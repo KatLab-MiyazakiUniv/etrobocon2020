@@ -1,5 +1,7 @@
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
+APPL_COBJS +=
+
 APPL_CXXOBJS += \
     Controller.o \
     Display.o \
@@ -14,14 +16,12 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-ev3/Makefile
 
 endif
 
-# APPL_DIR += \
-#    $(mkfile_path)/module \
-#    $(mkfile_path)/module/api \
-#    $(mkfile_path)/module/api/core
+APPL_DIRS += \
+    $(mkfile_path)app \
+    $(mkfile_path)module
 
-# INCLUDES += \
-#    -I$(mkfile_path)/module \
-#    -I$(mkfile_path)/module/api \
-#    -I$(mkfile_path)/module/api/core
+INCLUDES += \
+    -I$(mkfile_path)app \
+    -I$(mkfile_path)module
 
-# COPTS += -fno-use-cxa-atexit
+#COPTS += -fno-use-cxa-atexit
