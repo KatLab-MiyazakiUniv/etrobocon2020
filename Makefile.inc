@@ -18,10 +18,12 @@ endif
 
 APPL_DIRS += \
     $(mkfile_path)app \
-    $(mkfile_path)module
+    $(mkfile_path)module \
+    $(mkfile_path)module/api \
 
 INCLUDES += \
     -I$(mkfile_path)app \
-    -I$(mkfile_path)module
+    -I$(mkfile_path)module \
+    -I$(mkfile_path)module/api \
 
 #COPTS += -fno-use-cxa-atexit
