@@ -26,4 +26,4 @@ INCLUDES += \
     -I$(mkfile_path)module \
     -I$(mkfile_path)module/api \
 
-#COPTS += -fno-use-cxa-atexit
+COPTS += -std=gnu++11

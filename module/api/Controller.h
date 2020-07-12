@@ -31,7 +31,7 @@ struct HsvStatus
   double value;
 };
 
-enum Color
+enum class Color
 {
   black,
   red,
@@ -53,11 +53,9 @@ public:
   Clock clock;
   GyroSensor gyroSensor;
   // モータ入力電圧の最大値
-  // static constexpr int MOTOR_PWM_MAX = 100;
-  static const int MOTOR_PWM_MAX = 100;
+  static constexpr int MOTOR_PWM_MAX = 100;
   // モータ入力電圧の最小値
-  // static constexpr int MOTOR_PWM_MIN = -100;
-  static const int MOTOR_PWM_MIN = -100;
+  static constexpr int MOTOR_PWM_MIN = -100;
 
   // 白色のデフォルト値
   rgb_raw_t standardWhite;

@@ -88,10 +88,8 @@ int Controller::getBrightness()
 
 int limitRgbValue(const int value)
 {
-  // constexpr int max = 255;
-  // constexpr int min = 0;
-  int max = 255;
-  int min = 0;
+  constexpr int max = 255;
+  constexpr int min = 0;
 
   if (value >= max)
   {
@@ -119,18 +117,18 @@ Color Controller::hsvToColor(const HsvStatus &status)
   {
     if (status.value <= 69.841)
     {
-      return black;
+      return Color::black;
     }
     else
     {
-      return white;
+      return Color::white;
     }
   }
   else
   {
     if (status.value <= 29.037)
     {
-      return black;
+      return Color::black;
     }
     else
     {
@@ -142,21 +140,21 @@ Color Controller::hsvToColor(const HsvStatus &status)
           {
             if (status.hue <= 22.134)
             {
-              return red;
+              return Color::red;
             }
             else
             {
-              return yellow;
+              return Color::yellow;
             }
           }
           else
           {
-            return yellow;
+            return Color::yellow;
           }
         }
         else
         {
-          return green;
+          return Color::green;
         }
       }
       else
@@ -167,21 +165,21 @@ Color Controller::hsvToColor(const HsvStatus &status)
           {
             if (status.value <= 57.333)
             {
-              return green;
+              return Color::green;
             }
             else
             {
-              return blue;
+              return Color::blue;
             }
           }
           else
           {
-            return blue;
+            return Color::blue;
           }
         }
         else
         {
-          return red;
+          return Color::red;
         }
       }
     }
