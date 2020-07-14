@@ -15,7 +15,7 @@ NOTE: Macで上手くいくかはわかりません。
 
    すでに `etrobo シミュレータ v1.0` にアップデートしている人は、飛ばしてください。
 
-   ##### 1.1 開発環境を起動し、VSCodeを開く
+   ##### 1.1 開発環境（etroboパッケージ）を起動し、VSCodeを開く
 
    ##### 1.2 エクスプローラからダウンロードした`etrobo シミュレータ v1.0`のファイル（例：`etrobosim2020_1.0_win.tar.gz`）があるディレクトリを開く
    
@@ -23,7 +23,7 @@ NOTE: Macで上手くいくかはわかりません。
 
    <details><summary>【画像】詳しい手順を見るにはここをクリック！！！</summary><div>
    
-   ![Update](docs/img/etrobo-update01.png)
+   ![Update方法](docs/img/etrobo-update01.png)
    
    </div></details>
    
