@@ -1,5 +1,7 @@
 # etrobocon2020
 
+![Google Test](https://github.com/KatLab-MiyazakiUniv/etrobocon2020/workflows/Google%20Test/badge.svg)
+
 ## ビルド方法
 
 1. etrobo シミュレータ v1.0 であることを確認する

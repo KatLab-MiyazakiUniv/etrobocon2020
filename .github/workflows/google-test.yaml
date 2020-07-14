@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: setup
+    - name: setup # TODO: この部分をキャッシュする
       run: sudo apt install cmake -y
     - name: test
       run: ./gtest_all.sh
