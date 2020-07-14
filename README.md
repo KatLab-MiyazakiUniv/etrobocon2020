@@ -2,10 +2,8 @@
 
 ## 環境構築
 
-NOTE: Macで上手くいくかはわかりません。
-
 ### 前提条件
-- WSL1 の Ubuntu18.04 をインストール済み
+- Windowsの場合は、WSL1 の Ubuntu18.04 をインストール済み
 - [etroboパッケージ](https://github.com/ETrobocon/etrobo)をインストール済み
 - `etrobo シミュレータ v1.0`をダウンロードしている
 
@@ -17,7 +15,7 @@ NOTE: Macで上手くいくかはわかりません。
 
    ##### 1.1 開発環境（etroboパッケージ）を起動し、VSCodeを開く
 
-   ##### 1.2 エクスプローラからダウンロードした`etrobo シミュレータ v1.0`のファイル（例：`etrobosim2020_1.0_win.tar.gz`）があるディレクトリを開く
+   ##### 1.2 ダウンロードした`etrobo シミュレータ v1.0`のファイル（例：`etrobosim2020_1.0_win.tar.gz`）があるディレクトリを開く
    
    ##### 1.3 `etrobo シミュレータ v1.0`のファイルを`dist`ディレクトリにコピーする
 
@@ -87,10 +85,14 @@ $ ./gtest_all.sh
 #### **!!** エラーが発生した場合
 - `cmake`をインストールしていない場合
 
-   以下のようなエラーが発生した際は、`sudo apt install cmake`を実行して`cmake`をインストールした後、もう一度`gtest_all.sh`ファイルを実行してください。
+   以下のようなエラーが発生した際は、`cmake`をインストールしなければいけません。
 
    ```
    ./test/gtest/gtest_build.sh: 9: ./test/gtest/gtest_build.sh: cmake: not found
    ```
+
+   Windowsの場合は、 `sudo apt install cmake`を実行して`cmake`をインストールした後、もう一度`gtest_all.sh`ファイルを実行してください。
+
+   macOSの場合は、[Homebrew](https://brew.sh/index_ja)をインストールし、`brew install cmake`を実行して`cmake`をインストールした後、もう一度`gtest_all.sh`ファイルを実行してください。
 
 TODO: 後で整備する
