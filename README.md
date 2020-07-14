@@ -58,6 +58,14 @@ NOTE: Macで上手くいくかはわかりません。
    ```
    ※）`https://github.com/[自分のGitHubユーザ名]/etrobocon2020.git`の部分は先ほどコピーしたURLを使う。
 
+#### 4. KatLabのリポジトリを `upstream` として登録する
+
+   TODO: なぜ`upstream`を登録するのか理由を書く
+
+   ```
+   $ cd ~/etrobo/workspace/etrobocon2020
+   $ git remote add upstream https://github.com/KatLab-MiyazakiUniv/etrobocon2020.git
+   ```
 
 ## ビルド方法
 
