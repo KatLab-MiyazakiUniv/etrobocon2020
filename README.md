@@ -1,5 +1,6 @@
 # etrobocon2020
 
+![Google Test](https://github.com/KatLab-MiyazakiUniv/etrobocon2020/workflows/Google%20Test/badge.svg)
 ## 環境構築
 
 ### 前提条件
