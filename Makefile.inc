@@ -4,8 +4,13 @@ APPL_COBJS +=
 
 APPL_CXXOBJS += \
     Controller.o \
+    Curvature.o \
+    Distance.o \
     Display.o \
     EtRobocon2020.o \
+    Filter.o \
+    Pid.o \
+    TurnControl.o \
 
 SRCLANG := c++
 
