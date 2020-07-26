@@ -6,16 +6,15 @@
 #ifndef FILTER_H
 #define FILTER_H
 
-template <typename T = int>
 class Filter {
  private:
-  T preValue;
+  double preValue;
 
  public:
   Filter();
   void reset();
-  double lowPassFilter(T value, double rate = 0.9);
-  double complementaryFilter(T heavyValue, T lightValue, double rate = 0.94);
+  double lowPassFilter(double value, double rate = 0.9);
+  double complementaryFilter(double heavyValue, double lightValue, double rate = 0.94);
 };
 
 #endif

@@ -11,7 +11,7 @@
 
 class TurnControl {
  private:
-  Filter<> filter;
+  Filter filter;
   Pid pid;
 
  public:

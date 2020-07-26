@@ -5,17 +5,12 @@
  */
 #include "Filter.h"
 
-template <typename T>
-Filter<T>::Filter() : preValue(0)
-{
-}
+Filter::Filter() : preValue(0) {}
 
-template <typename T>
-void Filter<T>::reset()
+void Filter::reset()
 {
   preValue = 0;
 }
-
 
 /**
  *  [Filter::lowPassFilter]
@@ -24,8 +19,7 @@ void Filter<T>::reset()
  *  @param  rate  [前回値を参考にする割合]
  *  @return       [フィルター後の値]
  */
-template <typename T>
-double Filter<T>::lowPassFilter(T value, double rate)
+double Filter::lowPassFilter(double value, double rate)
 {
   // 前回値の初期化
   if(preValue == 0) {
@@ -40,13 +34,7 @@ double Filter<T>::lowPassFilter(T value, double rate)
   return filtered;
 }
 
-template <typename T>
-double Filter<T>::complementaryFilter(T heavyValue, T lightValue, double rate)
+double Filter::complementaryFilter(double heavyValue, double lightValue, double rate)
 {
   return rate * heavyValue + (1 - rate) * lightValue;
 }
-
-// 明示的なインスタンス化
-template class Filter<int>;
-template class Filter<float>;
-template class Filter<double>;
