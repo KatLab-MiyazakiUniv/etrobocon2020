@@ -33,7 +33,7 @@ void NormalCourse::runNormalCourse()
   printf("runNormalCourse\n");
   // 配列の個数
   constexpr int arraySize = 15;
-  constexpr int baseSpeed = 75;
+  constexpr int baseSpeed = 100;
   constexpr std::array<NormalCourseProperty, arraySize> normalCoursePropertyL
       /**
        * 詳しく見たいならLineTracer.hを見てね．

@@ -70,8 +70,8 @@ int LineTracer::calculateTurnValue(int speedValue, double curvatureValue, double
 {
   int turnValue = 0;  // 旋回値
   Curvature curvature(curvatureValue, curvaturePGain, curvatureIGain,
-                      curvatureDGain);     // 曲率PID制御
-  constexpr int baseSpeedRate = 640 / 70;  // PWM70で640mm/secとしたときの速度比
+                      curvatureDGain);                // 曲率PID制御
+  constexpr double baseSpeedRate = 436.332313 / 100;  // PWM100で436.332313mm/secとしたときの速度比
 
   // カラーセンサー値を用いたPID制御
   turnValue = turnControl.calculateTurn(speedValue, controller.getBrightness(), targetBrightness,
