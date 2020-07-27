@@ -13,8 +13,8 @@ void EtRobocon2020::start()
   // コースを設定(Lコース:ture, Rコース:false)
   constexpr bool isLeftCourse = true;
   // 白黒の基準値として実測値を設定
-  const rgb_raw_t standardWhite = { 7, 7, 12 };
-  const rgb_raw_t standardBlack = { 126, 120, 166 };
+  constexpr rgb_raw_t standardWhite = { 7, 7, 12 };
+  constexpr rgb_raw_t standardBlack = { 126, 120, 166 };
   // 光センサーの目標値を設定
   constexpr double targetBrightness = (255 - 0) / 2.0;
 
