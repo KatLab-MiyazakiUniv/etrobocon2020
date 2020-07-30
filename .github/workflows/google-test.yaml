@@ -4,12 +4,11 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v2
-    - name: setup # TODO: この部分をキャッシュする
-      run: sudo apt install cmake -y
-    - name: test
-      run: ./gtest_all.sh
+      - uses: actions/checkout@v2
+      - name: setup # TODO: この部分をキャッシュする
+        run: sudo apt install cmake -y
+      - name: test
+        run: ./gtest_all.sh

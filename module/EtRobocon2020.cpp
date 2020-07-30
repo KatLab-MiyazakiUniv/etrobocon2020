@@ -1,49 +1,33 @@
+/**
+ *  @file   EtRobocon2020.cpp
+ *  @brief  全体を制御するクラス
+ *  @author Arima Kaoru
+ **/
+
 #include "EtRobocon2020.h"
 #include "Controller.h"
-#include "Display.h"
+#include "NormalCourse.h"
 
-/*
-* タッチセンサーを押すと直進する
-* エンターボタンを押すと止まる
-* 下ボタンを押すとカラーセンサーのRGBをターミナルに表示する
-*/
 void EtRobocon2020::start()
 {
-  // Controllerクラスを使うためにインスタンス化する
+  // コースを設定(Lコース:ture, Rコース:false)
+  constexpr bool isLeftCourse = true;
+  // 白黒の基準値として実測値を設定
+  constexpr rgb_raw_t standardWhite = { 7, 7, 12 };
+  constexpr rgb_raw_t standardBlack = { 126, 120, 166 };
+  // 光センサーの目標値を設定
+  constexpr double targetBrightness = (255 - 0) / 2.0;
+
   Controller controller;
+  controller.setStandardWhite(standardWhite);
+  controller.setStandardBlack(standardBlack);
 
-  while (true)
-  {
-    // タッチセンサーを押すと直進する
-    if (controller.touchSensor.isPressed())
-    {
-      controller.setLeftMotorPwm(30);
-      controller.setRightMotorPwm(30);
-    }
-
-    // エンターボタンを押すと停止する
-    if (controller.buttonIsPressedEnter())
-    {
-      controller.stopMotor();
-    }
-
-    // 下ボタンを押すとカラーセンサーのRGB値を表示する
-    if (controller.buttonIsPressedDown())
-    {
-      rgb_raw_t rgb;
-      controller.colorSensor.getRawColor(rgb);
-      printf("R:%3d, G:%3d, B:%3d\n", rgb.r, rgb.g, rgb.b);
-      // 走行体の画面に表示する(動かない)
-      Display::print(6, "R:%3d, G:%3d, B:%3d", rgb.r, rgb.g, rgb.b);
-    }
-
-    // バックボタンを押すと終了する
-    if (controller.buttonIsPressedBack())
-    {
-      break;
-    }
-
-    // タスク時間4０００マイクロ秒=4ミリ秒待つ while文では必要らしい
+  // タッチセンサーが押されるまで待機
+  while(!controller.touchSensor.isPressed()) {
     controller.tslpTsk(4000);
   }
+
+  // ノーマルコースの走行開始
+  NormalCourse normalCourse(controller, isLeftCourse, targetBrightness);
+  normalCourse.runNormalCourse();
 }

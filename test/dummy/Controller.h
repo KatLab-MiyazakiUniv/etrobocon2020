@@ -8,8 +8,7 @@
 #include <array>
 
 // unsigned struct HsvStatus {
-struct HsvStatus
-{
+struct HsvStatus {
   //色相 範囲(0~360)
   double hue;
   //彩度 範囲(0~100)
@@ -18,28 +17,17 @@ struct HsvStatus
   double value;
 };
 
-struct rgb_raw_t
-{
-  unsigned int r;
-  unsigned int g;
-  unsigned int b;
-  rgb_raw_t() : r(0), g(0), b(0) {}
-};
+// ev3api_sensor.hからコピペ
+typedef struct {
+  uint16_t r;
+  uint16_t g;
+  uint16_t b;
+} rgb_raw_t;
 
-enum class Color
-{
-  black,
-  red,
-  green,
-  blue,
-  yellow,
-  white,
-  none
-};
+enum class Color { black, red, green, blue, yellow, white, none };
 
-class Motor
-{
-public:
+class Motor {
+ public:
   double count = 0.0;
   int getCount() { return static_cast<int>(count); };
   void setPWM(int pwm)
@@ -52,23 +40,20 @@ public:
   void setBrake(bool isBrake){};
 };
 
-class Clock
-{
-public:
+class Clock {
+ public:
   void sleep(int time){};
 };
 
-class TouchSensor
-{
-public:
+class TouchSensor {
+ public:
   bool isPressed() { return false; }
 };
 
-class ColorSensor
-{
-public:
+class ColorSensor {
+ public:
   int getBrightness() { return brightness; }
-  void getRawColor(rgb_raw_t &rgb)
+  void getRawColor(rgb_raw_t& rgb)
   {
     rgb.r = 1;
     rgb.g = 1;
@@ -77,22 +62,20 @@ public:
   int brightness = 0;
 };
 
-class GyroSensor
-{
-public:
+class GyroSensor {
+ public:
   int getAngle() { return angle; }
   void reset(){};
   int angle = 0;
 };
 
-class Controller
-{
-private:
+class Controller {
+ private:
   Motor rightWheel;
   Motor leftWheel;
   Motor liftMotor;
 
-public:
+ public:
   HsvStatus hsv;
   Clock clock;
   TouchSensor touchSensor;
@@ -118,13 +101,12 @@ public:
   bool buttonIsPressedBack()
   {
     counter++;
-    if (counter >= countLimit)
-    {
+    if(counter >= countLimit) {
       return true;
     }
     return false;
   };
-  void getRawColor(int &r, int &g, int &b)
+  void getRawColor(int& r, int& g, int& b)
   {
     r = mock_r;
     g = mock_g;
@@ -133,20 +115,17 @@ public:
     return;
   };
 
-  void convertHsv(int &r, int &g, int &b)
+  void convertHsv(int& r, int& g, int& b)
   {
     // r,g,bの最大値を求める
     double max = r;
-    if (max < g)
-      max = g;
-    if (max < b)
-      max = b;
+    if(max < g) max = g;
+    if(max < b) max = b;
 
     // 明度(value)を求める
     hsv.value = max / 255 * 100;
 
-    if (hsv.value == 0)
-    {
+    if(hsv.value == 0) {
       hsv.hue = 0;
       hsv.saturation = 0;
       return;
@@ -154,10 +133,8 @@ public:
 
     // r,g,bの最小値を求める
     double min = r;
-    if (min > g)
-      min = g;
-    if (min > b)
-      min = b;
+    if(min > g) min = g;
+    if(min > b) min = b;
 
     double diff = max - min;
 
@@ -165,89 +142,58 @@ public:
     hsv.saturation = diff / max * 100.0;
 
     // 色相(hue)を求める
-    if (r == g && r == b)
+    if(r == g && r == b)
       hsv.hue = 0;
-    else if (max == r)
+    else if(max == r)
       hsv.hue = 60.0 * ((g - b) / diff);
-    else if (max == g)
+    else if(max == g)
       hsv.hue = 60.0 * ((b - r) / diff) + 120.0;
-    else if (max == b)
+    else if(max == b)
       hsv.hue = 60.0 * ((r - g) / diff) + 240.0;
 
-    if (hsv.hue < 0.0)
-      hsv.hue += 360.0;
+    if(hsv.hue < 0.0) hsv.hue += 360.0;
   }
 
-  HsvStatus getHsv() { return hsv; } // hsv値を返す
+  HsvStatus getHsv() { return hsv; }  // hsv値を返す
 
-  Color hsvToColor(const HsvStatus &status)
+  Color hsvToColor(const HsvStatus& status)
   {
-    if (status.saturation <= 25.388)
-    {
-      if (status.value <= 69.841)
-      {
+    if(status.saturation <= 25.388) {
+      if(status.value <= 69.841) {
         return Color::black;
-      }
-      else
-      {
+      } else {
         return Color::white;
       }
-    }
-    else
-    {
-      if (status.value <= 29.037)
-      {
+    } else {
+      if(status.value <= 29.037) {
         return Color::black;
-      }
-      else
-      {
-        if (status.hue <= 125.776)
-        {
-          if (status.hue <= 63.737)
-          {
-            if (status.hue <= 49.617)
-            {
-              if (status.hue <= 22.134)
-              {
+      } else {
+        if(status.hue <= 125.776) {
+          if(status.hue <= 63.737) {
+            if(status.hue <= 49.617) {
+              if(status.hue <= 22.134) {
                 return Color::red;
-              }
-              else
-              {
+              } else {
                 return Color::yellow;
               }
-            }
-            else
-            {
+            } else {
               return Color::yellow;
             }
-          }
-          else
-          {
+          } else {
             return Color::green;
           }
-        }
-        else
-        {
-          if (status.hue <= 312.573)
-          {
-            if (status.saturation <= 79.553)
-            {
-              if (status.value <= 57.333)
-              {
+        } else {
+          if(status.hue <= 312.573) {
+            if(status.saturation <= 79.553) {
+              if(status.value <= 57.333) {
                 return Color::green;
-              }
-              else
-              {
+              } else {
                 return Color::blue;
               }
-            }
-            else
-            {
+            } else {
               return Color::blue;
             }
-          }
-          else
-          {
+          } else {
             return Color::red;
           }
         }
@@ -261,8 +207,7 @@ public:
   bool pushRight = false;
   bool buttonIsPressedRight()
   {
-    if (pushRight)
-    {
+    if(pushRight) {
       pushRight = false;
       return true;
     }
@@ -272,8 +217,7 @@ public:
   bool pushLeft = false;
   bool buttonIsPressedLeft()
   {
-    if (pushLeft)
-    {
+    if(pushLeft) {
       pushLeft = false;
       return true;
     }
@@ -284,8 +228,7 @@ public:
   {
     static int counter = 0;
     counter++;
-    if (counter >= 10)
-    {
+    if(counter >= 10) {
       counter = 0;
       return true;
     }
@@ -294,10 +237,9 @@ public:
   void tslpTsk(int time)
   {
     exitCounter++;
-    if (exitCounter > exitCountLimit)
-      std::exit(1);
-  }; // 4msec周期起動
-  void printDisplay(int row, const char *format, ...){};
+    if(exitCounter > exitCountLimit) std::exit(1);
+  };  // 4msec周期起動
+  void printDisplay(int row, const char* format, ...){};
   int countLimit = 100;
   int counter = 0;
   int exitCounter = 0;
@@ -312,7 +254,7 @@ public:
   }
   static void lcdSetFont() {}
   static void lcdFillRect(int, int, int) {}
-  static void lcdDrawString(char *msg, int, int)
+  static void lcdDrawString(char* msg, int, int)
   {
     // std::cout << "[          ] " << msg << std::endl;
   }
@@ -335,12 +277,9 @@ public:
   }
   static int suppressPwmValue(const int value)
   {
-    if (value > MOTOR_PWM_MAX)
-    {
+    if(value > MOTOR_PWM_MAX) {
       return MOTOR_PWM_MAX;
-    }
-    else if (value < MOTOR_PWM_MIN)
-    {
+    } else if(value < MOTOR_PWM_MIN) {
       return MOTOR_PWM_MIN;
     }
     return value;
@@ -350,18 +289,13 @@ public:
   {
     this->resetArmMotorCount();
 
-    if (count >= 0)
-    {
-      while (this->getArmMotorCount() < count)
-      {
+    if(count >= 0) {
+      while(this->getArmMotorCount() < count) {
         this->setArmMotorPwm(pwm);
         this->tslpTsk(4);
       }
-    }
-    else
-    {
-      while (this->getArmMotorCount() > count)
-      {
+    } else {
+      while(this->getArmMotorCount() > count) {
         this->setArmMotorPwm(-pwm);
         this->tslpTsk(4);
       }
@@ -384,31 +318,26 @@ public:
   {
     colorBuffer[colorBufferCounter] = getColor();
     colorBufferCounter++;
-    if (colorBufferSize <= colorBufferCounter)
-    {
+    if(colorBufferSize <= colorBufferCounter) {
       colorBufferCounter = 0;
     }
   }
 
-  void steer(int power = 10, int turnRatio = 10)
-  {
-    this->steer(power, turnRatio);
-  }
+  void steer(int power = 10, int turnRatio = 10) { this->steer(power, turnRatio); }
 
   void resetGyroSensor()
   {
     // なぜかジャイロセンサーの値が訳の分からない値になることがあるので、0になるまでリセットする
-    while (gyroSensor.getAngle() != 0)
-      gyroSensor.reset();
+    while(gyroSensor.getAngle() != 0) gyroSensor.reset();
   }
 
   void stopLiftMotor() { this->resetArmMotorCount(); }
 
   rgb_raw_t standardWhite;
-  void setStandardWhite(const rgb_raw_t &rgb) { standardWhite = rgb; }
+  void setStandardWhite(const rgb_raw_t& rgb) { standardWhite = rgb; }
 
   rgb_raw_t standardBlack;
-  void setStandardBlack(const rgb_raw_t &rgb) { standardBlack = rgb; }
+  void setStandardBlack(const rgb_raw_t& rgb) { standardBlack = rgb; }
 
   int getVolt() { return 3; }
   int getAmp() { return 3; }
