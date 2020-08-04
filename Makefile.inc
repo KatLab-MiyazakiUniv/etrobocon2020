@@ -2,6 +2,7 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_COBJS +=
 
+# ここにファイルを追加する
 APPL_CXXOBJS += \
     Controller.o \
     Curvature.o \
