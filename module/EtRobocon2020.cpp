@@ -17,7 +17,7 @@ void EtRobocon2020::start()
   constexpr rgb_raw_t standardBlack = { 126, 120, 166 };
 
   Controller controller;
-  // 光センサーの目標値を設定
+  // 明るさの目標値を設定
   const double targetBrightness = controller.getBrightness();
   controller.setStandardWhite(standardWhite);
   controller.setStandardBlack(standardBlack);
