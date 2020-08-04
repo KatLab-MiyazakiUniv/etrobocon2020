@@ -55,7 +55,7 @@ void LineTracer::run(const NormalCourseProperty& settings)
     currentDistance
         = distance.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
 
-    controller.tslpTsk(40000);
+    controller.tslpTsk(4000);
   }
 }
 
