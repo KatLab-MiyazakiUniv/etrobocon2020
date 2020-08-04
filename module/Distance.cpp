@@ -5,7 +5,7 @@
  **/
 #include "Distance.h"
 
-Distance::Distance() : radius(50) {}
+Distance::Distance() : radius(45) {}
 
 double Distance::calculate(int angle)
 {
