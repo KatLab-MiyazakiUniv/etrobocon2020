@@ -32,7 +32,7 @@ void NormalCourse::runNormalCourse()
 {
   printf("runNormalCourse\n");
   // 配列の個数
-  constexpr int arraySize = 16;
+  constexpr int arraySize = 15;
   constexpr int baseSpeed = 100;
   constexpr std::array<NormalCourseProperty, arraySize> normalCoursePropertyL
       /**
@@ -46,8 +46,7 @@ void NormalCourse::runNormalCourse()
           { 320, baseSpeed, 0.0, { 0.1, 0.005, 0.01 } },               // 第3区間
           { 1310, baseSpeed, -0.002941, { 0.373, 0.005, 0.009 } },         // 第4区間
           { 620, baseSpeed, 0.0, { 0.1, 0.005, 0.01 } },    // 第5区間
-          //{ 510, baseSpeed, -0.004167, { 0.713, 0.001, 0.017 } },  // 第6区間
-          { 500, baseSpeed, -0.004167, { 0.45, 0.005, 0.011 } },
+          { 500, baseSpeed, -0.004167, { 0.45, 0.005, 0.011 } },  // 第6区間
           { 590, baseSpeed, 0.0, { 0.1, 0.005, 0.01 } },            // 第7区間
           { 710, baseSpeed, 0.002439, { 0.356, 0.002, 0.008 } },        // 第8区間
           { 163, baseSpeed, 0.0, { 0.1, 0.005, 0.01 } },       // 第9区間
@@ -56,8 +55,7 @@ void NormalCourse::runNormalCourse()
           { 680, baseSpeed, 0.002778, { 0.358, 0.002, 0.008 } },               // 第12区間
           { 1613, baseSpeed, 0.0 , { 0.1, 0.005, 0.03 } },         // 第13区間
           { 530, baseSpeed, -0.004167, { 0.45, 0.005, 0.025 } },    // 第14区間
-          { 1300, baseSpeed, 0.0, { 0.1, 0.005, 0.01 } },       //進入ライン
-          { 580, 0, 0.00331, { 0.55, 0.0, 0.04 } },          //本番で要調整
+          { 1800, baseSpeed, 0.0, { 0.1, 0.005, 0.01 } },       //進入ライン
       } };
   constexpr std::array<NormalCourseProperty, arraySize> normalCoursePropertyR
       /**
@@ -81,7 +79,6 @@ void NormalCourse::runNormalCourse()
           { 1700, baseSpeed, 0.0 , { 0.2, 0.005, 0.01 } },        // 第13区間
           { 2085, 1 + 10, 0.0, { 0.4, 0.005, 0.03 } },            // 進入ライン
           { 580, 1, -0.00331, { 0.55, 0.0, 0.04 } },               // 本番で要調整
-          { 0, 0, 0, { 0.0, 0.0, 0.0 } },               // 本番で要調整
       } };
       
   // LコースならLコースのPID値を採用する。RコースならRコースのPID値を採用する。
