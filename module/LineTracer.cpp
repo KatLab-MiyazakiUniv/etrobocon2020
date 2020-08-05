@@ -37,15 +37,16 @@ void LineTracer::run(const NormalCourseProperty& settings)
     // 旋回値の計算
     turnValue = calculateTurnValue(speedValue, settings.curvature, settings.turnPid.Kp,
                                    settings.turnPid.Ki, settings.turnPid.Kd);
+
     // モータ出力の計算
     if(isLeftCourse) {
       // Leftコースの場合
-      leftPWM = speedValue - turnValue;
-      rightPWM = speedValue + turnValue;
-    } else {
-      // Rightコースの場合
       leftPWM = speedValue + turnValue;
       rightPWM = speedValue - turnValue;
+    } else {
+      // Rightコースの場合
+      leftPWM = speedValue - turnValue;
+      rightPWM = speedValue + turnValue;
     }
     // PWM値の設定
     controller.setLeftMotorPwm(leftPWM);

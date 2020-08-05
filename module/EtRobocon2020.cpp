@@ -15,10 +15,10 @@ void EtRobocon2020::start()
   // 白黒の基準値として実測値を設定
   constexpr rgb_raw_t standardWhite = { 108, 104, 149 };
   constexpr rgb_raw_t standardBlack = { 4, 5, 8 };
+  // 明るさの目標値を設定
+  constexpr int targetBrightness = (255 - 0) / 2;
 
   Controller controller;
-  // 明るさの目標値を設定
-  const double targetBrightness = controller.getBrightness();
   controller.setStandardWhite(standardWhite);
   controller.setStandardBlack(standardBlack);
 
