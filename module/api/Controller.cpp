@@ -1,13 +1,13 @@
 #include "Controller.h"
 
 Controller::Controller()
-    : touchSensor(PORT_1),
-      colorSensor(PORT_3),
-      gyroSensor(PORT_4),
-      liftMotor(PORT_A),
-      rightWheel(PORT_B),
-      leftWheel(PORT_C),
-      tailMotor(PORT_D)
+  : touchSensor(PORT_1),
+    colorSensor(PORT_3),
+    gyroSensor(PORT_4),
+    liftMotor(PORT_A),
+    rightWheel(PORT_B),
+    leftWheel(PORT_C),
+    tailMotor(PORT_D)
 {
   colorSensor.getRawColor(standardWhite);
   colorSensor.getRawColor(standardBlack);
@@ -91,94 +91,64 @@ int limitRgbValue(const int value)
   constexpr int max = 255;
   constexpr int min = 0;
 
-  if (value >= max)
-  {
+  if(value >= max) {
     return max;
-  }
-  else if (value <= min)
-  {
+  } else if(value <= min) {
     return min;
   }
   return value;
 }
 
-void Controller::getRawColor(int &r, int &g, int &b)
+void Controller::getRawColor(int& r, int& g, int& b)
 {
   rgb_raw_t rgb;
   colorSensor.getRawColor(rgb);
-  r = limitRgbValue(static_cast<double>((rgb.r - standardBlack.r)) * 255 / (standardWhite.r - standardBlack.r));
-  g = limitRgbValue(static_cast<double>((rgb.g - standardBlack.g)) * 255 / (standardWhite.g - standardBlack.g));
-  b = limitRgbValue(static_cast<double>((rgb.b - standardBlack.b)) * 255 / (standardWhite.b - standardBlack.b));
+  r = limitRgbValue(static_cast<double>((rgb.r - standardBlack.r)) * 255
+                    / (standardWhite.r - standardBlack.r));
+  g = limitRgbValue(static_cast<double>((rgb.g - standardBlack.g)) * 255
+                    / (standardWhite.g - standardBlack.g));
+  b = limitRgbValue(static_cast<double>((rgb.b - standardBlack.b)) * 255
+                    / (standardWhite.b - standardBlack.b));
 }
 
-Color Controller::hsvToColor(const HsvStatus &status)
+Color Controller::hsvToColor(const HsvStatus& status)
 {
-  if (status.saturation <= 25.388)
-  {
-    if (status.value <= 69.841)
-    {
+  if(status.saturation <= 25.388) {
+    if(status.value <= 69.841) {
       return Color::black;
-    }
-    else
-    {
+    } else {
       return Color::white;
     }
-  }
-  else
-  {
-    if (status.value <= 29.037)
-    {
+  } else {
+    if(status.value <= 29.037) {
       return Color::black;
-    }
-    else
-    {
-      if (status.hue <= 125.776)
-      {
-        if (status.hue <= 63.737)
-        {
-          if (status.hue <= 49.617)
-          {
-            if (status.hue <= 22.134)
-            {
+    } else {
+      if(status.hue <= 125.776) {
+        if(status.hue <= 63.737) {
+          if(status.hue <= 49.617) {
+            if(status.hue <= 22.134) {
               return Color::red;
-            }
-            else
-            {
+            } else {
               return Color::yellow;
             }
-          }
-          else
-          {
+          } else {
             return Color::yellow;
           }
-        }
-        else
-        {
+        } else {
           return Color::green;
         }
-      }
-      else
-      {
-        if (status.hue <= 312.573)
-        {
-          if (status.saturation <= 79.553)
-          {
-            if (status.value <= 57.333)
-            {
+      } else {
+        if(status.hue <= 312.573) {
+          if(status.saturation <= 79.553) {
+            if(status.value <= 57.333) {
               return Color::green;
-            }
-            else
-            {
+            } else {
               return Color::blue;
             }
-          }
-          else
-          {
+          } else {
             return Color::blue;
           }
-        }
-        else
-        {
+        } else {
           return Color::red;
         }
       }
@@ -205,7 +175,7 @@ void Controller::lcdFillRect(int x, int y, int h)
   ev3_lcd_fill_rect(x, y, EV3_LCD_WIDTH, h, EV3_LCD_WHITE);
 }
 
-void Controller::lcdDrawString(const char *str, int x, int y)
+void Controller::lcdDrawString(const char* str, int x, int y)
 {
   ev3_lcd_draw_string(str, x, y);
 }
@@ -232,12 +202,9 @@ int Controller::getArmMotorCount()
 
 int Controller::suppressPwmValue(const int value)
 {
-  if (value > MOTOR_PWM_MAX)
-  {
+  if(value > MOTOR_PWM_MAX) {
     return MOTOR_PWM_MAX;
-  }
-  else if (value < MOTOR_PWM_MIN)
-  {
+  } else if(value < MOTOR_PWM_MIN) {
     return MOTOR_PWM_MIN;
   }
   return value;
@@ -258,30 +225,27 @@ void Controller::setArmMotorPwm(const int pwm)
   liftMotor.setPWM(suppressPwmValue(pwm));
 }
 
-void Controller::setStandardWhite(const rgb_raw_t &rgb)
+void Controller::setStandardWhite(const rgb_raw_t& rgb)
 {
   standardWhite = rgb;
 }
 
-void Controller::setStandardBlack(const rgb_raw_t &rgb)
+void Controller::setStandardBlack(const rgb_raw_t& rgb)
 {
   standardBlack = rgb;
 }
 
-void Controller::convertHsv(int &r, int &g, int &b)
+void Controller::convertHsv(int& r, int& g, int& b)
 {
   // r,g,bの最大値を求める
   double max = r;
-  if (max < g)
-    max = g;
-  if (max < b)
-    max = b;
+  if(max < g) max = g;
+  if(max < b) max = b;
 
   // 明度(value)を求める
   hsv.value = max / 255 * 100;
 
-  if (hsv.value == 0)
-  {
+  if(hsv.value == 0) {
     hsv.hue = 0;
     hsv.saturation = 0;
     return;
@@ -289,10 +253,8 @@ void Controller::convertHsv(int &r, int &g, int &b)
 
   // r,g,bの最小値を求める
   double min = r;
-  if (min > g)
-    min = g;
-  if (min > b)
-    min = b;
+  if(min > g) min = g;
+  if(min > b) min = b;
 
   double diff = max - min;
 
@@ -300,23 +262,22 @@ void Controller::convertHsv(int &r, int &g, int &b)
   hsv.saturation = diff / max * 100.0;
 
   // 色相(hue)を求める
-  if (r == g && r == b)
+  if(r == g && r == b)
     hsv.hue = 0;
-  else if (max == r)
+  else if(max == r)
     hsv.hue = 60.0 * ((g - b) / diff);
-  else if (max == g)
+  else if(max == g)
     hsv.hue = 60.0 * ((b - r) / diff) + 120.0;
-  else if (max == b)
+  else if(max == b)
     hsv.hue = 60.0 * ((r - g) / diff) + 240.0;
 
-  if (hsv.hue < 0.0)
-    hsv.hue += 360.0;
+  if(hsv.hue < 0.0) hsv.hue += 360.0;
 }
 
 HsvStatus Controller::getHsv() const
 {
   return hsv;
-} // hsv値を返す
+}  // hsv値を返す
 
 void Controller::resetMotorCount()
 {
@@ -339,20 +300,15 @@ void Controller::moveArm(int count, int pwm)
 {
   this->resetArmMotorCount();
 
-  if (count >= 0)
-  {
+  if(count >= 0) {
     this->setArmMotorPwm(pwm);
-    while (this->getArmMotorCount() < count)
-    {
-      this->tslpTsk(4);
+    while(this->getArmMotorCount() < count) {
+      this->tslpTsk(4000);
     }
-  }
-  else
-  {
+  } else {
     this->setArmMotorPwm(-pwm);
-    while (this->getArmMotorCount() > count)
-    {
-      this->tslpTsk(4);
+    while(this->getArmMotorCount() > count) {
+      this->tslpTsk(4000);
     }
   }
 
@@ -372,12 +328,11 @@ void Controller::steer(int power, int turnRatio)
 void Controller::resetGyroSensor()
 {
   // なぜかジャイロセンサーの値が訳の分からない値になることがあるので、0になるまでリセットする
-  while (gyroSensor.getAngle() != 0)
-    gyroSensor.reset();
+  while(gyroSensor.getAngle() != 0) gyroSensor.reset();
 }
 
 void Controller::stopLiftMotor()
 {
   this->resetArmMotorCount();
-  this->tslpTsk(1500);
+  this->tslpTsk(1500000);
 }

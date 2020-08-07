@@ -1,13 +1,13 @@
 ---
 name: Ticket template
 about: チケットを発行するときのテンプレート
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 ## 完了条件
+
 - XXX
 - XXX
 - XXX
