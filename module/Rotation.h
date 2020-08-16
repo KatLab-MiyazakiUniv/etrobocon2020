@@ -38,7 +38,7 @@ class Rotation {
    *  @param clockwise [回転方向(Trueが時計回り)]
    *  @param pwm [モーターパワー]
    */
-  void pivotTurn(double angle, bool clockwise, int pwm = 50);
+  void pivotTurn(double angle, bool clockwise, int pwm = 30);
 
   /**
    *  @brief 走行体をバックで軸足回転させる
@@ -46,7 +46,7 @@ class Rotation {
    *  @param clockwise [回転方向(Trueが時計回り)]
    *  @param pwm [モーターパワー]
    */
-  void pivotTurnBack(double angle, bool clockwise, int pwm = 50);
+  void pivotTurnBack(double angle, bool clockwise, int pwm = 30);
 
   /**
    *  @brief 走行体を指定されたように回転させる

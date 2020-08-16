@@ -58,7 +58,7 @@ void Filter::rotationFilterSet(int fancName, bool clockwise)
     if(clockwise)
       filterData = { 1.01, 0.97, 1.053, 1.06 };  //時計回り
     else
-      filterData = { 1.033, 0.98, 1.08, 1.075 };  //反時計回り
+      filterData = { 1.05, 0.98, 1.08, 1.075 };  //反時計回り
   }
 }
 
