@@ -54,7 +54,7 @@ namespace etrobocon2020_test {
     filter.rotationFilterSet(pivotTurnFunc, clockwise);
     double actual = filter.rotationFilter(
         rotation.calculate(controller.getLeftMotorCount(), controller.getRightMotorCount()),
-        expected, 50);
+        expected, 30);
 
     ASSERT_LE(expected, actual);
     ASSERT_GE(expected + 5, actual);
