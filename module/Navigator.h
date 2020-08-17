@@ -2,14 +2,12 @@
  *  @file  Navigator.h
  *  @brief ビンゴエリアを走る
  *  @author sugaken0528
- *  updated by T.Miyaji
  */
 
 #ifndef NAVIGATOR_H
 #define NAVIGATOR_H
 
 #include "LineTracer.h"
-#include <array>
 
 class Navigator {
  public:
