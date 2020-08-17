@@ -38,3 +38,37 @@ double Filter::complementaryFilter(double heavyValue, double lightValue, double 
 {
   return rate * heavyValue + (1 - rate) * lightValue;
 }
+
+void Filter::rotationFilterSet(int fancName, bool clockwise)
+{
+  //回頭の時の基準値をセット
+  if(fancName == rotateFunc) {
+    if(clockwise)
+      filterData = { 1.2453, 1.128, 1.538, 1.237 };  //時計回り
+    else
+      filterData = { 1.1748, 1.097, 1.368, 1.17 };  //反時計回り
+    //ピボットターン(前)の時の基準値をセット
+  } else if(fancName == pivotTurnFunc) {
+    if(clockwise)
+      filterData = { 1.0, 1.0, 0.96, 1.01 };  //時計回り
+    else
+      filterData = { 0.98, 1.0, 0.98, 0.98 };  //反時計回り
+    //ピボットターン(後)の時の基準値をセット
+  } else if(fancName == pivotTurnBackFunc) {
+    if(clockwise)
+      filterData = { 1.01, 0.97, 1.053, 1.06 };  //時計回り
+    else
+      filterData = { 1.05, 0.98, 1.08, 1.075 };  //反時計回り
+  }
+}
+
+double Filter::rotationFilter(double Angle, double targetAngle, int pwm)
+{
+  double filterValue = filterData.Phalf_Ahalf
+                       + (filterData.Pmax_Ahalf - filterData.Phalf_Ahalf) * (pwm - 50) / 50
+                       - (filterData.Phalf_Ahalf - filterData.Phalf_Amax) * (targetAngle - 90) / 90
+                       - ((filterData.Pmax_Ahalf - filterData.Pmax_Amax)
+                          - (filterData.Phalf_Ahalf - filterData.Phalf_Amax))
+                             * (pwm - 50) / 50 * (targetAngle - 90) / 90;
+  return filterValue * Angle;
+}

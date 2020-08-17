@@ -14,7 +14,11 @@ APPL_CXXOBJS += \
     NormalCourse.o \
     Pid.o \
     TurnControl.o \
+<<<<<<< HEAD
     Navigator.o \
+=======
+    Rotation.o \
+>>>>>>> upstream/master
 
 SRCLANG := c++
 
