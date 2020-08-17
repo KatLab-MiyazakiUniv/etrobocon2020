@@ -20,6 +20,6 @@ void Navigator::traceBingoArea(bool isRightEdge)
   int basespeed = 70;
   int distance = 255;
   // 開始位置: Lコース(x: 13.43 y: z: 12.2 rot: 180)
-  NormalCourseProperty property = { distance, basespeed, 0.0, { PGain, IGain, DGain } };
+  NormalCourseProperty property = { distance, basespeed, 0.0, { pGain, iGain, dGain } };
   lineTracer.run(property);
 }
