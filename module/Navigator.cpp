@@ -2,7 +2,6 @@
  *  @file  Navigator.cpp
  *  @brief ビンゴエリアを走る
  *  @author sugaken0528
- *  updated by T.Miyaji
  */
 
 #include "Navigator.h"
@@ -11,11 +10,6 @@ Navigator::Navigator(Controller& controller_, bool isLeftCourse_, int targetBrig
   : controller(controller_), isLeftCourse(isLeftCourse_), targetBrightness(targetBrightness_)
 {
 }
-
-void Navigator::setIsLeftCourse(bool isLeftCourse_)
-{
-  isLeftCourse = isLeftCourse_;
-};
 
 void Navigator::runBingoArea(bool isRightEdge)
 {
@@ -28,14 +22,4 @@ void Navigator::runBingoArea(bool isRightEdge)
   // 開始位置: Lコース(x: 13.43 y: z: 12.2 rot: 180)
   NormalCourseProperty property = { distance, basespeed, 0.0, { PGain, IGain, DGain } };
   lineTracer.run(property);
-}
-
-bool Navigator::getIsLeftCourse() const
-{
-  return isLeftCourse;
-}
-
-int Navigator::getTargetBrightness() const
-{
-  return targetBrightness;
 }

@@ -23,14 +23,10 @@ class Navigator {
    */
   Navigator(Controller& controller_, bool isLeftCourse_, int targetBrightness_);
 
-  void setIsLeftCourse(bool isLeftCourse_);
-
   /**
    * 実際にビンゴエリアを走る．
    */
   void runBingoArea(bool isRightEdge);
-  bool getIsLeftCourse() const;
-  int getTargetBrightness() const;
 
  private:
   Controller& controller;
