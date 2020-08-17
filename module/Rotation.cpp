@@ -49,7 +49,7 @@ void Rotation::run(double angle, double left_pwm, double right_pwm)
   while(filter.rotationFilter(motorAngle, angle, pwm) < angle) {
     controller.setLeftMotorPwm(left_pwm);
     controller.setRightMotorPwm(right_pwm);
-    controller.tslpTsk(4);
+    controller.tslpTsk(4000);
 
     motorAngle = this->calculate(controller.getLeftMotorCount(), controller.getRightMotorCount());
   }

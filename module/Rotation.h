@@ -18,6 +18,14 @@ class Rotation {
   Filter filter;
   Controller& controller;
 
+  /**
+   *  @brief 走行体を指定されたように回転させる
+   *  @param angle [回転角度]
+   *  @param left_pwm [左車輪のモーターパワー]
+   *  @param right_pwm [右車輪のモーターパワー]
+   */
+  void run(double angle, double left_pwm, double right_pwm);
+
  public:
   /**　コンストラクタ
    *   @param controller_  [Controller]
@@ -47,14 +55,6 @@ class Rotation {
    *  @param pwm [モーターパワー]
    */
   void pivotTurnBack(double angle, bool clockwise, int pwm = 30);
-
-  /**
-   *  @brief 走行体を指定されたように回転させる
-   *  @param angle [回転角度]
-   *  @param left_pwm [左車輪のモーターパワー]
-   *  @param right_pwm [右車輪のモーターパワー]
-   */
-  void run(double angle, double left_pwm, double right_pwm);
 
   /**
    *  @brief 回転したときの角度を求める
