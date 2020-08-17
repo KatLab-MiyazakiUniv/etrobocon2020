@@ -11,12 +11,12 @@ Navigator::Navigator(Controller& controller_, bool isLeftCourse_, int targetBrig
 {
 }
 
-void Navigator::runBingoArea(bool isRightEdge)
+void Navigator::traceBingoArea(bool isRightEdge)
 {
   LineTracer lineTracer(controller, targetBrightness, isRightEdge);
-  double PGain = 0.1;
-  double IGain = 0.005;
-  double DGain = 0.01;
+  double pGain = 0.1;
+  double iGain = 0.005;
+  double dGain = 0.01;
   int basespeed = 70;
   int distance = 255;
   // 開始位置: Lコース(x: 13.43 y: z: 12.2 rot: 180)

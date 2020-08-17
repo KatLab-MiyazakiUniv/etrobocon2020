@@ -8,7 +8,6 @@
 #ifndef NAVIGATOR_H
 #define NAVIGATOR_H
 
-#include "Controller.h"
 #include "LineTracer.h"
 #include <array>
 
@@ -19,14 +18,15 @@ class Navigator {
    *
    * @brief Navigatorクラスのコンストラクタ
    * @param &controller_ [Controllerインスタンスの参照]
-   * @param targetBrightness [黒と白の閾値]
+   * @param isLeftCourse_ [エッジがどっちかtrueがLeftコース]
+   * @param targetBrightness_ [黒と白の閾値]
    */
   Navigator(Controller& controller_, bool isLeftCourse_, int targetBrightness_);
 
   /**
    * 実際にビンゴエリアを走る．
    */
-  void runBingoArea(bool isRightEdge);
+  void traceBingoArea(bool isRightEdge);
 
  private:
   Controller& controller;
