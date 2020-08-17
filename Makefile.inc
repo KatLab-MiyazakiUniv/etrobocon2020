@@ -14,6 +14,7 @@ APPL_CXXOBJS += \
     NormalCourse.o \
     Pid.o \
     TurnControl.o \
+    Navigator.o \
 
 SRCLANG := c++
 
