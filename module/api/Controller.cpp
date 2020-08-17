@@ -281,8 +281,11 @@ HsvStatus Controller::getHsv() const
 
 void Controller::resetMotorCount()
 {
-  leftWheel.reset();
-  rightWheel.reset();
+  while((this->getLeftMotorCount() != 0) || (this->getRightMotorCount() != 0)) {
+    leftWheel.reset();
+    rightWheel.reset();
+    this->tslpTsk(20000);
+  }
 }
 
 void Controller::stopMotor()
