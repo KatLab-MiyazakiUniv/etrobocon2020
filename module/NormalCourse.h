@@ -8,6 +8,7 @@
 #include <array>
 #include "LineTracer.h"
 #include "Controller.h"
+#include "Rotation.h"
 
 class NormalCourse {
  public:
