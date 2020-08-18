@@ -28,7 +28,7 @@ class MoveStraight {
   void moveto(int destination, unsigned int pwm = 30);
 
  private:
-  Distance odometer;     //距離計
+  Distance odometer;     // 距離計
   Controller* cont_ptr;  // Controllerクラスポインタ
 };
 
