@@ -7,27 +7,33 @@
 
 MoveStraight::MoveStraight(Controller* cont_ptr_) : cont_ptr(cont_ptr_) {}
 
-void MoveStraight::moveto(int destination)
+void MoveStraight::moveto(int destination, unsigned int pwm)
 {
-  static int prev;  //
-  int pres = odometer.getDistance(cont_ptr->getLeftMotorCount(), cont_ptr->getRightMotorCount());
+  //現在の位置
+  int presPos = odometer.getDistance(cont_ptr->getLeftMotorCount(), cont_ptr->getRightMotorCount());
 
-  static bool toggle = 0;
+  //目的位置
+  int goal = presPos + destination;
 
-  if(toggle == 0) {
-    prev = odometer.getDistance(cont_ptr->getLeftMotorCount(), cont_ptr->getRightMotorCount());
-    toggle = 1;
-  }
-
-  if((destination > 0) ? (pres - prev < destination)
-                       : (pres + prev > destination)) {  //変位と行き先を比較
-    cont_ptr->setLeftMotorPwm((destination > 0) ? 30 : -30);
-    cont_ptr->setRightMotorPwm((destination > 0) ? 30 : -30);
-
+  if(destination > 0) {      //目的位置が走行体より前方
+    while(presPos < goal) {  //目的位置にたどり着くまで前進
+      cont_ptr->setLeftMotorPwm(pwm);
+      cont_ptr->setRightMotorPwm(pwm);
+      presPos = odometer.getDistance(cont_ptr->getLeftMotorCount(), cont_ptr->getRightMotorCount());
+      cont_ptr->tslpTsk(4000);
+    }
   } else {
-    cont_ptr->stopMotor();
-    cont_ptr->resetMotorCount();
-    cont_ptr->tslpTsk(1000000);
-    toggle = 0;
+    　  //目的位置が走行体より後方
+        while(presPos > goal)
+    {
+      　  //目的位置にたどり着くまで後退
+          cont_ptr->setLeftMotorPwm(-pwm);
+      cont_ptr->setRightMotorPwm(-pwm);
+      presPos = odometer.getDistance(cont_ptr->getLeftMotorCount(), cont_ptr->getRightMotorCount());
+      cont_ptr->tslpTsk(4000);
+    }
   }
+  //目的位置に到着
+  cont_ptr->stopMotor();
+  　  //ブレーキをかける
 }

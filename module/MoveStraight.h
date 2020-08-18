@@ -23,8 +23,9 @@ class MoveStraight {
    *
    * @brief
    * @param destination 行き先（mm, 正で前進・負で後退）
+   * @param pwm モーター出力
    */
-  void moveto(int destination);
+  void moveto(int destination, unsigned int pwm = 30);
 
  private:
   Distance odometer;     //距離計
