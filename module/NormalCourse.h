@@ -1,7 +1,7 @@
 /**
  *  @file   NormalCourse.h
  *  @brief  NormalCourseを走る
- *  @author Tatsumi0000
+ *  @author sugaken0528
  */
 #ifndef NORMALCOURSE_H
 #define NORMALCOURSE_H

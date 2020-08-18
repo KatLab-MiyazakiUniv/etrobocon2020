@@ -1,7 +1,7 @@
 /**
  *  @file   NormalCourse.h
  *  @brief  NormalCourseを走る
- *  @author Tatsumi0000
+ *  @author sugaken0528
  */
 #include "NormalCourse.h"
 
