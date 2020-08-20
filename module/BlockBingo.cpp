@@ -1,6 +1,6 @@
 /**
- *  @file   BlockBingo.h
- *  @brief
+ *  @file   BlockBingo.cpp
+ *  @brief ビンゴエリアのデータ構造を管理する
  *  @author mutotaka0426, sugaken0528, Takahiro55555
  */
 #include "BlockBingo.h"
@@ -21,7 +21,7 @@ int BlockBingo::init_block_circle(int x, int y, BlockCircle block_circle)
   // サークルナンバーのエラー処理
   if(block_circle.circle_number < 1 || MAX_BLOCK_CIRCLE_NUMBER < block_circle.circle_number) {
     // -1は数字がないとき
-    if(block_circle.block.block_number != -1) {
+    if(block_circle.circle_number != -1) {
       // printf("[ERROR] Unecpected block circle number\n");
       return 1;
     }

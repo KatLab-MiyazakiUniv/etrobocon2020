@@ -1,6 +1,6 @@
 /**
  *  @file   BlockCircle.h
- *  @brief
+ *  @brief	ビンゴエリアのデータ構造を管理する
  *  @author mutotaka0426,sugaken0528,Takahiro55555
  */
 #ifndef BLOCK_BINGO_H
@@ -10,7 +10,7 @@
 
 struct Block {
   Color block_color;
-  int block_number = -1;
+  int block_number;
 };
 
 struct CrossCircle {
@@ -21,7 +21,7 @@ struct CrossCircle {
 struct BlockCircle {
   Color block_circle_color;
   Block block;
-  int circle_number = -1;
+  int circle_number;
 };
 
 class BlockBingo {
