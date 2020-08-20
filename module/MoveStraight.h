@@ -11,25 +11,27 @@
 #include "Distance.h"
 #include <cmath>
 
+#define BACK_BIAS 1  //後退の位置補正
+
 class MoveStraight {
  public:
   /**
    * コンストラクタ
    * @brief MoveStraightクラスのコンストラクタ
    */
-  MoveStraight(Controller* cont_ptr_);
+  MoveStraight(Controller& controller_);
   /**
    * 任意の距離だけ直線移動する
    *
    * @brief
-   * @param destination 行き先（mm, 正で前進・負で後退）
+   * @param destination 移動距離（mm, 正で前進・負で後退）
    * @param pwm モーター出力
    */
-  void moveto(int destination, unsigned int pwm = 30);
+  void moveTo(int destination, unsigned int pwm = 30);
 
  private:
-  Distance odometer;     // 距離計
-  Controller* cont_ptr;  // Controllerクラスポインタ
+  Distance odometer;       // 距離計
+  Controller& controller;  // 参照型Controllerクラス
 };
 
 #endif
