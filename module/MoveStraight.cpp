@@ -26,7 +26,7 @@ void MoveStraight::moveTo(int destination, unsigned int pwm)
     }
   } else {
     //目的位置が走行体より後方
-    while(presPos > goal) {  // 目的位置にたどり着くまで後退 (BIASは補正値)
+    while(presPos > goal) {  // 目的位置にたどり着くまで後退 
       controller.setLeftMotorPwm(-pwm);
       controller.setRightMotorPwm(-pwm);
       presPos
