@@ -15,7 +15,7 @@ APPL_CXXOBJS += \
     Pid.o \
     TurnControl.o \
     Rotation.o \
-	BlockBingo.o \
+    BlockBingoData.o \
 
 SRCLANG := c++
 
