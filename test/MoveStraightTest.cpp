@@ -41,6 +41,6 @@ namespace etrobocon2020_test {
 
     presPos = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
 
-    ASSERT_LE(prevPos - 100, presPos);
+    ASSERT_GE(prevPos - 100, presPos);
   }
 }  // namespace etrobocon2020_test
