@@ -1,7 +1,7 @@
 /**
  *  @file   NormalCourse.h
  *  @brief  NormalCourseを走る
- *  @author Tatsumi0000
+ *  @author sugaken0528
  */
 #include "NormalCourse.h"
 
@@ -55,7 +55,7 @@ void NormalCourse::runNormalCourse()
           { 680, baseSpeed, 0.002778, { 0.358, 0.002, 0.008 } },    // 第12区間
           { 1613, baseSpeed, 0.0, { 0.1, 0.005, 0.03 } },           // 第13区間
           { 530, baseSpeed, -0.004167, { 0.45, 0.005, 0.025 } },    // 第14区間
-          { 1800, baseSpeed, 0.0, { 0.1, 0.005, 0.01 } },           //進入ライン
+          { 340, baseSpeed-50, 0.0, { 0.1, 0.005, 0.02 } },  //進入ライン
       } };
   constexpr std::array<NormalCourseProperty, arraySize> normalCoursePropertyR
       /**
@@ -77,8 +77,8 @@ void NormalCourse::runNormalCourse()
           { 1640, baseSpeed, 0.0, { 0.2, 0.005, 0.01 } },       // 第11区間
           { 470, baseSpeed, 0.00416, { 0.68, 0.005, 0.03 } },   // 第12区間
           { 1700, baseSpeed, 0.0, { 0.2, 0.005, 0.01 } },       // 第13区間
-          { 2085, 1 + 10, 0.0, { 0.4, 0.005, 0.03 } },          // 進入ライン
-          { 580, 1, -0.00331, { 0.55, 0.0, 0.04 } },            // 本番で要調整
+          { 2085, 1 + 10, 0.0, { 0.4, 0.005, 0.03 } },          // 第14区間
+          { 340, baseSpeed-50, 0.0, { 0.1, 0.005, 0.02 } },  // 進入ライン
       } };
 
   // LコースならLコースのPID値を採用する。RコースならRコースのPID値を採用する。
@@ -87,9 +87,9 @@ void NormalCourse::runNormalCourse()
   LineTracer lineTracer(controller, targetBrightness, isLeftCourse);
   for(const auto& ncp : normalCourseProperty) {
     lineTracer.run(ncp);
-    // １区間終わるごとに音を奏でる．
-    controller.speakerPlayToneFS6(100);
   }
+  Rotation rotation(controller);
+  rotation.pivotTurn(90, isLeftCourse, 48);
 }
 
 /**
