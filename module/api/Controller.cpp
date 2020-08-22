@@ -339,3 +339,8 @@ void Controller::stopLiftMotor()
   this->resetArmMotorCount();
   this->tslpTsk(1500000);
 }
+
+int Controller::getCourseInfo(ETROBOC_COURSE_INFO_ID id)
+{
+  return ETRoboc_getCourceInfo(id);
+}

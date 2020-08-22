@@ -36,5 +36,6 @@ INCLUDES += \
     -I$(mkfile_path)app \
     -I$(mkfile_path)module \
     -I$(mkfile_path)module/api \
+    -I$(ETROBO_HRP3_WORKSPACE)/etroboc_common \
 
 COPTS += -std=gnu++11

@@ -8,21 +8,9 @@
 #include "Motor.h"
 #include "TouchSensor.h"
 #include "GyroSensor.h"
-// #include <array>
-/*
- * touch_sensor = EV3_PORT_1;
- * sonar_sensor = EV3_PORT_2;
- * color_sensor = EV3_PORT_3;
- * gyro_sensor  = EV3_PORT_4;
- *
- * left_motor   = EV3_PORT_C;
- * right_motor  = EV3_PORT_B;
- * lift_motor   = EV3_PORT_A;
- * tail_motor   = EV3_PORT_D;
- */
+#include "etroboc_ext.h"
 
-struct HsvStatus
-{
+struct HsvStatus {
   //色相 範囲(0~360)
   double hue;
   //彩度 範囲(0~100)
@@ -31,22 +19,12 @@ struct HsvStatus
   double value;
 };
 
-enum class Color
-{
-  black,
-  red,
-  green,
-  blue,
-  yellow,
-  white,
-  none
-};
+enum class Color { black, red, green, blue, yellow, white, none };
 
 using namespace ev3api;
 
-class Controller
-{
-public:
+class Controller {
+ public:
   Controller();
   TouchSensor touchSensor;
   ColorSensor colorSensor;
@@ -74,13 +52,13 @@ public:
   bool buttonIsPressedLeft();
   bool buttonIsPressedEnter();
   static float getBatteryVoltage();
-  static void tslpTsk(int time); // 引数はマイクロ秒で指定する
-  void getRawColor(int &r, int &g, int &b);
-  void convertHsv(int &r, int &g, int &b); // RGBをHSV変換する
+  static void tslpTsk(int time);  // 引数はマイクロ秒で指定する
+  void getRawColor(int& r, int& g, int& b);
+  void convertHsv(int& r, int& g, int& b);  // RGBをHSV変換する
   HsvStatus getHsv() const;
-  Color hsvToColor(const HsvStatus &status); // HSVから色を識別する
+  Color hsvToColor(const HsvStatus& status);  // HSVから色を識別する
   static void lcdFillRect(int x, int y, int h);
-  static void lcdDrawString(const char *str, int x, int y);
+  static void lcdDrawString(const char* str, int x, int y);
   static void lcdSetFont();
   int getLeftMotorCount();
   int getRightMotorCount();
@@ -88,8 +66,8 @@ public:
   void setLeftMotorPwm(const int pwm);
   void setRightMotorPwm(const int pwm);
   void setArmMotorPwm(const int pwm);
-  void setStandardWhite(const rgb_raw_t &rgb);
-  void setStandardBlack(const rgb_raw_t &rgb);
+  void setStandardWhite(const rgb_raw_t& rgb);
+  void setStandardBlack(const rgb_raw_t& rgb);
   void resetMotorCount();
   void stopMotor();
   int getAngleOfRotation();
@@ -110,7 +88,16 @@ public:
   void stopLiftMotor();
   void steer(int power, int turnRatio);
 
-private:
+  // シミュレータ用拡張API
+  /**
+   * @brief   コース情報の取得
+   * @param   コース情報取得関数用ID
+   * @return  指定されたidの情報
+   * @note    https://github.com/ETrobocon/etrobo/wiki/sim_extended_api
+   */
+  int getCourseInfo(ETROBOC_COURSE_INFO_ID id);
+
+ private:
   HsvStatus hsv;
   Motor liftMotor;
   Motor rightWheel;

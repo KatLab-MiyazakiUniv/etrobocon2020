@@ -26,6 +26,25 @@ typedef struct {
 
 enum class Color { black, red, green, blue, yellow, white, none };
 
+// シミュレータ用拡張API etroboc_ext.hからコピペ
+enum ETROBOC_COURSE_INFO_ID {
+  ETROBOC_COURSE_INFO_CARD_NUMBER,
+  ETROBOC_COURSE_INFO_BLOCK_NUMBER,
+  ETROBOC_COURSE_INFO_BLOCK_POS_START,
+  ETROBOC_COURSE_INFO_BLOCK_POS_BLACK1 = ETROBOC_COURSE_INFO_BLOCK_POS_START,
+  ETROBOC_COURSE_INFO_BLOCK_POS_BLACK2,
+  ETROBOC_COURSE_INFO_BLOCK_POS_RED1,
+  ETROBOC_COURSE_INFO_BLOCK_POS_RED2,
+  ETROBOC_COURSE_INFO_BLOCK_POS_YELLOW1,
+  ETROBOC_COURSE_INFO_BLOCK_POS_YELLOW2,
+  ETROBOC_COURSE_INFO_BLOCK_POS_BLUE1,
+  ETROBOC_COURSE_INFO_BLOCK_POS_BLUE2,
+  ETROBOC_COURSE_INFO_BLOCK_POS_GREEN1,
+  ETROBOC_COURSE_INFO_BLOCK_POS_GREEN2,
+  ETROBOC_COURSE_INFO_BLOCK_POS_END = ETROBOC_COURSE_INFO_BLOCK_POS_GREEN2,
+  ETROBOC_COURSE_INFO_MAX = ETROBOC_COURSE_INFO_BLOCK_POS_END
+};
+
 class Motor {
  public:
   double count = 0.0;
@@ -341,5 +360,15 @@ class Controller {
 
   int getVolt() { return 3; }
   int getAmp() { return 3; }
+
+  // シミュレータ用拡張API
+  /**
+   * @brief   コース情報の取得
+   * @param   コース情報取得関数用ID
+   * @return  指定されたidの情報
+   * @note    https://github.com/ETrobocon/etrobo/wiki/sim_extended_api
+   * @note    dummy Controllerでは、競技規約p26の図6-5:初期配置の例(Lコース)の配置情報を返す
+   */
+  int getCourseInfo(ETROBOC_COURSE_INFO_ID id);
 };
 #endif
