@@ -33,14 +33,14 @@ class BlockBingoData {
    *  @param y [ブロックサークルのy座標]
    *  @param blockCircle [データ設定済みのBlockCircle構造体]
    */
-  int initBlockCircle(int x, int y, BlockCircle blockCircle);
+  bool initBlockCircle(int x, int y, BlockCircle blockCircle);
 
   /**
    *  @param x [クロスサークルのx座標]
    *  @param y [クロスサークルのy座標]
    *  @param crossCircle [データ設定済みのCrossCircle構造体]
    */
-  int initCrossCircle(int x, int y, CrossCircle crossCircle);
+  bool initCrossCircle(int x, int y, CrossCircle crossCircle);
 
   /**
    *  @param crossCircle [データ設定済みのCrossCircle構造体]

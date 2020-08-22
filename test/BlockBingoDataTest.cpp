@@ -13,70 +13,60 @@ namespace etrobocon2020_test {
     BlockBingoData blockBingoData;
     BlockCircle blockCircle;
     int x, y;
-    int expected;
 
     // ブロックサークルの色の異常時判定(black)
     x = 0, y = 0;
     blockCircle
         = BlockCircle{ Color::black, Block{ Color::red, BingoNumber::none }, BingoNumber::one };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_FALSE(blockBingoData.initBlockCircle(x, y, blockCircle));
 
     // ブロックサークルの色の異常時判定(white)
     x = 0, y = 0;
     blockCircle
         = BlockCircle{ Color::white, Block{ Color::red, BingoNumber::none }, BingoNumber::one };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_FALSE(blockBingoData.initBlockCircle(x, y, blockCircle));
 
     // 正常時（XY座標境界値1）
     x = 0, y = 0;
     blockCircle
         = BlockCircle{ Color::red, Block{ Color::red, BingoNumber::none }, BingoNumber::one };
-    expected = 0;
-    ASSERT_EQ(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_TRUE(blockBingoData.initBlockCircle(x, y, blockCircle));
 
     // 正常時(XY座標境界値2）
     x = 2, y = 2;
     blockCircle
         = BlockCircle{ Color::red, Block{ Color::red, BingoNumber::none }, BingoNumber::one };
-    expected = 0;
-    ASSERT_EQ(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_TRUE(blockBingoData.initBlockCircle(x, y, blockCircle));
 
     // 座標異常時（指定したx座標が範囲外）
     x = 3, y = 0;
     blockCircle
         = BlockCircle{ Color::red, Block{ Color::red, BingoNumber::four }, BingoNumber::one };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_FALSE(blockBingoData.initBlockCircle(x, y, blockCircle));
 
     // 座標異常時（指定したy座標が範囲外）
     x = 0, y = 3;
     blockCircle
         = BlockCircle{ Color::red, Block{ Color::red, BingoNumber::four }, BingoNumber::one };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_FALSE(blockBingoData.initBlockCircle(x, y, blockCircle));
 
     // 座標異常時（指定したx座標が範囲外）
     x = -1, y = 2;
     blockCircle
         = BlockCircle{ Color::red, Block{ Color::red, BingoNumber::four }, BingoNumber::one };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_FALSE(blockBingoData.initBlockCircle(x, y, blockCircle));
 
     // 座標異常時（指定したy座標が範囲外）
     x = 2, y = -1;
     blockCircle
         = BlockCircle{ Color::red, Block{ Color::red, BingoNumber::four }, BingoNumber::one };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_FALSE(blockBingoData.initBlockCircle(x, y, blockCircle));
 
     // ブロックカラー異常時
     x = 2, y = 2;
     blockCircle
         = BlockCircle{ Color::red, Block{ Color::white, BingoNumber::none }, BingoNumber::one };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initBlockCircle(x, y, blockCircle));
+    ASSERT_FALSE(blockBingoData.initBlockCircle(x, y, blockCircle));
   }
 
   TEST(BlockBingoData, initCrossCircle)
@@ -84,67 +74,56 @@ namespace etrobocon2020_test {
     BlockBingoData blockBingoData;
     CrossCircle crossCircle;
     int x, y;
-    int expected;
 
     //交点サークルの色の異常時判定(none)
     x = 0, y = 0;
     crossCircle = CrossCircle{ Color::none, Block{ Color::red, BingoNumber::none } };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_FALSE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // 交点サークルの色の異常時判定(black)
     x = 0, y = 0;
     crossCircle = CrossCircle{ Color::black, Block{ Color::red, BingoNumber::none } };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_FALSE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // 交点サークルの色の異常時判定(white)
     x = 0, y = 0;
     crossCircle = CrossCircle{ Color::white, Block{ Color::red, BingoNumber::none } };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_FALSE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // 正常時（XY座標境界値1）
     x = 0, y = 0;
     crossCircle = CrossCircle{ Color::red, Block{ Color::red, BingoNumber::none } };
-    expected = 0;
-    ASSERT_EQ(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_TRUE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // 正常時（XY座標境界値2）
     x = 3, y = 3;
     crossCircle = CrossCircle{ Color::red, Block{ Color::red, BingoNumber::none } };
-    expected = 0;
-    ASSERT_EQ(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_TRUE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // 座標異常時（指定したx座標が範囲外）
     x = 4, y = 2;
     crossCircle = CrossCircle{ Color::red, Block{ Color::red, BingoNumber::four } };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_FALSE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // 座標異常時（指定したy座標が範囲外）
     x = 2, y = 4;
     crossCircle = CrossCircle{ Color::red, Block{ Color::red, BingoNumber::four } };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_FALSE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // 座標異常時（指定したx座標が範囲外）
     x = -1, y = 2;
     crossCircle = CrossCircle{ Color::red, Block{ Color::red, BingoNumber::four } };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_FALSE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // 座標異常時（指定したy座標が範囲外）
     x = 2, y = -1;
     crossCircle = CrossCircle{ Color::red, Block{ Color::red, BingoNumber::four } };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_FALSE(blockBingoData.initCrossCircle(x, y, crossCircle));
 
     // ブロックカラー異常時
     x = 2, y = 2;
     crossCircle = CrossCircle{ Color::red, Block{ Color::white, BingoNumber::none } };
-    expected = 0;
-    ASSERT_NE(expected, blockBingoData.initCrossCircle(x, y, crossCircle));
+    ASSERT_FALSE(blockBingoData.initCrossCircle(x, y, crossCircle));
   }
 
   TEST(BlockBingoData, getBlockCircle)
