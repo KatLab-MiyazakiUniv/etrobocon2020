@@ -24,7 +24,9 @@ namespace etrobocon2020_test {
 
     presPos = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
 
+    // test prevPos+100 < presPos < prevPos+105
     ASSERT_LE(prevPos + 100, presPos);
+    ASSERT_GE(prevPos + 105, presPos);
   }
 
   TEST(MoveStraight, reverse)
@@ -41,6 +43,8 @@ namespace etrobocon2020_test {
 
     presPos = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
 
-    ASSERT_LE(prevPos - 100, presPos);
+    // test prevPos-105 < presPos < prevPos-100
+    ASSERT_GE(prevPos - 100, presPos);
+    ASSERT_LE(prevPos - 100 - 5, presPos);
   }
 }  // namespace etrobocon2020_test

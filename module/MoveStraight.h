@@ -11,8 +11,6 @@
 #include "Distance.h"
 #include <cmath>
 
-#define BACK_BIAS 1  //後退の位置補正
-
 class MoveStraight {
  public:
   /**
@@ -34,4 +32,4 @@ class MoveStraight {
   Controller& controller;  // 参照型Controllerクラス
 };
 
-#endif
+#endif  
