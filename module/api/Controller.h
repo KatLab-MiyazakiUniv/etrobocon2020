@@ -21,8 +21,7 @@
  * tail_motor   = EV3_PORT_D;
  */
 
-struct HsvStatus
-{
+struct HsvStatus {
   //色相 範囲(0~360)
   double hue;
   //彩度 範囲(0~100)
@@ -31,22 +30,12 @@ struct HsvStatus
   double value;
 };
 
-enum class Color
-{
-  black,
-  red,
-  green,
-  blue,
-  yellow,
-  white,
-  none
-};
+enum class Color { black, red, green, blue, yellow, white, none };
 
 using namespace ev3api;
 
-class Controller
-{
-public:
+class Controller {
+ public:
   Controller();
   TouchSensor touchSensor;
   ColorSensor colorSensor;
@@ -74,13 +63,13 @@ public:
   bool buttonIsPressedLeft();
   bool buttonIsPressedEnter();
   static float getBatteryVoltage();
-  static void tslpTsk(int time); // 引数はマイクロ秒で指定する
-  void getRawColor(int &r, int &g, int &b);
-  void convertHsv(int &r, int &g, int &b); // RGBをHSV変換する
+  static void tslpTsk(int time);  // 引数はマイクロ秒で指定する
+  void getRawColor(int& r, int& g, int& b);
+  void convertHsv(int& r, int& g, int& b);  // RGBをHSV変換する
   HsvStatus getHsv() const;
-  Color hsvToColor(const HsvStatus &status); // HSVから色を識別する
+  Color hsvToColor(const HsvStatus& status);  // HSVから色を識別する
   static void lcdFillRect(int x, int y, int h);
-  static void lcdDrawString(const char *str, int x, int y);
+  static void lcdDrawString(const char* str, int x, int y);
   static void lcdSetFont();
   int getLeftMotorCount();
   int getRightMotorCount();
@@ -88,8 +77,8 @@ public:
   void setLeftMotorPwm(const int pwm);
   void setRightMotorPwm(const int pwm);
   void setArmMotorPwm(const int pwm);
-  void setStandardWhite(const rgb_raw_t &rgb);
-  void setStandardBlack(const rgb_raw_t &rgb);
+  void setStandardWhite(const rgb_raw_t& rgb);
+  void setStandardBlack(const rgb_raw_t& rgb);
   void resetMotorCount();
   void stopMotor();
   int getAngleOfRotation();
@@ -110,7 +99,7 @@ public:
   void stopLiftMotor();
   void steer(int power, int turnRatio);
 
-private:
+ private:
   HsvStatus hsv;
   Motor liftMotor;
   Motor rightWheel;
