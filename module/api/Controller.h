@@ -8,18 +8,7 @@
 #include "Motor.h"
 #include "TouchSensor.h"
 #include "GyroSensor.h"
-// #include <array>
-/*
- * touch_sensor = EV3_PORT_1;
- * sonar_sensor = EV3_PORT_2;
- * color_sensor = EV3_PORT_3;
- * gyro_sensor  = EV3_PORT_4;
- *
- * left_motor   = EV3_PORT_C;
- * right_motor  = EV3_PORT_B;
- * lift_motor   = EV3_PORT_A;
- * tail_motor   = EV3_PORT_D;
- */
+#include "etroboc_ext.h"
 
 struct HsvStatus {
   //色相 範囲(0~360)
@@ -98,7 +87,16 @@ class Controller {
   void resetArmMotorCount();
   void stopLiftMotor();
   void steer(int power, int turnRatio);
-
+  
+  // シミュレータ用拡張API
+  /**
+   * @brief   コース情報の取得
+   * @param   コース情報取得関数用ID
+   * @return  指定されたidの情報
+   * @note    https://github.com/ETrobocon/etrobo/wiki/sim_extended_api
+   */
+  int getCourseInfo(ETROBOC_COURSE_INFO_ID id);
+  
  private:
   HsvStatus hsv;
   Motor liftMotor;
