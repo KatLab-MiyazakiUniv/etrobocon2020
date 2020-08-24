@@ -87,7 +87,7 @@ class Controller {
   void resetArmMotorCount();
   void stopLiftMotor();
   void steer(int power, int turnRatio);
-
+  
   // シミュレータ用拡張API
   /**
    * @brief   コース情報の取得
@@ -96,7 +96,7 @@ class Controller {
    * @note    https://github.com/ETrobocon/etrobo/wiki/sim_extended_api
    */
   int getCourseInfo(ETROBOC_COURSE_INFO_ID id);
-
+  
  private:
   HsvStatus hsv;
   Motor liftMotor;
