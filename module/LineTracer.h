@@ -60,6 +60,28 @@ class LineTracer {
                          double dGain, double curvaturePGain = 1.2, double curvatureIGain = 1.8,
                          double curvatureDGain = 0.0);
 
+  /** 白黒以外までまでライントレースする。
+   *  @param targetSpeed [目標スピード]
+   *  @param pGain [カラーセンサーの値を用いたPID制御のPゲイン]
+   *  @param iGain [カラーセンサーの値を用いたPID制御のIゲイン]
+   *  @param dGain [カラーセンサーの値を用いたPID制御のDゲイン]
+   *  @param curvatureValue [曲率(直進時は、0.0)]
+   *  @param isLeftCourse_ [Leftコースである場合True]
+   */
+  void runToColor(int targetSpeed, double pGain, double iGain, double dGain, double curvatureValue);
+
+  /** 任意の色までライントレースする。
+   *  @param lineColor [指定する色]
+   *  @param targetSpeed [目標スピード]
+   *  @param pGain [カラーセンサーの値を用いたPID制御のPゲイン]
+   *  @param iGain [カラーセンサーの値を用いたPID制御のIゲイン]
+   *  @param dGain [カラーセンサーの値を用いたPID制御のDゲイン]
+   *  @param curvatureValue [曲率(直進時は、0.0)]
+   *  @param isLeftCourse_ [Leftコースである場合True]
+   */
+  void runToSpecifiedColor(Color lineColor, int targetSpeed, double pGain, double iGain,
+                           double dGain, double curvatureValue);
+
  private:
   Controller& controller;
   int targetBrightness;
