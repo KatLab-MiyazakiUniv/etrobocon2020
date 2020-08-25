@@ -100,7 +100,7 @@ void LineTracer::runToColor(int targetSpeed, double pGain, double iGain, double 
     speedValue = targetSpeed;
 
     // 旋回値の計算
-    turnValue = calculateTurnValue(speedValue, curvatureValue, 0.007, 0.005, 0.001);
+    turnValue = calculateTurnValue(speedValue, curvatureValue, pGain, iGain, dGain);
 
     // モータ出力の計算
     if(isLeftCourse) {
@@ -138,7 +138,7 @@ void LineTracer::runToSpecifiedColor(Color targetColor, int targetSpeed, double 
     speedValue = targetSpeed;
 
     // 旋回値の計算
-    turnValue = calculateTurnValue(speedValue, curvatureValue, 0.01, 0.005, 0.01);
+    turnValue = calculateTurnValue(speedValue, curvatureValue, pGain, iGain, dGain);
 
     // モータ出力の計算
     if(isLeftCourse) {

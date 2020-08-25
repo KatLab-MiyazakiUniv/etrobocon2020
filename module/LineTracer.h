@@ -60,7 +60,7 @@ class LineTracer {
                          double dGain, double curvaturePGain = 1.2, double curvatureIGain = 1.8,
                          double curvatureDGain = 0.0);
 
-  /** 白黒以外までまでライントレースする。
+  /** 白黒以外の色までライントレースする。
    *  @param targetSpeed [目標スピード]
    *  @param pGain [カラーセンサーの値を用いたPID制御のPゲイン]
    *  @param iGain [カラーセンサーの値を用いたPID制御のIゲイン]
