@@ -10,12 +10,14 @@ APPL_CXXOBJS += \
     Distance.o \
     EtRobocon2020.o \
     Filter.o \
+    MoveStraight.o \
     LineTracer.o \
     NormalCourse.o \
     Pid.o \
     TurnControl.o \
     Navigator.o \
     Rotation.o \
+    BlockBingoData.o \
 
 SRCLANG := c++
 
@@ -35,5 +37,6 @@ INCLUDES += \
     -I$(mkfile_path)app \
     -I$(mkfile_path)module \
     -I$(mkfile_path)module/api \
+    -I$(ETROBO_HRP3_WORKSPACE)/etroboc_common \
 
 COPTS += -std=gnu++11
