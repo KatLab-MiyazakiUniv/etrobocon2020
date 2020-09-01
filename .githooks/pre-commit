@@ -1,0 +1,9 @@
+#!/bin/bash
+
+STAGED_FILES=$(git diff --diff-filter=d --staged --name-only)
+
+echo "$STAGED_FILES" | grep -e '\(.*\).cpp$' -e '\(.*\).h$' | while read -r file; do
+  clang-format -i -style=file "${file}"
+  git add "${file}"
+done
+
