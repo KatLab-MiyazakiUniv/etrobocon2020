@@ -47,7 +47,7 @@ void MoveStraight::moveWhileBW()
   {
     controller.setLeftMotorPwm(THROTTLE_WHILE_BW);
     controller.setRightMotorPwm(THROTTLE_WHILE_BW);
-    controller.tslpTsk(4000);
+    controller.tslpTsk(2000); // できたらこのウェイト外したい
   }
   controller.stopMotor();
 }
@@ -58,7 +58,7 @@ void MoveStraight::moveTo(Color destColor)
   {
     controller.setLeftMotorPwm(THROTTLE_MOVETO_X);
     controller.setRightMotorPwm(THROTTLE_MOVETO_X);
-    controller.tslpTsk(4000);
+    controller.tslpTsk(2000); // できたらこのウェイト外したい
   }
   controller.stopMotor();
 }
