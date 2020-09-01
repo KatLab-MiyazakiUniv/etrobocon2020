@@ -22,19 +22,43 @@ void MoveStraight::moveTo(int destination, unsigned int pwm)
       controller.setRightMotorPwm(pwm);
       presPos
           = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
-      controller.tslpTsk(4000);
+      controller.tslpTsk(2000);  // 4000にすると走りすぎる（このウェイト必要か？？）
     }
   } else {
     //目的位置が走行体より後方
-    while(presPos > goal) {  // 目的位置にたどり着くまで後退 
+    while(presPos > goal) {  // 目的位置にたどり着くまで後退
       controller.setLeftMotorPwm(-pwm);
       controller.setRightMotorPwm(-pwm);
       presPos
           = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
-      controller.tslpTsk(4000);
+      controller.tslpTsk(2000); // できたらこのウェイト外したい
     }
   }
   // 目的位置に到着
   controller.stopMotor();
   // ブレーキをかける
+}
+
+void MoveStraight::moveWhileBW()
+{
+  Color col;
+  while((col = controller.getColor()) == Color::black
+        || col == Color::white)  //色評価変数colが黒か白の場合は継続
+  {
+    controller.setLeftMotorPwm(THROTTLE_WHILE_BW);
+    controller.setRightMotorPwm(THROTTLE_WHILE_BW);
+    controller.tslpTsk(4000);
+  }
+  controller.stopMotor();
+}
+
+void MoveStraight::moveTo(Color destColor)
+{
+  while(controller.getColor() != destColor)  //目的の色まで達するまで継続
+  {
+    controller.setLeftMotorPwm(THROTTLE_MOVETO_X);
+    controller.setRightMotorPwm(THROTTLE_MOVETO_X);
+    controller.tslpTsk(4000);
+  }
+  controller.stopMotor();
 }
