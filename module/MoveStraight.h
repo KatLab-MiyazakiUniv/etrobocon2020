@@ -11,9 +11,6 @@
 #include "Distance.h"
 #include <cmath>
 
-#define THROTTLE_WHILE_BW 30  //黒白以外まで直進するときのモータ出力
-#define THROTTLE_MOVETO_X 30  //任意の色まで直進するときのモータ出力
-
 class MoveStraight {
  public:
   /**
@@ -27,23 +24,25 @@ class MoveStraight {
    *
    * @brief
    * @param destination 移動距離（mm, 正で前進・負で後退）
-   * @param pwm モーター出力
+   * @param pwm モータ出力
    */
   void moveTo(int destination, unsigned int pwm = 30);
 
   /**
    * 白黒以外まで直進する
-   *
    * @brief
+   * @param pwm モータ出力
    */
-  void moveWhileBW();
+  void moveWhileBW(unsigned int pwm = 30);
 
   /**
    * 任意の色まで直進する
    *
    * @brief オーバーロードしてみた
+   * @param destColor 直進して目指す色
+   * @param pwm モータ出力
    */
-  void moveTo(Color destColor);
+  void moveTo(Color destColor, unsigned int pwm = 30);
 
  private:
   Distance odometer;       // 距離計
