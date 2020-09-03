@@ -22,19 +22,43 @@ void MoveStraight::moveTo(int destination, unsigned int pwm)
       controller.setRightMotorPwm(pwm);
       presPos
           = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
-      controller.tslpTsk(4000);
+      controller.tslpTsk(2000);  // 実機では4000に
     }
   } else {
     //目的位置が走行体より後方
-    while(presPos > goal) {  // 目的位置にたどり着くまで後退 
+    while(presPos > goal) {  // 目的位置にたどり着くまで後退
       controller.setLeftMotorPwm(-pwm);
       controller.setRightMotorPwm(-pwm);
       presPos
           = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
-      controller.tslpTsk(4000);
+      controller.tslpTsk(2000);  // 実機では4000に
     }
   }
   // 目的位置に到着
   controller.stopMotor();
   // ブレーキをかける
+}
+
+void MoveStraight::moveWhileBW(unsigned int pwm)
+{
+  Color col;
+  while((col = controller.getColor()) == Color::black
+        || col == Color::white)  //色評価変数colが黒か白の場合は継続
+  {
+    controller.setLeftMotorPwm(pwm);
+    controller.setRightMotorPwm(pwm);
+    controller.tslpTsk(2000);  // 実機では4000に
+  }
+  controller.stopMotor();
+}
+
+void MoveStraight::moveTo(Color destColor, unsigned int pwm)
+{
+  while(controller.getColor() != destColor)  //目的の色まで達するまで継続
+  {
+    controller.setLeftMotorPwm(pwm);
+    controller.setRightMotorPwm(pwm);
+    controller.tslpTsk(2000);  // 実機では4000に
+  }
+  controller.stopMotor();
 }

@@ -17,19 +17,36 @@ class MoveStraight {
    * コンストラクタ
    * @brief MoveStraightクラスのコンストラクタ
    */
+
   MoveStraight(Controller& controller_);
   /**
    * 任意の距離だけ直線移動する
    *
    * @brief
    * @param destination 移動距離（mm, 正で前進・負で後退）
-   * @param pwm モーター出力
+   * @param pwm モータ出力
    */
   void moveTo(int destination, unsigned int pwm = 30);
+
+  /**
+   * 白黒以外まで直進する
+   * @brief
+   * @param pwm モータ出力
+   */
+  void moveWhileBW(unsigned int pwm = 30);
+
+  /**
+   * 任意の色まで直進する
+   *
+   * @brief オーバーロードしてみた
+   * @param destColor 直進して目指す色
+   * @param pwm モータ出力
+   */
+  void moveTo(Color destColor, unsigned int pwm = 30);
 
  private:
   Distance odometer;       // 距離計
   Controller& controller;  // 参照型Controllerクラス
 };
 
-#endif  
+#endif
