@@ -3,12 +3,12 @@
  *  @brief	ビンゴエリアのデータ構造を管理する
  *  @author mutotaka0426,sugaken0528,Takahiro55555
  */
-#ifndef BLOCK_BINGO_H
-#define BLOCK_BINGO_H
+#ifndef BLOCK_BINGO_DATA_H
+#define BLOCK_BINGO_DATA_H
 
 #include "Controller.h"
 
-enum class BingoNumber { one, two, three, four, five, six, seven, eight, none };
+enum class BingoNumber { none, one, two, three, four, five, six, seven, eight };
 
 struct Block {
   Color blockColor;
@@ -17,8 +17,8 @@ struct Block {
 
 struct BlockCircle {
   Color blockCircleColor;
-  Block block;
   BingoNumber circleNumber;
+  Block block;
 };
 
 struct CrossCircle {
@@ -33,19 +33,19 @@ class BlockBingoData {
    *  @param y [ブロックサークルのy座標]
    *  @param blockCircle [データ設定済みのBlockCircle構造体]
    */
-  bool initBlockCircle(int x, int y, BlockCircle blockCircle);
+  bool setBlockCircle(int x, int y, BlockCircle blockCircle);
 
   /**
    *  @param x [クロスサークルのx座標]
    *  @param y [クロスサークルのy座標]
    *  @param crossCircle [データ設定済みのCrossCircle構造体]
    */
-  bool initCrossCircle(int x, int y, CrossCircle crossCircle);
+  bool setCrossCircle(int x, int y, CrossCircle crossCircle);
 
   /**
    *  @param crossCircle [データ設定済みのCrossCircle構造体]
    */
-  void initCardNumber(BingoNumber cardNumber);
+  void setCardNumber(BingoNumber cardNumber);
 
   /**
    *  @param x [ブロックサークルのx座標]
@@ -65,6 +65,32 @@ class BlockBingoData {
    *  @return [BingoNumber]
    */
   BingoNumber getCardNumber(void);
+
+  /**
+   *  @param x [ブロックサークルの数字]
+   *  @return [ブロックサークルの色]
+   */
+  Color getBlockCircleColorL(BingoNumber circleNumber);
+
+  /**
+   *  @param x [クロスサークルのx座標]
+   *  @param y [クロスサークルのy座標]
+   *  @return [クロスサークルの色]
+   */
+  Color getCrossCircleColorL(int x, int y);
+
+  /**
+   *  @param x [ブロックサークルの数字]
+   *  @return [ブロックサークルの色]
+   */
+  Color getBlockCircleColorR(BingoNumber circleNumber);
+
+  /**
+   *  @param x [クロスサークルのx座標]
+   *  @param y [クロスサークルのy座標]
+   *  @return [クロスサークルの色]
+   */
+  Color getCrossCircleColorR(int x, int y);
 
  private:
   const int BlockCircleSize = 3;

@@ -5,7 +5,7 @@
  */
 #include "BlockBingoData.h"
 
-bool BlockBingoData::initBlockCircle(int x, int y, BlockCircle blockCircle)
+bool BlockBingoData::setBlockCircle(int x, int y, BlockCircle blockCircle)
 {
   //ブロックサークルの色のエラー処理
   if(blockCircle.blockCircleColor == Color::black || blockCircle.blockCircleColor == Color::white) {
@@ -28,7 +28,7 @@ bool BlockBingoData::initBlockCircle(int x, int y, BlockCircle blockCircle)
   return true;
 }
 
-bool BlockBingoData::initCrossCircle(int x, int y, CrossCircle crossCircle)
+bool BlockBingoData::setCrossCircle(int x, int y, CrossCircle crossCircle)
 {
   //交点サークルの色のエラー処理
   if(crossCircle.crossCircleColor == Color::none || crossCircle.crossCircleColor == Color::black
@@ -51,7 +51,7 @@ bool BlockBingoData::initCrossCircle(int x, int y, CrossCircle crossCircle)
   return true;
 }
 
-void BlockBingoData::initCardNumber(BingoNumber cardNumber_)
+void BlockBingoData::setCardNumber(BingoNumber cardNumber_)
 {
   cardNumber = cardNumber_;
 }
@@ -70,3 +70,74 @@ BingoNumber BlockBingoData::getCardNumber(void)
 {
   return cardNumber;
 }
+
+Color BlockBingoData::getBlockCircleColorL(BingoNumber circleNumber)
+{
+  switch(circleNumber) {
+    case BingoNumber::one:
+    case BingoNumber::five:
+      return Color::yellow;
+    case BingoNumber::two:
+    case BingoNumber::six:
+      return Color::green;
+    case BingoNumber::three:
+    case BingoNumber::seven:
+      return Color::red;
+    case BingoNumber::four:
+    case BingoNumber::eight:
+      return Color::blue;
+    default:
+      return Color::none;
+  }
+}
+
+Color BlockBingoData::getCrossCircleColorL(int x, int y)
+{
+  if((x >= 0) && (x < 2) && (y >= 0) && (y < 2)) {
+    return Color::red;
+  } else if((x >= 2) && (x < 4) && (y >= 0) && (y < 2)) {
+    return Color::blue;
+  } else if((x >= 0) && (x < 2) && (y >= 2) && (y < 4)) {
+    return Color::yellow;
+  } else if((x >= 2) && (x < 4) && (y >= 2) && (y < 4)) {
+    return Color::green;
+  } else {
+    return Color::none;
+  }
+}
+
+Color BlockBingoData::getBlockCircleColorR(BingoNumber circleNumber)
+{
+  switch(circleNumber) {
+    case BingoNumber::one:
+    case BingoNumber::seven:
+      return Color::red;
+    case BingoNumber::two:
+    case BingoNumber::eight:
+      return Color::green;
+    case BingoNumber::three:
+    case BingoNumber::four:
+      return Color::yellow;
+    case BingoNumber::five:
+    case BingoNumber::six:
+      return Color::blue;
+    default:
+      return Color::none;
+  }
+}
+
+Color BlockBingoData::getCrossCircleColorR(int x, int y)
+{
+  if((x >= 0) && (x < 2) && (y >= 0) && (y < 2)) {
+    return Color::blue;
+  } else if((x >= 2) && (x < 4) && (y >= 0) && (y < 2)) {
+    return Color::red;
+  } else if((x >= 0) && (x < 2) && (y >= 2) && (y < 4)) {
+    return Color::green;
+  } else if((x >= 2) && (x < 4) && (y >= 2) && (y < 4)) {
+    return Color::yellow;
+  } else {
+    return Color::none;
+  }
+}
+
