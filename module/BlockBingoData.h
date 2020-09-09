@@ -8,16 +8,14 @@
 
 #include "Controller.h"
 
-enum class BingoNumber { none, one, two, three, four, five, six, seven, eight };
-
 struct Block {
   Color blockColor;
-  BingoNumber blockNumber;
+  int blockNumber;
 };
 
 struct BlockCircle {
   Color blockCircleColor;
-  BingoNumber circleNumber;
+  int circleNumber;
   Block block;
 };
 
@@ -28,76 +26,108 @@ struct CrossCircle {
 
 class BlockBingoData {
  public:
+  /** コンストラクタ
+   *  @param controller_ [Controller]
+   *  @param isLeftCourse_ [Bool]
+   */
+  BlockBingoData(Controller& controller_, bool isLeftCourse_);
+
   /**
-   *  @param x [ブロックサークルのx座標]
-   *  @param y [ブロックサークルのy座標]
+   *  @brief ブロックサークル情報をセットする
+   *  @param x [x座標(0~6)]
+   *  @param y [y座標(0~6)]
    *  @param blockCircle [データ設定済みのBlockCircle構造体]
+   *  @return 成功判定 [trueでセット成功]
    */
   bool setBlockCircle(int x, int y, BlockCircle blockCircle);
 
   /**
-   *  @param x [クロスサークルのx座標]
-   *  @param y [クロスサークルのy座標]
+   *  @brief 交点サークル情報をセットする
+   *  @param x [x座標(0~6)]
+   *  @param y [y座標(0~6)]
    *  @param crossCircle [データ設定済みのCrossCircle構造体]
+   *  @return 成功判定 [trueでセット成功]
    */
   bool setCrossCircle(int x, int y, CrossCircle crossCircle);
 
   /**
-   *  @param crossCircle [データ設定済みのCrossCircle構造体]
-   */
-  void setCardNumber(BingoNumber cardNumber);
-
-  /**
-   *  @param x [ブロックサークルのx座標]
-   *  @param y [ブロックサークルのy座標]
-   *  @return [BlockCircle構造体]
+   *  @brief ブロックサークルの情報を取得する
+   *  @param x [x座標(0~6)]
+   *  @param y [y座標(0~6)]
+   *  @return ブロックサークル情報[BlockCircle構造体]
    */
   BlockCircle getBlockCircle(int x, int y);
 
   /**
-   *  @param x [クロスサークルのx座標]
-   *  @param y [クロスサークルのy座標]
-   *  @return [crosscircle構造体]
+   *  @brief 交点サークルの情報を取得する
+   *  @param x [x座標(0~6)]
+   *  @param y [y座標(0~6)]
+   *  @return 交点サークル情報[CrossCircle構造体]
    */
   CrossCircle getCrossCircle(int x, int y);
 
   /**
-   *  @return [BingoNumber]
+   *  @brief 数字カード情報を取得する
+   *  @return カードの数字
    */
-  BingoNumber getCardNumber(void);
+  int getCardNumber(void);
 
   /**
-   *  @param x [ブロックサークルの数字]
-   *  @return [ブロックサークルの色]
+   *  @brief ビンゴエリアの情報を初期化する
    */
-  Color getBlockCircleColorL(BingoNumber circleNumber);
+  void initBlockBingoData(void);
 
   /**
-   *  @param x [クロスサークルのx座標]
-   *  @param y [クロスサークルのy座標]
-   *  @return [クロスサークルの色]
+   *  @brief ブロックサークルの色情報を取得する
+   *  @param circleNumber [ブロックサークルの数字]
+   *  @return ブロックサークルの色情報
    */
-  Color getCrossCircleColorL(int x, int y);
+  Color getBlockCircleColor(int circleNumber);
 
   /**
-   *  @param x [ブロックサークルの数字]
-   *  @return [ブロックサークルの色]
+   *  @brief 交点サークルの色情報を取得する
+   *  @param x [x座標(0~6)]
+   *  @param y [y座標(0~6)]
+   *  @return 交点サークルの色情報
    */
-  Color getBlockCircleColorR(BingoNumber circleNumber);
-
-  /**
-   *  @param x [クロスサークルのx座標]
-   *  @param y [クロスサークルのy座標]
-   *  @return [クロスサークルの色]
-   */
-  Color getCrossCircleColorR(int x, int y);
+  Color getCrossCircleColor(int x, int y);
 
  private:
-  const int BlockCircleSize = 3;
-  const int CrossCircleSize = 4;
-  struct BlockCircle blockCircleCoordinate[3][3];
-  struct CrossCircle crossCircleCoordinate[4][4];
-  BingoNumber cardNumber = BingoNumber::none;
+  Controller& controller;
+  bool isLeftCourse;
+  int cardNumber;                                  // 数字カード
+  struct BlockCircle blockCircleCoordinate[3][3];  // ブロックサークル情報
+  struct CrossCircle crossCircleCoordinate[4][4];  // 交点サークル情報
+
+  // Lコースのブロックサークルの色情報
+  Color blockCircleColorL[8] = { Color::yellow, Color::green, Color::red, Color::blue,
+                                 Color::yellow, Color::green, Color::red, Color::blue };
+  // Rコースのブロックサークルの色情報
+  Color blockCircleColorR[8] = { Color::red,  Color::green, Color::yellow, Color::yellow,
+                                 Color::blue, Color::blue,  Color::red,    Color::green };
+  // Lコースの交点サークルの色情報
+  Color crossCircleColorL[4][4] = { { Color::red, Color::red, Color::blue, Color::blue },
+                                    { Color::red, Color::red, Color::blue, Color::blue },
+                                    { Color::yellow, Color::yellow, Color::green, Color::green },
+                                    { Color::yellow, Color::yellow, Color::green, Color::green } };
+  // Rコースの交点サークルの色情報
+  Color crossCircleColorR[4][4] = { { Color::blue, Color::blue, Color::red, Color::red },
+                                    { Color::blue, Color::blue, Color::red, Color::red },
+                                    { Color::green, Color::green, Color::yellow, Color::yellow },
+                                    { Color::green, Color::green, Color::yellow, Color::yellow } };
+
+  /**
+   *  @brief 数字カードを初期化する
+   *  @param cardNumber [カードの数字]
+   */
+  void initCardNumber(int cardNumber);
+
+  /**
+   *  @brief ブロック情報を初期化する
+   *  @param initColor [初期化する色情報]
+   *  @param coordinate [APIから受けとったブロックの位置情報]
+   */
+  void initBlock(Color initColor, int coordinate);
 };
 
 #endif
