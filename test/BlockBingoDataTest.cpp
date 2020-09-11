@@ -373,4 +373,20 @@ namespace etrobocon2020_test {
     ASSERT_EQ(expectedBlockColor, actualBlockCircle.block.blockColor);
     ASSERT_EQ(expectedBlockNumber, actualBlockCircle.block.blockNumber);
   }
+
+  TEST(BlockBingoData, Direction)
+  {
+    Controller controller;
+    bool isLeftCourse = false;
+    BlockBingoData blockBingoData(controller, isLeftCourse);
+
+    Direction expected = Direction::North;
+    Direction actual = blockBingoData.getDirection();
+    ASSERT_EQ(expected, actual);
+
+    expected = Direction::South;
+    blockBingoData.setDirection(expected);
+    actual = blockBingoData.getDirection();
+    ASSERT_EQ(expected, actual);
+  }
 }  // namespace etrobocon2020_test

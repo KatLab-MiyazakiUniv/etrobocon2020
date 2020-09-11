@@ -75,6 +75,18 @@ class BlockBingoData {
   int getCardNumber(void);
 
   /**
+   *  @brief 走行体の向きをセットする
+   *  @param セットする向き
+   */
+  void setDirection(Direction direction_);
+
+  /**
+   *  @brief 現在の走行体の向きを取得する
+   *  @return 現在の走行体の向き
+   */
+  Direction getDirection(void);
+
+  /**
    *  @brief ビンゴエリアの情報を初期化する
    */
   void initBlockBingoData(void);

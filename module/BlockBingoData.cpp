@@ -107,6 +107,16 @@ int BlockBingoData::getCardNumber(void)
   return cardNumber;
 }
 
+void BlockBingoData::setDirection(Direction direction_)
+{
+  direction = direction_;
+}
+
+Direction BlockBingoData::getDirection(void)
+{
+  return direction;
+}
+
 void BlockBingoData::initBlockBingoData(void)
 {
   int blockCircleNumber = 1;
@@ -253,4 +263,3 @@ Color BlockBingoData::getCrossCircleColor(int x, int y)
 
   return isLeftCourse ? crossCircleColorL[y / 2][x / 2] : crossCircleColorR[y / 2][x / 2];
 }
-
