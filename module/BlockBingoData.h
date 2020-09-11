@@ -24,6 +24,8 @@ struct CrossCircle {
   Block block;
 };
 
+enum class Direction { North, NEast, East, SEast, South, SWest, West, NWest };
+
 class BlockBingoData {
  public:
   /** コンストラクタ
@@ -98,6 +100,7 @@ class BlockBingoData {
   int cardNumber;                                  // 数字カード
   struct BlockCircle blockCircleCoordinate[3][3];  // ブロックサークル情報
   struct CrossCircle crossCircleCoordinate[4][4];  // 交点サークル情報
+  Direction direction = Direction::North;          // 走行体の向き
 
   // Lコースのブロックサークルの色情報
   Color blockCircleColorL[8] = { Color::yellow, Color::green, Color::red, Color::blue,
