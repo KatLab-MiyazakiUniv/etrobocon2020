@@ -176,61 +176,61 @@ void BlockBingoData::initBlock(Color initColor, int coordinate)
 
   switch(coordinate) {
       // ブロックサークル
-    case 1:
+    case 49:  // 1のとき
       x = 1, y = 1;
       break;
-    case 2:
+    case 50:  // 2のとき
       x = 3, y = 1;
       break;
-    case 3:
+    case 51:  // 3のとき
       x = 5, y = 1;
       break;
-    case 4:
+    case 52:  // 4のとき
       x = 0, y = 3;
       break;
-    case 5:
+    case 53:  // 5のとき
       x = 5, y = 3;
       break;
-    case 6:
+    case 54:  // 6のとき
       x = 0, y = 5;
       break;
-    case 7:
+    case 55:  // 7のとき
       x = 3, y = 5;
       break;
-    case 8:
+    case 56:  // 8のとき
       x = 5, y = 5;
       break;
 
       // 交点サークル
-    case 65:
+    case 65:  // Aのとき
       x = 0, y = 0;
       break;
-    case 67:
+    case 67:  // Cのとき
       x = 4, y = 0;
       break;
-    case 70:
+    case 70:  // Fのとき
       x = 2, y = 2;
       break;
-    case 72:
+    case 72:  // Hのとき
       x = 6, y = 2;
       break;
-    case 74:
+    case 74:  // Jのとき
       x = 0, y = 4;
       break;
-    case 76:
+    case 76:  // Lのとき
       x = 4, y = 4;
       break;
-    case 81:
+    case 81:  // Qのとき
       x = 2, y = 6;
       break;
-    case 83:
+    case 83:  // Sのとき
       x = 6, y = 6;
       break;
     default:
       x = -1, y = -1;
   }
 
-  if((coordinate > 0) && (coordinate <= 8)) {
+  if((coordinate >= 49) && (coordinate <= 56)) {
     blockCircle = getBlockCircle(x, y);
     blockCircle.block.blockColor = initColor;
     setBlockCircle(x, y, blockCircle);
