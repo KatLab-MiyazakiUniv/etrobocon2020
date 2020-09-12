@@ -17,25 +17,25 @@ int Controller::getCourseInfo(ETROBOC_COURSE_INFO_ID id)
     case ETROBOC_COURSE_INFO_BLOCK_NUMBER:
       return 4;
     case ETROBOC_COURSE_INFO_BLOCK_POS_BLACK1:
-      return 67;
+      return 67;  // C
     case ETROBOC_COURSE_INFO_BLOCK_POS_BLACK2:
-      return 83;
+      return 83;  // S
     case ETROBOC_COURSE_INFO_BLOCK_POS_RED1:
-      return 72;
+      return 72;  // H
     case ETROBOC_COURSE_INFO_BLOCK_POS_RED2:
-      return 74;
+      return 74;  // J
     case ETROBOC_COURSE_INFO_BLOCK_POS_YELLOW1:
-      return 5;
+      return 53;  // 5
     case ETROBOC_COURSE_INFO_BLOCK_POS_YELLOW2:
-      return 76;
+      return 76;  // L
     case ETROBOC_COURSE_INFO_BLOCK_POS_BLUE1:
-      return 65;
+      return 65;  // A
     case ETROBOC_COURSE_INFO_BLOCK_POS_BLUE2:
-      return 81;
+      return 81;  // Q
     case ETROBOC_COURSE_INFO_BLOCK_POS_GREEN1:
-      return 70;
+      return 70;  // F
     case ETROBOC_COURSE_INFO_BLOCK_POS_GREEN2:
-      return 7;
+      return 55;  // 7
     default:
       return 0;
   }

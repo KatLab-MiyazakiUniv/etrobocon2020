@@ -5,8 +5,18 @@
  */
 #include "BlockBingoData.h"
 
-bool BlockBingoData::initBlockCircle(int x, int y, BlockCircle blockCircle)
+BlockBingoData::BlockBingoData(Controller& controller_, bool isLeftCourse_)
+  : controller(controller_), isLeftCourse(isLeftCourse_), cardNumber(-1)
 {
+}
+
+bool BlockBingoData::setBlockCircle(int x, int y, BlockCircle blockCircle)
+{
+  if((x % 2 != 1) || (y % 2 != 1)) {
+    printf("[ERROR] Not BlockCircle\n");
+    return false;
+  }
+
   //ブロックサークルの色のエラー処理
   if(blockCircle.blockCircleColor == Color::black || blockCircle.blockCircleColor == Color::white) {
     printf("[ERROR] Unexpected color\n");
@@ -15,21 +25,34 @@ bool BlockBingoData::initBlockCircle(int x, int y, BlockCircle blockCircle)
 
   //ブロックの色のエラー処理
   if(blockCircle.block.blockColor == Color::white) {
+    printf("[ERROR] Unexpected color\n");
     return false;
   }
 
   // 座標指定のエラー処理
-  if((x < 0) || (x >= BlockCircleSize) || (y < 0) || (y >= BlockCircleSize)) {
+  if((x < 0) || (x >= 7) || (y < 0) || (y >= 7)) {
     return false;
   }
 
+  // ブロック数字のエラー処理
+  if((blockCircle.block.blockNumber <= 0) || (blockCircle.block.blockNumber > 8)) {
+    if(blockCircle.block.blockNumber != -1) {
+      return false;
+    }
+  }
+
   // 正常時
-  blockCircleCoordinate[x][y] = blockCircle;
+  blockCircleCoordinate[(y - 1) / 2][(x - 1) / 2] = blockCircle;
   return true;
 }
 
-bool BlockBingoData::initCrossCircle(int x, int y, CrossCircle crossCircle)
+bool BlockBingoData::setCrossCircle(int x, int y, CrossCircle crossCircle)
 {
+  if((x % 2 != 0) || (y % 2 != 0)) {
+    printf("[ERROR] Not CrossCircle\n");
+    return false;
+  }
+
   //交点サークルの色のエラー処理
   if(crossCircle.crossCircleColor == Color::none || crossCircle.crossCircleColor == Color::black
      || crossCircle.crossCircleColor == Color::white) {
@@ -39,34 +62,204 @@ bool BlockBingoData::initCrossCircle(int x, int y, CrossCircle crossCircle)
 
   //ブロックの色のエラー処理
   if(crossCircle.block.blockColor == Color::white) {
+    printf("[ERROR] Unexpected color\n");
     return false;
   }
 
   // 座標指定のエラー処理
-  if((x < 0) || (x >= CrossCircleSize) || (y < 0) || (y >= CrossCircleSize)) {
+  if((x < 0) || (x >= 7) || (y < 0) || (y >= 7)) {
     return false;
   }
-  // 正常時
-  crossCircleCoordinate[x][y] = crossCircle;
-  return true;
-}
 
-void BlockBingoData::initCardNumber(BingoNumber cardNumber_)
-{
-  cardNumber = cardNumber_;
+  // ブロック数字のエラー処理
+  if((crossCircle.block.blockNumber <= 0) || (crossCircle.block.blockNumber > 8)) {
+    if(crossCircle.block.blockNumber != -1) {
+      return false;
+    }
+  }
+
+  // 正常時
+  crossCircleCoordinate[y / 2][x / 2] = crossCircle;
+  return true;
 }
 
 BlockCircle BlockBingoData::getBlockCircle(int x, int y)
 {
-  return blockCircleCoordinate[x][y];
+  if((x % 2 != 1) || (y % 2 != 1)) {
+    printf("[ERROR] Coordinate is not BlockCircle\n");
+    return BlockCircle{ Color::none, -1, Block{ Color::none, -1 } };
+  }
+
+  return blockCircleCoordinate[(y - 1) / 2][(x - 1) / 2];
 }
 
 CrossCircle BlockBingoData::getCrossCircle(int x, int y)
 {
-  return crossCircleCoordinate[x][y];
+  if((x % 2 != 0) || (y % 2 != 0)) {
+    printf("[ERROR] Coordinate is not CrossCircle\n");
+    return CrossCircle{ Color::none, Block{ Color::none, -1 } };
+  }
+  return crossCircleCoordinate[y / 2][x / 2];
 }
 
-BingoNumber BlockBingoData::getCardNumber(void)
+int BlockBingoData::getCardNumber(void)
 {
   return cardNumber;
+}
+
+void BlockBingoData::setDirection(Direction direction_)
+{
+  direction = direction_;
+}
+
+Direction BlockBingoData::getDirection(void)
+{
+  return direction;
+}
+
+void BlockBingoData::initBlockBingoData(void)
+{
+  int blockCircleNumber = 1;
+  Color circleColor;                      //サークルの色を受け取る
+  Block noneBlock = { Color::none, -1 };  // とりあえずすべてブロックなしでセット
+  BlockCircle initBlockCircle;            // 初期化用の情報を保持する
+  CrossCircle initCrossCircle;            // 初期化用の情報を保持する
+
+  // ブロックサークルの初期化
+  for(int j = 0; j < 7; j++) {
+    for(int i = 0; i < 7; i++) {
+      // 交点サークルの場合
+      if((i % 2 == 0) && (j % 2 == 0)) {
+        circleColor = getCrossCircleColor(i, j);
+        initCrossCircle = CrossCircle{ circleColor, noneBlock };
+        setCrossCircle(i, j, initCrossCircle);
+        // ブロックサークルの場合
+      } else if((i % 2 == 1) && (j % 2 == 1)) {
+        if((i == 3) && (j == 3)) {  // 真ん中のブロックサークルはすべてnone
+          initBlockCircle = BlockCircle{ Color::none, -1, noneBlock };
+        } else {
+          circleColor = getBlockCircleColor(blockCircleNumber);
+          initBlockCircle = BlockCircle{ circleColor, blockCircleNumber, noneBlock };
+          blockCircleNumber++;
+        }
+        setBlockCircle(i, j, initBlockCircle);
+      }
+    }
+  }
+
+  // 数字カードの初期化
+  initCardNumber(controller.getCourseInfo(ETROBOC_COURSE_INFO_CARD_NUMBER));
+
+  // ブロックの初期位置を設定する
+  initBlock(Color::black, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_BLACK1));
+  initBlock(Color::black, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_BLACK2));
+  initBlock(Color::red, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_RED1));
+  initBlock(Color::red, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_RED2));
+  initBlock(Color::yellow, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_YELLOW1));
+  initBlock(Color::yellow, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_YELLOW2));
+  initBlock(Color::blue, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_BLUE1));
+  initBlock(Color::blue, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_BLUE2));
+  initBlock(Color::green, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_GREEN1));
+  initBlock(Color::green, controller.getCourseInfo(ETROBOC_COURSE_INFO_BLOCK_POS_GREEN2));
+}
+
+void BlockBingoData::initCardNumber(int cardNumber_)
+{
+  cardNumber = cardNumber_;
+}
+
+void BlockBingoData::initBlock(Color initColor, int coordinate)
+{
+  int x, y;
+  BlockCircle blockCircle;
+  CrossCircle crossCircle;
+
+  switch(coordinate) {
+      // ブロックサークル
+    case 49:  // 1のとき
+      x = 1, y = 1;
+      break;
+    case 50:  // 2のとき
+      x = 3, y = 1;
+      break;
+    case 51:  // 3のとき
+      x = 5, y = 1;
+      break;
+    case 52:  // 4のとき
+      x = 0, y = 3;
+      break;
+    case 53:  // 5のとき
+      x = 5, y = 3;
+      break;
+    case 54:  // 6のとき
+      x = 0, y = 5;
+      break;
+    case 55:  // 7のとき
+      x = 3, y = 5;
+      break;
+    case 56:  // 8のとき
+      x = 5, y = 5;
+      break;
+
+      // 交点サークル
+    case 65:  // Aのとき
+      x = 0, y = 0;
+      break;
+    case 67:  // Cのとき
+      x = 4, y = 0;
+      break;
+    case 70:  // Fのとき
+      x = 2, y = 2;
+      break;
+    case 72:  // Hのとき
+      x = 6, y = 2;
+      break;
+    case 74:  // Jのとき
+      x = 0, y = 4;
+      break;
+    case 76:  // Lのとき
+      x = 4, y = 4;
+      break;
+    case 81:  // Qのとき
+      x = 2, y = 6;
+      break;
+    case 83:  // Sのとき
+      x = 6, y = 6;
+      break;
+    default:
+      x = -1, y = -1;
+  }
+
+  if((coordinate >= 49) && (coordinate <= 56)) {
+    blockCircle = getBlockCircle(x, y);
+    blockCircle.block.blockColor = initColor;
+    setBlockCircle(x, y, blockCircle);
+  } else {
+    crossCircle = getCrossCircle(x, y);
+    crossCircle.block.blockColor = initColor;
+    setCrossCircle(x, y, crossCircle);
+  }
+}
+
+Color BlockBingoData::getBlockCircleColor(int circleNumber)
+{
+  // ブロックサークルにない数字の時のエラー処理
+  if((circleNumber < 1) || (circleNumber > 8)) {
+    return Color::none;
+  }
+  return isLeftCourse ? blockCircleColorL[circleNumber - 1] : blockCircleColorR[circleNumber - 1];
+}
+
+Color BlockBingoData::getCrossCircleColor(int x, int y)
+{
+  // 座標が範囲外の時のエラー処理
+  if((x < 0) || (x >= 7) || (y < 0) || (y >= 7)) {
+    return Color::none;
+  }
+  // 交点サークルではない時のエラー処理
+  if((x % 2 != 0) || (y % 2 != 0)) {
+    return Color::none;
+  }
+
+  return isLeftCourse ? crossCircleColorL[y / 2][x / 2] : crossCircleColorR[y / 2][x / 2];
 }
