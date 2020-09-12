@@ -244,7 +244,7 @@ void BlockBingoData::initBlock(Color initColor, int coordinate)
 Color BlockBingoData::getBlockCircleColor(int circleNumber)
 {
   // ブロックサークルにない数字の時のエラー処理
-  if((circleNumber < 1) && (circleNumber > 8)) {
+  if((circleNumber < 1) || (circleNumber > 8)) {
     return Color::none;
   }
   return isLeftCourse ? blockCircleColorL[circleNumber - 1] : blockCircleColorR[circleNumber - 1];
