@@ -88,7 +88,7 @@ BlockCircle BlockBingoData::getBlockCircle(int x, int y)
   if((x % 2 != 1) || (y % 2 != 1)) {
     printf("[ERROR] Coordinate is not BlockCircle\n");
     return BlockCircle{ Color::none, -1, Block{ Color::none, -1 } };
-  };
+  }
 
   return blockCircleCoordinate[(y - 1) / 2][(x - 1) / 2];
 }
@@ -98,7 +98,7 @@ CrossCircle BlockBingoData::getCrossCircle(int x, int y)
   if((x % 2 != 0) || (y % 2 != 0)) {
     printf("[ERROR] Coordinate is not CrossCircle\n");
     return CrossCircle{ Color::none, Block{ Color::none, -1 } };
-  };
+  }
   return crossCircleCoordinate[y / 2][x / 2];
 }
 
