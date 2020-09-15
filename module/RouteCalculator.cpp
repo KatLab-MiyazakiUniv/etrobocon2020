@@ -17,7 +17,7 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
   vector<AStarProperty> open;
   vector<AStarProperty> close;
   struct AStarProperty elem(0, 0, 0.0);
-  double actualCost;
+  int actualCost;
   Route route[7][7];
 
   list.clear();

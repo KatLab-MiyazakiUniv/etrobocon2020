@@ -27,7 +27,7 @@ struct AStarProperty {
 struct Route {
   int px;  //親ノード
   int py;
-  double currentCost;          //このノードに到達するまでのコスト
+  int currentCost;             //このノードに到達するまでのコスト
   Direction currentDirection;  //このノードに到達したときの向き　
 
   Route() : px(-1), py(-1), currentCost(0), currentDirection(Direction::North) {}
