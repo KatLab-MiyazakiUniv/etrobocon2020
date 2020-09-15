@@ -11,6 +11,11 @@
 struct Block {
   Color blockColor;
   int blockNumber;
+
+  Block(Color blockColor_ = Color::none, int blockNumber_ = -1)
+    : blockColor(blockColor_), blockNumber(blockNumber_)
+  {
+  }
 };
 
 struct BlockCircle {
