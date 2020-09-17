@@ -13,7 +13,6 @@ RouteCalculator::RouteCalculator(BlockBingoData& blockBingoData_) : blockBingoDa
 
 void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy, int gx, int gy)
 {
-  // vector<vector<int>> list;  // 戻り値用配列
   vector<AStarProperty> open;
   vector<AStarProperty> close;
   struct AStarProperty elem(0, 0, 0.0);
