@@ -344,3 +344,8 @@ int Controller::getCourseInfo(ETROBOC_COURSE_INFO_ID id)
 {
   return ETRoboc_getCourceInfo(id);
 }
+
+void Controller::notifyCompleted(void)
+{
+  ETRoboc_notifyCompletedToSimulator();
+}
