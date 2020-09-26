@@ -16,16 +16,17 @@ namespace etrobocon2020_test {
     BlockBingoData blockBingoData(controller, isLeftCourse);
     RouteCalculator routeCalculator(blockBingoData);
     vector<vector<int>> actualList;
+    int AREASIZE = 7;
     int actualDiffX, actualDiffY;
     int expectedSX, expectedSY, expectedGX, expectedGY;
     int goalPoint;
 
     blockBingoData.initBlockBingoData();
 
-    for(expectedSX = 0; expectedSX < 7; expectedSX++) {
-      for(expectedSY = 0; expectedSY < 7; expectedSY++) {
-        for(expectedGX = 0; expectedGX < 7; expectedGX++) {
-          for(expectedGY = 0; expectedGY < 7; expectedGY++) {
+    for(expectedSX = 0; expectedSX < AREASIZE; expectedSX++) {
+      for(expectedSY = 0; expectedSY < AREASIZE; expectedSY++) {
+        for(expectedGX = 0; expectedGX < AREASIZE; expectedGX++) {
+          for(expectedGY = 0; expectedGY < AREASIZE; expectedGY++) {
             routeCalculator.solveBlockBingo(actualList, expectedSX, expectedSY, expectedGX,
                                             expectedGY);
             // スタートとゴールが指定されたものか
@@ -48,5 +49,7 @@ namespace etrobocon2020_test {
         }
       }
     }
+
+    //(2,6)のブロックと(4,4)のブロックを設置して(0,6)に行くまでの経路をテスト
   }
 }  // namespace etrobocon2020_test

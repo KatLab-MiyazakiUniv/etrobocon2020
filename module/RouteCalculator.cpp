@@ -7,7 +7,8 @@
 
 using namespace std;
 
-RouteCalculator::RouteCalculator(BlockBingoData& blockBingoData_) : blockBingoData(blockBingoData_)
+RouteCalculator::RouteCalculator(BlockBingoData& blockBingoData_)
+  : blockBingoData(blockBingoData_), gX(0), gY(0)
 {
 }
 
@@ -17,7 +18,7 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
   vector<AStarProperty> close;
   struct AStarProperty elem(0, 0, 0.0);
   int actualCost;
-  Route route[7][7];
+  Route route[AREASIZE][AREASIZE];
 
   list.clear();
   gX = gx;  // ゴールノードをセット
@@ -39,13 +40,13 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
         // 親ノードの場合はopenに追加しない
         // printf("(%d,%d)は親ノードだから除外した\n", m.x, m.y);
       } else if(blockCheck(m.x, m.y)) {
-        // ブロックがる場合はopenに追加しない
+        // ブロックがある場合はopenに追加しない
         // printf("(%d,%d)はブロックがあったから除外した\n", m.x, m.y);
       } else if(listCheck(m, open)) {
-        // openにより大きいコストの同じ座標がある場合はopenを更新する
+        // openにより大きいコストの同じ座標がある場合はopenから削除する
         // printf("(%d,%d)はオープンによりコストの小さいものがあったから除外した\n", m.x, m.y);
       } else if(listCheck(m, close)) {
-        // closeにより小さいコストの同じ座標がある場合はopenに追加しない
+        // closeにより大きいコストの同じ座標がある場合はopenから削除する
         // printf("(%d,%d)はクローズによりコストの小さいものがあったから除外した\n", m.x, m.y);
       } else {
         actualCost = route[elem.y][elem.x].currentCost + moveCost(elem.x, elem.y, m.x, m.y, route);
@@ -61,7 +62,8 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
   setRoute(list, route, gX, gY);
 }
 
-vector<AStarProperty> RouteCalculator::nextNode(int x, int y, double currentCost, Route route[7][7])
+vector<AStarProperty> RouteCalculator::nextNode(int x, int y, double currentCost,
+                                                Route route[AREASIZE][AREASIZE])
 {
   vector<AStarProperty> nodeList;
   int nx, ny;
@@ -70,7 +72,7 @@ vector<AStarProperty> RouteCalculator::nextNode(int x, int y, double currentCost
     for(int j = -1; j < 2; j++) {
       if(i != 0 || j != 0) {
         nx = x + i, ny = y + j;
-        if((nx >= 0) && (nx < 7) && (ny >= 0) && (ny < 7)) {
+        if((nx >= 0) && (nx < AREASIZE) && (ny >= 0) && (ny < AREASIZE)) {
           nodeList.push_back(AStarProperty(
               nx, ny, currentCost + moveCost(x, y, nx, ny, route) + euclideanDistance(nx, ny)));
         }
@@ -122,7 +124,7 @@ bool RouteCalculator::listCheck(AStarProperty node, vector<AStarProperty>& list)
   return false;  // listにないノードなので次の処理に移る
 }
 
-int RouteCalculator::moveCost(int x, int y, int nx, int ny, Route route[7][7])
+int RouteCalculator::moveCost(int x, int y, int nx, int ny, Route route[AREASIZE][AREASIZE])
 {
   int cost = 0;
   bool nextNode = (x == nx) || (y == ny);
@@ -182,11 +184,11 @@ double RouteCalculator::euclideanDistance(int nx, int ny)
   return sqrt(pow((gX - nx), 2) + pow((gY - ny), 2));
 }
 
-void RouteCalculator::setRoute(vector<vector<int>>& list, Route route[7][7], int x, int y)
+void RouteCalculator::setRoute(vector<vector<int>>& list, Route route[AREASIZE][AREASIZE], int x,
+                               int y)
 {
   // (x,y)を通っていないときのエラー処理
   if((route[y][x].px == -1) && (route[y][x].py == -1)) {
-    list.push_back({ x, y });
     printf("[ERROR] This coordinate does not pass.\n");
   } else if((route[y][x].px == x) && (route[y][x].py == y)) {  // スタートノードの場合
     list.push_back({ x, y });

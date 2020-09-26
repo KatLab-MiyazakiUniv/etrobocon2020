@@ -25,7 +25,8 @@ struct AStarProperty {
 };
 
 struct Route {
-  int px;  //親ノード
+  //親ノード
+  int px;
   int py;
   int currentCost;             //このノードに到達するまでのコスト
   Direction currentDirection;  //このノードに到達したときの向き　
@@ -61,6 +62,7 @@ class RouteCalculator {
  private:
   BlockBingoData& blockBingoData;
   int gX, gY;  //クラス内でゴールノードを共有しておく
+  static constexpr int AREASIZE = 7;
 
   /**
    *  @brief 指定ノードの隣接ノードをすべて求める
@@ -70,7 +72,8 @@ class RouteCalculator {
    *  @param route [経路情報]
    *  @return 隣接ノードそれぞれの情報(エリア外のノードは除外する)
    */
-  std::vector<AStarProperty> nextNode(int x, int y, double currentCost, Route route[7][7]);
+  std::vector<AStarProperty> nextNode(int x, int y, double currentCost,
+                                      Route route[AREASIZE][AREASIZE]);
 
   /**
    *  @brief その座標のブロックの有無を判定する(7×7座標)
@@ -81,7 +84,7 @@ class RouteCalculator {
   bool blockCheck(int x, int y);
 
   /**
-   *  @brief リストに隣接ノードと同じノードがあるか判定
+   *  @brief リストに隣接ノードと同じノードがあるか調べて，ある場合は削除する
    *  @param node [隣接ノードの情報]
    *  @param list [オープンorクローズリスト]
    *  @return 判定結果 [この隣接ノードを探索する必要がない場合true]
@@ -97,7 +100,7 @@ class RouteCalculator {
    *  @param route [経路情報]
    *  @return 移動コスト [int]
    */
-  int moveCost(int x, int y, int nx, int ny, Route route[7][7]);
+  int moveCost(int x, int y, int nx, int ny, Route route[AREASIZE][AREASIZE]);
 
   /**
    *  @brief ヒューリスティック関数としてユークリッド距離を取る
@@ -114,7 +117,7 @@ class RouteCalculator {
    *  @param x [x座標]
    *  @param y [y座標]
    */
-  void setRoute(std::vector<std::vector<int>>& list, Route route[7][7], int x, int y);
+  void setRoute(std::vector<std::vector<int>>& list, Route route[AREASIZE][AREASIZE], int x, int y);
 };
 
 #endif
