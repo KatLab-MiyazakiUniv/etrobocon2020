@@ -46,7 +46,7 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
         // openにより大きいコストの同じ座標がある場合はopenから削除する
         // printf("(%d,%d)はオープンによりコストの小さいものがあったから除外した\n", m.x, m.y);
       } else if(listCheck(m, close)) {
-        // closeにより大きいコストの同じ座標がある場合はopenから削除する
+        // closeにより大きいコストの同じ座標がある場合はcloseから削除する
         // printf("(%d,%d)はクローズによりコストの小さいものがあったから除外した\n", m.x, m.y);
       } else {
         actualCost = route[elem.y][elem.x].currentCost + moveCost(elem.x, elem.y, m.x, m.y, route);
