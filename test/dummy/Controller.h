@@ -370,5 +370,11 @@ class Controller {
    * @note    dummy Controllerでは、競技規約p26の図6-5:初期配置の例(Lコース)の配置情報を返す
    */
   int getCourseInfo(ETROBOC_COURSE_INFO_ID id);
+
+  /**
+   * @brief   競技終了通知をシミュレータに送信する
+   * @note    dummy Contoellerでは、何もしない
+   */
+  void notifyCompleted(void);
 };
 #endif

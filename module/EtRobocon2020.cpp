@@ -30,4 +30,7 @@ void EtRobocon2020::start()
   // ノーマルコースの走行開始
   NormalCourse normalCourse(controller, isLeftCourse, targetBrightness);
   normalCourse.runNormalCourse();
+
+  // 競技終了通知を送信する
+  controller.notifyCompleted();
 }

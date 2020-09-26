@@ -57,7 +57,7 @@ class LineTracer {
    *  @param curvatureDGain [曲率の値を用いたPID制御のDゲイン]
    */
   int calculateTurnValue(int speedValue, double curvatureValue, double pGain, double iGain,
-                         double dGain, double curvaturePGain = 1.2, double curvatureIGain = 1.8,
+                         double dGain, double curvaturePGain = 2.5, double curvatureIGain = 1.8,
                          double curvatureDGain = 0.0);
 
   /** 白黒以外の色までライントレースする。

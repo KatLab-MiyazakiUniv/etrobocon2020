@@ -40,3 +40,5 @@ int Controller::getCourseInfo(ETROBOC_COURSE_INFO_ID id)
       return 0;
   }
 }
+
+void Controller::notifyCompleted(void) {}
