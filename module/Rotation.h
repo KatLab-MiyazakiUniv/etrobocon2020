@@ -18,11 +18,11 @@ class Rotation {
   static constexpr int minPwm = 10;       // モーターパワーの最小値
 
   /**
-   *  @brief 指定角度回頭したときの片輪の回転角度を算する
+   *  @brief 指定角度回頭したときの片輪の回転角度を計算する
    *  @param Angle [走行体が回頭する角度[deg]]
    *  @return 片輪の回転角度(回転方向に関わらず正の数)
    */
-  double calculate(int Angle);
+  double calculate(int angle);
 
  public:
   /**　コンストラクタ
@@ -34,7 +34,7 @@ class Rotation {
    *  @brief 走行体を回頭させる
    *  @param angle [回頭角度]
    *  @param clockwise [回転方向(Trueが時計回り)]
-   *  @param pwm [モーターパワー]
+   *  @param pwm [モーターパワー(PWM1の最大値）]
    */
   void rotate(int angle, bool clockwise, int pwm = 100);
 };
