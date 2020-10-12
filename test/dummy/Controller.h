@@ -55,7 +55,7 @@ class Motor {
     // std::cout << count << std::endl;
   };
   void stop(){};
-  void reset(){};
+  void reset() { count = 0; };
   void setBrake(bool isBrake){};
 };
 
