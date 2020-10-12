@@ -16,7 +16,7 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
 {
   vector<AStarProperty> open;
   vector<AStarProperty> close;
-  struct AStarProperty elem(0, 0, 0.0);
+  struct AStarProperty elem(0, 0, 0);
   int actualCost;
   Route route[AREASIZE][AREASIZE];
 
@@ -24,9 +24,9 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
   gX = gx;  // ゴールノードをセット
   gY = gy;
 
-  route[sy][sx].set(sx, sy, 0.0);
+  route[sy][sx].set(sx, sy, 0);
   route[sy][sx].currentDirection = blockBingoData.getDirection();
-  open.push_back(AStarProperty(sx, sy, route[sy][sx].currentCost + euclideanDistance(sx, sy)));
+  open.push_back(AStarProperty(sx, sy, route[sy][sx].currentCost + manhattanDistance(sx, sy)));
   while(!open.empty()) {
     sort(open.begin(), open.end(), std::greater<AStarProperty>());
     elem = open.back();
@@ -50,7 +50,7 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
         // printf("(%d,%d)はクローズによりコストの小さいものがあったから除外した\n", m.x, m.y);
       } else {
         actualCost = route[elem.y][elem.x].currentCost + moveCost(elem.x, elem.y, m.x, m.y, route);
-        open.push_back(AStarProperty(m.x, m.y, actualCost + euclideanDistance(m.x, m.y)));
+        open.push_back(AStarProperty(m.x, m.y, actualCost + manhattanDistance(m.x, m.y)));
         route[m.y][m.x].set(elem.x, elem.y, actualCost);
         // printf("openに(%d,%d)を追加した(カレントコスト:%f,推定コスト:%f)\n", m.x, m.y,
         //     route[m.y][m.x].currentCost, m.estimateCost);
@@ -62,7 +62,7 @@ void RouteCalculator::solveBlockBingo(vector<vector<int>>& list, int sx, int sy,
   setRoute(list, route, gX, gY);
 }
 
-vector<AStarProperty> RouteCalculator::nextNode(int x, int y, double currentCost,
+vector<AStarProperty> RouteCalculator::nextNode(int x, int y, int currentCost,
                                                 Route route[AREASIZE][AREASIZE])
 {
   vector<AStarProperty> nodeList;
@@ -74,7 +74,7 @@ vector<AStarProperty> RouteCalculator::nextNode(int x, int y, double currentCost
         nx = x + i, ny = y + j;
         if((nx >= 0) && (nx < AREASIZE) && (ny >= 0) && (ny < AREASIZE)) {
           nodeList.push_back(AStarProperty(
-              nx, ny, currentCost + moveCost(x, y, nx, ny, route) + euclideanDistance(nx, ny)));
+              nx, ny, currentCost + moveCost(x, y, nx, ny, route) + manhattanDistance(nx, ny)));
         }
       }
     }
@@ -136,9 +136,6 @@ int RouteCalculator::moveCost(int x, int y, int nx, int ny, Route route[AREASIZE
   if(nextNode) {  //横縦移動の時
     cost += 1;
   } else {  //斜め移動の時
-    if(blockCheck(x, ny) || blockCheck(nx, y)) {
-      cost += 1;  // 隣にブロックがあるときコストを高く設定する
-    }
     cost += 6;
   }
 
@@ -179,9 +176,9 @@ int RouteCalculator::moveCost(int x, int y, int nx, int ny, Route route[AREASIZE
   }
 }
 
-double RouteCalculator::euclideanDistance(int nx, int ny)
+int RouteCalculator::manhattanDistance(int nx, int ny)
 {
-  return sqrt(pow((gX - nx), 2) + pow((gY - ny), 2));
+  return abs(gX - nx) + abs(gY - ny);
 }
 
 void RouteCalculator::setRoute(vector<vector<int>>& list, Route route[AREASIZE][AREASIZE], int x,

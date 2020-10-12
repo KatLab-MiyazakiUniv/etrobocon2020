@@ -16,9 +16,9 @@ struct AStarProperty {
   // ノードの座標
   int x;
   int y;
-  double estimateCost;
+  int estimateCost;
 
-  AStarProperty(int x_, int y_, double estimateCost_) : x(x_), y(y_), estimateCost(estimateCost_) {}
+  AStarProperty(int x_, int y_, int estimateCost_) : x(x_), y(y_), estimateCost(estimateCost_) {}
 
   bool operator<(const AStarProperty& another) const { return estimateCost < another.estimateCost; }
   bool operator>(const AStarProperty& another) const { return estimateCost > another.estimateCost; }
@@ -33,7 +33,7 @@ struct Route {
 
   Route() : px(-1), py(-1), currentCost(0), currentDirection(Direction::North) {}
 
-  void set(int px_, int py_, double currentCost_)
+  void set(int px_, int py_, int currentCost_)
   {
     px = px_;
     py = py_;
@@ -72,7 +72,7 @@ class RouteCalculator {
    *  @param route [経路情報]
    *  @return 隣接ノードそれぞれの情報(エリア外のノードは除外する)
    */
-  std::vector<AStarProperty> nextNode(int x, int y, double currentCost,
+  std::vector<AStarProperty> nextNode(int x, int y, int currentCost,
                                       Route route[AREASIZE][AREASIZE]);
 
   /**
@@ -103,12 +103,12 @@ class RouteCalculator {
   int moveCost(int x, int y, int nx, int ny, Route route[AREASIZE][AREASIZE]);
 
   /**
-   *  @brief ヒューリスティック関数としてユークリッド距離を取る
+   *  @brief ヒューリスティック関数としてマンハッタン距離を取る
    *  @param nx [隣接ノードのx座標]
    *  @param ny [隣接ノードのy座標]
-   *  @return 隣接ノードとゴールノードのユークリッド距離 [double]
+   *  @return 隣接ノードとゴールノードのマンハッタン距離 [int]
    */
-  double euclideanDistance(int nx, int ny);
+  int manhattanDistance(int nx, int ny);
 
   /**
    *  @brief 指定ノードまでの経路をセットする
