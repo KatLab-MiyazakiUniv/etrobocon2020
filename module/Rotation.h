@@ -34,7 +34,7 @@ class Rotation {
    *  @brief 走行体を回頭させる
    *  @param angle [回頭角度]
    *  @param clockwise [回転方向(Trueが時計回り)]
-   *  @param pwm [モーターパワー(PWM1の最大値）]
+   *  @param pwm [モーターパワー(PWMの最大値）]
    */
   void rotate(int angle, bool clockwise, int pwm = 100);
 };
