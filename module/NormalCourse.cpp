@@ -40,7 +40,7 @@ void NormalCourse::runNormalCourse()
        * 進む距離，目標スピード，曲率，ターンpid
        * 曲率は、直進のとき0.0を指定する
        */
-= { {
+      = { {
           { 730, baseSpeed, 0.0, { 0.5, 0.005, 0.2 } },             // 第1区間
           { 1000, baseSpeed, 0.003226, { 0.55, 0.005, 1.5 } },      // 第2区間
           { 290, baseSpeed, 0.0, { 0.2, 0.005, 0.01 } },            // 第3区間
@@ -89,7 +89,7 @@ void NormalCourse::runNormalCourse()
     lineTracer.run(ncp);
   }
   Rotation rotation(controller);
-  rotation.pivotTurn(90, isLeftCourse, 48);
+  rotation.rotate(90, isLeftCourse);
 }
 
 /**

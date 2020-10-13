@@ -7,75 +7,74 @@
 #include "Controller.h"
 #include <gtest/gtest.h>
 
+using namespace std;
+
 namespace etrobocon2020_test {
-  TEST(Rotation, calculate)
-  {
-    Controller controller;
-    Rotation rotation(controller);
-    const double Radius = 45.0;
-    static constexpr double Tread = 140.0;
-    double wheelAngle = 30;
-
-    double expected = 2.0 * Radius * wheelAngle / Tread;
-
-    ASSERT_DOUBLE_EQ(expected, rotation.calculate(30, -30));
-    ASSERT_DOUBLE_EQ(expected, rotation.calculate(-30, 30));
-  }
-
   TEST(Rotation, rotate)
   {
+    constexpr double Radius = 45.0;
+    constexpr double Tread = 140.0;
+    const double transform = 2.0 * Radius / Tread;
+
     Controller controller;
     Rotation rotation(controller);
-    Filter filter;
+    double expected, actual;
+    double motorAngle;
+    bool clockwise;
 
-    double expected = 90;
-    bool clockwise = true;
+    // 45度右回頭の回頭誤差が１度未満かテスト
+    expected = 45;
+    clockwise = true;
     rotation.rotate(expected, clockwise);
-
-    filter.rotationFilterSet(rotateFunc, clockwise);
-    double actual = filter.rotationFilter(
-        rotation.calculate(controller.getLeftMotorCount(), controller.getRightMotorCount()),
-        expected, 50);
-
+    motorAngle = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
+    actual = transform * motorAngle;
     ASSERT_LE(expected, actual);
-    ASSERT_GE(expected + 5, actual);
+    ASSERT_GE(expected + 1.0, actual);
+
+    // 45度左回頭の回頭誤差が１度未満かテスト
+    expected = 45;
+    clockwise = false;
+    rotation.rotate(expected, clockwise);
+    motorAngle = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
+    actual = transform * motorAngle;
+    ASSERT_LE(expected, actual);
+    ASSERT_GE(expected + 1.0, actual);
+
+    // 90度右回頭の回頭誤差が１度未満かテスト
+    expected = 90;
+    clockwise = true;
+    rotation.rotate(expected, clockwise);
+    motorAngle = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
+    actual = transform * motorAngle;
+    ASSERT_LE(expected, actual);
+    ASSERT_GE(expected + 1.0, actual);
+
+    // 90度左回頭の回頭誤差が１度未満かテスト
+    expected = 90;
+    clockwise = false;
+    rotation.rotate(expected, clockwise);
+    motorAngle = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
+    actual = transform * motorAngle;
+    ASSERT_LE(expected, actual);
+    ASSERT_GE(expected + 1.0, actual);
+
+    // // 180度右回頭の回頭誤差が１度未満かテスト
+    expected = 180;
+    clockwise = true;
+    rotation.rotate(expected, clockwise);
+    motorAngle = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
+    actual = transform * motorAngle;
+    ASSERT_LE(expected, actual);
+    ASSERT_GE(expected + 1.0, actual);
+
+    // 180度左回頭の回頭誤差が１度未満かテスト
+    expected = 180;
+    clockwise = false;
+    rotation.rotate(expected, clockwise);
+    motorAngle = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
+    actual = transform * motorAngle;
+    ASSERT_LE(expected, actual);
+    ASSERT_GE(expected + 1.0, actual);
   }
 
-  TEST(Rotation, pivotTurn)
-  {
-    Controller controller;
-    Rotation rotation(controller);
-    Filter filter;
-
-    double expected = 90;
-    bool clockwise = true;
-    rotation.pivotTurn(expected, clockwise);
-
-    filter.rotationFilterSet(pivotTurnFunc, clockwise);
-    double actual = filter.rotationFilter(
-        rotation.calculate(controller.getLeftMotorCount(), controller.getRightMotorCount()),
-        expected, 30);
-
-    ASSERT_LE(expected, actual);
-    ASSERT_GE(expected + 5, actual);
-  }
-
-  TEST(Rotation, pivotTurnBack)
-  {
-    Controller controller;
-    Rotation rotation(controller);
-    Filter filter;
-
-    double expected = 90;
-    bool clockwise = true;
-    rotation.pivotTurnBack(expected, clockwise);
-
-    filter.rotationFilterSet(pivotTurnBackFunc, clockwise);
-    double actual = filter.rotationFilter(
-        rotation.calculate(controller.getLeftMotorCount(), controller.getRightMotorCount()),
-        expected, 30);
-
-    ASSERT_LE(expected, actual);
-    ASSERT_GE(expected + 5, actual);
-  }
 }  // namespace etrobocon2020_test

@@ -6,61 +6,47 @@
 
 #include "Rotation.h"
 
-Rotation::Rotation(Controller& controller_)
-  : Radius(45.0), distance(), filter(), controller(controller_)
-{
-}
+using namespace std;
 
-void Rotation::rotate(double angle, bool clockwise, int pwm)
-{
-  double left_pwm = clockwise ? pwm : -pwm;
-  double right_pwm = clockwise ? -pwm : pwm;
-  filter.rotationFilterSet(rotateFunc, clockwise);
-  this->run(angle, left_pwm, right_pwm);
-}
+Rotation::Rotation(Controller& controller_) : distance(), controller(controller_) {}
 
-void Rotation::pivotTurn(double angle, bool clockwise, int pwm)
-{
-  int left_pwm = clockwise ? pwm : 0;
-  int right_pwm = clockwise ? 0 : pwm;
-  filter.rotationFilterSet(pivotTurnFunc, clockwise);
-  this->run(angle, left_pwm, right_pwm);
-}
-
-void Rotation::pivotTurnBack(double angle, bool clockwise, int pwm)
-{
-  int left_pwm = clockwise ? 0 : -pwm;
-  int right_pwm = clockwise ? -pwm : 0;
-  filter.rotationFilterSet(pivotTurnBackFunc, clockwise);
-  this->run(angle, left_pwm, right_pwm);
-}
-
-void Rotation::run(double angle, double left_pwm, double right_pwm)
+void Rotation::rotate(int angle, bool clockwise, int pwm)
 {
   // angleの絶対値をとる
-  angle = std::abs(angle);
-  int pwm = std::abs(left_pwm) > std::abs(right_pwm) ? std::abs(left_pwm) : std::abs(right_pwm);
+  angle = abs(angle);
+  int leftSign = clockwise ? 1 : -1;
+  int rightSign = clockwise ? -1 : 1;
+  double targetMotorCount = calculate(angle);
+  int LeftPwm, RightPwm;  // タイヤのモーターパワー(回頭角度に応じて減衰していく)
+  double leftCountRate, rightCountRate;  //現在のタイヤの回転比率[0.0~1.0]
   controller.resetMotorCount();
 
-  double motorAngle
-      = this->calculate(controller.getLeftMotorCount(), controller.getRightMotorCount());
+  // 両輪が止まるまでループ
+  while(leftSign != 0 || rightSign != 0) {
+    leftCountRate = 1 - abs(controller.getLeftMotorCount()) / targetMotorCount;
+    rightCountRate = 1 - abs(controller.getRightMotorCount()) / targetMotorCount;
+    LeftPwm
+        = pwm * leftCountRate > minPwm ? (int)(pwm * leftCountRate * leftSign) : minPwm * leftSign;
+    RightPwm = pwm * rightCountRate > minPwm ? (int)(pwm * rightCountRate * rightSign)
+                                             : minPwm * rightSign;
 
-  // 指定した角度回転するまでループ
-  while(filter.rotationFilter(motorAngle, angle, pwm) < angle) {
-    controller.setLeftMotorPwm(left_pwm);
-    controller.setRightMotorPwm(right_pwm);
+    controller.setLeftMotorPwm(LeftPwm);
+    controller.setRightMotorPwm(RightPwm);
     controller.tslpTsk(4000);
 
-    motorAngle = this->calculate(controller.getLeftMotorCount(), controller.getRightMotorCount());
+    if(abs(controller.getLeftMotorCount()) >= targetMotorCount) {
+      leftSign = 0;
+    }
+    if(abs(controller.getRightMotorCount()) >= targetMotorCount) {
+      rightSign = 0;
+    }
   }
   controller.stopMotor();
 }
 
-double Rotation::calculate(const int leftAngle, const int rightAngle)
+double Rotation::calculate(int angle)
 {
-  // 両輪の回転角から回転角度を取得
   // @see docs/Odometry/odometry.pdf
   const double transform = 2.0 * Radius / Tread;
-  double WheelAngle = (std::abs(leftAngle) + std::abs(rightAngle)) / 2;
-  return transform * WheelAngle;
+  return angle / transform;
 }
