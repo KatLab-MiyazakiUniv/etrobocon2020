@@ -67,7 +67,7 @@ namespace etrobocon2020_test {
     ASSERT_LE(expected, actual);
     ASSERT_GE(expected + 1.0, actual);
 
-    // 180度右回頭の回頭誤差が１度未満かテスト
+    // 180度左回頭の回頭誤差が１度未満かテスト
     expected = 180;
     clockwise = false;
     rotation.rotate(expected, clockwise);
