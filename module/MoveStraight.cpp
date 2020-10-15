@@ -88,10 +88,12 @@ int MoveStraight::calcPwm(int presPos, int destination, int maxPwm)
   int minPwm = 10;
   if(maxPwm < minPwm) minPwm = maxPwm;
 
-  // 上に凸の放物線の方程式より、走行距離に応じてpwmを計算する。放物線は、次の点を通る。
-  // (0, minPwm) (destination/2, maxPwm) (destination, minPwm)
-  double pwm = 4 * (minPwm - maxPwm) * (presPos - destination / 2) * (presPos - destination / 2);
-  pwm = pwm / (destination * destination) + maxPwm;
+  // 二次関数の式 y = a(x - p)^2 + q を利用して、走行距離に応じてPWM値を放物線のように変化させる。
+  // 放物線は、次の点を通る。(0, minPwm) (destination/2, maxPwm) (destination, minPwm)
+  // pwm = a(presPos - destination/2)^2 + maxPwm
+  // a = 4(minPwm - maxPwm) / destination^2
+  const double a = 4.0 * (minPwm - maxPwm) / (destination * destination);
+  double pwm = a * (presPos - destination / 2) * (presPos - destination / 2) + maxPwm;
 
   return static_cast<int>(pwm);
 }
