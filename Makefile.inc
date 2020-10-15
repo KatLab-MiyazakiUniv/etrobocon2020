@@ -18,6 +18,7 @@ APPL_CXXOBJS += \
     Navigator.o \
     Rotation.o \
     BlockBingoData.o \
+    RouteCalculator.o \
 
 SRCLANG := c++
 
