@@ -11,6 +11,11 @@
 struct Block {
   Color blockColor;
   int blockNumber;
+
+  Block(Color blockColor_ = Color::none, int blockNumber_ = -1)
+    : blockColor(blockColor_), blockNumber(blockNumber_)
+  {
+  }
 };
 
 struct BlockCircle {
@@ -24,7 +29,21 @@ struct CrossCircle {
   Block block;
 };
 
+struct Coordinate {
+  int x;
+  int y;
+
+  Coordinate(int x_ = -1, int y_ = -1) : x(x_), y(y_) {}
+
+  bool operator==(const Coordinate& another) const
+  {
+    return ((x == another.x) && (y == another.y));
+  }
+};
+
 enum class Direction { North, NEast, East, SEast, South, SWest, West, NWest };
+
+enum class NodeType { blockCircle, crossCircle, middlePoint };
 
 class BlockBingoData {
  public:
@@ -35,38 +54,41 @@ class BlockBingoData {
   BlockBingoData(Controller& controller_, bool isLeftCourse_);
 
   /**
+   *  @brief 指定座標が交点サークルかブロックサークルか中点か判定する
+   *  @param coordinate [座標(7×7)]
+   *  @return 判定結果 [NodeType]
+   */
+  NodeType checkNode(Coordinate Coordinate);
+
+  /**
    *  @brief ブロックサークル情報をセットする
-   *  @param x [x座標(0~6)]
-   *  @param y [y座標(0~6)]
+   *  @param coordinate [座標(7×7)]
    *  @param blockCircle [データ設定済みのBlockCircle構造体]
    *  @return 成功判定 [trueでセット成功]
    */
-  bool setBlockCircle(int x, int y, BlockCircle blockCircle);
+  bool setBlockCircle(Coordinate coordinate, BlockCircle blockCircle);
 
   /**
    *  @brief 交点サークル情報をセットする
-   *  @param x [x座標(0~6)]
-   *  @param y [y座標(0~6)]
+   *  @param coordinate [座標(7×7)]
    *  @param crossCircle [データ設定済みのCrossCircle構造体]
    *  @return 成功判定 [trueでセット成功]
    */
-  bool setCrossCircle(int x, int y, CrossCircle crossCircle);
+  bool setCrossCircle(Coordinate coordinate, CrossCircle crossCircle);
 
   /**
    *  @brief ブロックサークルの情報を取得する
-   *  @param x [x座標(0~6)]
-   *  @param y [y座標(0~6)]
+   *  @param coordinate [座標(7×7)]
    *  @return ブロックサークル情報[BlockCircle構造体]
    */
-  BlockCircle getBlockCircle(int x, int y);
+  BlockCircle getBlockCircle(Coordinate coordinate);
 
   /**
    *  @brief 交点サークルの情報を取得する
-   *  @param x [x座標(0~6)]
-   *  @param y [y座標(0~6)]
+   *  @param coordinate [座標(7×7)]
    *  @return 交点サークル情報[CrossCircle構造体]
    */
-  CrossCircle getCrossCircle(int x, int y);
+  CrossCircle getCrossCircle(Coordinate coordinate);
 
   /**
    *  @brief 数字カード情報を取得する
@@ -100,11 +122,10 @@ class BlockBingoData {
 
   /**
    *  @brief 交点サークルの色情報を取得する
-   *  @param x [x座標(0~6)]
-   *  @param y [y座標(0~6)]
+   *  @param coordinate [座標(7×7)]
    *  @return 交点サークルの色情報
    */
-  Color getCrossCircleColor(int x, int y);
+  Color getCrossCircleColor(Coordinate coordinate);
 
  private:
   Controller& controller;

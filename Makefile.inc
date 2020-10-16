@@ -41,7 +41,3 @@ INCLUDES += \
     -I$(ETROBO_HRP3_WORKSPACE)/etroboc_common \
 
 COPTS += -std=gnu++11
-
-COPTS += -DMAKE_SIM
-
-COPTS += -DMAKE_SIM

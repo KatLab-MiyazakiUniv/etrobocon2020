@@ -10,9 +10,20 @@ BlockBingoData::BlockBingoData(Controller& controller_, bool isLeftCourse_)
 {
 }
 
-bool BlockBingoData::setBlockCircle(int x, int y, BlockCircle blockCircle)
+NodeType BlockBingoData::checkNode(Coordinate coordinate)
 {
-  if((x % 2 != 1) || (y % 2 != 1)) {
+  if((coordinate.x % 2 == 0) && (coordinate.y % 2 == 0)) {
+    return NodeType::crossCircle;
+  } else if((coordinate.x % 2 == 1) && (coordinate.y % 2 == 1)) {
+    return NodeType::blockCircle;
+  } else {
+    return NodeType::middlePoint;
+  }
+}
+
+bool BlockBingoData::setBlockCircle(Coordinate coordinate, BlockCircle blockCircle)
+{
+  if(checkNode(coordinate) != NodeType::blockCircle) {
     printf("[ERROR] Not BlockCircle\n");
     return false;
   }
@@ -30,7 +41,7 @@ bool BlockBingoData::setBlockCircle(int x, int y, BlockCircle blockCircle)
   }
 
   // 座標指定のエラー処理
-  if((x < 0) || (x >= 7) || (y < 0) || (y >= 7)) {
+  if((coordinate.x < 0) || (coordinate.x >= 7) || (coordinate.y < 0) || (coordinate.y >= 7)) {
     return false;
   }
 
@@ -42,13 +53,13 @@ bool BlockBingoData::setBlockCircle(int x, int y, BlockCircle blockCircle)
   }
 
   // 正常時
-  blockCircleCoordinate[(y - 1) / 2][(x - 1) / 2] = blockCircle;
+  blockCircleCoordinate[(coordinate.y - 1) / 2][(coordinate.x - 1) / 2] = blockCircle;
   return true;
 }
 
-bool BlockBingoData::setCrossCircle(int x, int y, CrossCircle crossCircle)
+bool BlockBingoData::setCrossCircle(Coordinate coordinate, CrossCircle crossCircle)
 {
-  if((x % 2 != 0) || (y % 2 != 0)) {
+  if(checkNode(coordinate) != NodeType::crossCircle) {
     printf("[ERROR] Not CrossCircle\n");
     return false;
   }
@@ -67,7 +78,7 @@ bool BlockBingoData::setCrossCircle(int x, int y, CrossCircle crossCircle)
   }
 
   // 座標指定のエラー処理
-  if((x < 0) || (x >= 7) || (y < 0) || (y >= 7)) {
+  if((coordinate.x < 0) || (coordinate.x >= 7) || (coordinate.y < 0) || (coordinate.y >= 7)) {
     return false;
   }
 
@@ -79,27 +90,29 @@ bool BlockBingoData::setCrossCircle(int x, int y, CrossCircle crossCircle)
   }
 
   // 正常時
-  crossCircleCoordinate[y / 2][x / 2] = crossCircle;
+  crossCircleCoordinate[coordinate.y / 2][coordinate.x / 2] = crossCircle;
   return true;
 }
 
-BlockCircle BlockBingoData::getBlockCircle(int x, int y)
+BlockCircle BlockBingoData::getBlockCircle(Coordinate coordinate)
 {
-  if((x % 2 != 1) || (y % 2 != 1)) {
+  if(checkNode(coordinate) != NodeType::blockCircle) {
     printf("[ERROR] Coordinate is not BlockCircle\n");
+
     return BlockCircle{ Color::none, -1, Block{ Color::none, -1 } };
   }
 
-  return blockCircleCoordinate[(y - 1) / 2][(x - 1) / 2];
+  return blockCircleCoordinate[(coordinate.y - 1) / 2][(coordinate.x - 1) / 2];
 }
 
-CrossCircle BlockBingoData::getCrossCircle(int x, int y)
+CrossCircle BlockBingoData::getCrossCircle(Coordinate coordinate)
 {
-  if((x % 2 != 0) || (y % 2 != 0)) {
+  if(checkNode(coordinate) != NodeType::crossCircle) {
     printf("[ERROR] Coordinate is not CrossCircle\n");
     return CrossCircle{ Color::none, Block{ Color::none, -1 } };
   }
-  return crossCircleCoordinate[y / 2][x / 2];
+
+  return crossCircleCoordinate[coordinate.y / 2][coordinate.x / 2];
 }
 
 int BlockBingoData::getCardNumber(void)
@@ -129,12 +142,12 @@ void BlockBingoData::initBlockBingoData(void)
   for(int j = 0; j < 7; j++) {
     for(int i = 0; i < 7; i++) {
       // 交点サークルの場合
-      if((i % 2 == 0) && (j % 2 == 0)) {
-        circleColor = getCrossCircleColor(i, j);
+      if(checkNode(Coordinate(i, j)) == NodeType::crossCircle) {
+        circleColor = getCrossCircleColor(Coordinate(i, j));
         initCrossCircle = CrossCircle{ circleColor, noneBlock };
-        setCrossCircle(i, j, initCrossCircle);
+        setCrossCircle({ i, j }, initCrossCircle);
         // ブロックサークルの場合
-      } else if((i % 2 == 1) && (j % 2 == 1)) {
+      } else if(checkNode(Coordinate(i, j)) == NodeType::blockCircle) {
         if((i == 3) && (j == 3)) {  // 真ん中のブロックサークルはすべてnone
           initBlockCircle = BlockCircle{ Color::none, -1, noneBlock };
         } else {
@@ -142,7 +155,7 @@ void BlockBingoData::initBlockBingoData(void)
           initBlockCircle = BlockCircle{ circleColor, blockCircleNumber, noneBlock };
           blockCircleNumber++;
         }
-        setBlockCircle(i, j, initBlockCircle);
+        setBlockCircle({ i, j }, initBlockCircle);
       }
     }
   }
@@ -170,74 +183,75 @@ void BlockBingoData::initCardNumber(int cardNumber_)
 
 void BlockBingoData::initBlock(Color initColor, int coordinate)
 {
-  int x, y;
+  Coordinate initCoordinate;
   BlockCircle blockCircle;
   CrossCircle crossCircle;
 
   switch(coordinate) {
       // ブロックサークル
     case 49:  // 1のとき
-      x = 1, y = 1;
+      initCoordinate = { 1, 1 };
       break;
     case 50:  // 2のとき
-      x = 3, y = 1;
+      initCoordinate = { 3, 1 };
       break;
     case 51:  // 3のとき
-      x = 5, y = 1;
+      initCoordinate = { 5, 1 };
       break;
     case 52:  // 4のとき
-      x = 0, y = 3;
+      initCoordinate = { 0, 3 };
       break;
     case 53:  // 5のとき
-      x = 5, y = 3;
+      initCoordinate = { 5, 3 };
       break;
     case 54:  // 6のとき
-      x = 0, y = 5;
+      initCoordinate = { 0, 5 };
       break;
     case 55:  // 7のとき
-      x = 3, y = 5;
+      initCoordinate = { 3, 5 };
       break;
     case 56:  // 8のとき
-      x = 5, y = 5;
+      initCoordinate = { 5, 5 };
       break;
 
       // 交点サークル
     case 65:  // Aのとき
-      x = 0, y = 0;
+      initCoordinate = { 0, 0 };
       break;
     case 67:  // Cのとき
-      x = 4, y = 0;
+      initCoordinate = { 4, 0 };
       break;
     case 70:  // Fのとき
-      x = 2, y = 2;
+      initCoordinate = { 2, 2 };
       break;
     case 72:  // Hのとき
-      x = 6, y = 2;
+      initCoordinate = { 6, 2 };
       break;
     case 74:  // Jのとき
-      x = 0, y = 4;
+      initCoordinate = { 0, 4 };
       break;
     case 76:  // Lのとき
-      x = 4, y = 4;
+      initCoordinate = { 4, 4 };
       break;
     case 81:  // Qのとき
-      x = 2, y = 6;
+      initCoordinate = { 2, 6 };
       break;
     case 83:  // Sのとき
-      x = 6, y = 6;
+      initCoordinate = { 6, 6 };
       break;
     default:
-      x = -1, y = -1;
+      initCoordinate = { -1, -1 };
+      break;
   }
 
   if((coordinate >= 49) && (coordinate <= 56)) {
-    blockCircle = getBlockCircle(x, y);
+    blockCircle = getBlockCircle(initCoordinate);
     blockCircle.block.blockColor = initColor;
-    setBlockCircle(x, y, blockCircle);
+    setBlockCircle(initCoordinate, blockCircle);
   } else {
-    crossCircle = getCrossCircle(x, y);
+    crossCircle = getCrossCircle(initCoordinate);
     crossCircle.block.blockColor = initColor;
-    setCrossCircle(x, y, crossCircle);
+    setCrossCircle(initCoordinate, crossCircle);
   }
 }
 
@@ -250,16 +264,17 @@ Color BlockBingoData::getBlockCircleColor(int circleNumber)
   return isLeftCourse ? blockCircleColorL[circleNumber - 1] : blockCircleColorR[circleNumber - 1];
 }
 
-Color BlockBingoData::getCrossCircleColor(int x, int y)
+Color BlockBingoData::getCrossCircleColor(Coordinate coordinate)
 {
   // 座標が範囲外の時のエラー処理
-  if((x < 0) || (x >= 7) || (y < 0) || (y >= 7)) {
+  if((coordinate.x < 0) || (coordinate.x >= 7) || (coordinate.y < 0) || (coordinate.y >= 7)) {
     return Color::none;
   }
   // 交点サークルではない時のエラー処理
-  if((x % 2 != 0) || (y % 2 != 0)) {
+  if(checkNode(coordinate) != NodeType::crossCircle) {
     return Color::none;
   }
 
-  return isLeftCourse ? crossCircleColorL[y / 2][x / 2] : crossCircleColorR[y / 2][x / 2];
+  return isLeftCourse ? crossCircleColorL[coordinate.y / 2][coordinate.x / 2]
+                      : crossCircleColorR[coordinate.y / 2][coordinate.x / 2];
 }
