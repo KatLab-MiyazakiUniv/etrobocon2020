@@ -18,6 +18,7 @@ APPL_CXXOBJS += \
     Navigator.o \
     Rotation.o \
     BlockBingoData.o \
+    Parking.o \
 
 SRCLANG := c++
 
@@ -40,3 +41,7 @@ INCLUDES += \
     -I$(ETROBO_HRP3_WORKSPACE)/etroboc_common \
 
 COPTS += -std=gnu++11
+
+COPTS += -DMAKE_SIM
+
+COPTS += -DMAKE_SIM
