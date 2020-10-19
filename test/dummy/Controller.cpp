@@ -42,3 +42,13 @@ int Controller::getCourseInfo(ETROBOC_COURSE_INFO_ID id)
 }
 
 void Controller::notifyCompleted(void) {}
+
+int Controller::getTargetBrightness()
+{
+  return targetBrightness;
+}
+
+void Controller::setTargetBrightness(int brightness_)
+{
+  targetBrightness = brightness_;
+}

@@ -127,6 +127,37 @@ class BlockBingoData {
    */
   Color getCrossCircleColor(Coordinate coordinate);
 
+  /**
+   *  @brief 現在座標から見た場合の次の座標の方位を計算する
+   *  @param currentCoordinate [現在座標]
+   *  @param nextCoordinate [次の座標]
+   *  @return 現在座標から見た場合の次の座標の方位
+   */
+  Direction calcNextDirection(Coordinate const& currentCoordinate,
+                              Coordinate const& nextCoordinate);
+
+  /**
+   *  @brief 座標の交点サークルまたはブロックサークルにブロックを設定する
+   *  @param coordinate [設定先サークルの座標]
+   *  @param block      [設定するブロック]
+   *  @return ブロック設定の成否
+   */
+  bool setBlock(Coordinate const& coordinate, Block block);
+
+  /**
+   *  @brief 座標のブロックを取得する
+   *  @param coordinate [取得する座標]
+   *  @return 座標に置かれているブロック
+   */
+  Block getBlock(Coordinate const& coordinate);
+
+  /**
+   *  @brief 座標にブロックがあるかどうかを判定する
+   *  @param coordinate [判定したい座標]
+   *  @return ブロックの有無(ture=有)
+   */
+  bool hasBlock(Coordinate const& coordinate);
+
  private:
   Controller& controller;
   bool isLeftCourse;
