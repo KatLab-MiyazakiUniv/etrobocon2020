@@ -68,6 +68,27 @@ void Navigator::execMotion(vector<MotionCommand> const& motionCommandList)
   }
 }
 
+void Navigator::enterStraight()
+{
+  lineTracer.runToColor(30, 0.2, 0.005, 0.01, 0.0);
+  moveStraight.moveTo(110, 30);
+  printf("ビンゴエリアにまっすぐ進入\n");
+}
+
+void Navigator::enterLeft()
+{
+  lineTracer.run({ 70, 30, 0.0, { 0.2, 0.005, 0.01 } });
+  changeDirection(45, true);
+  moveStraight.moveTo(215, 30);
+}
+
+void Navigator::enterRight()
+{
+  lineTracer.run({ 70, 30, 0.0, { 0.2, 0.005, 0.01 } });
+  changeDirection(45, false);
+  moveStraight.moveTo(215, 30);
+}
+
 int Navigator::countRepeatedCommand(vector<MotionCommand> const& motionCommandList, int startIndex)
 {
   MotionCommand startCommand = motionCommandList[startIndex];

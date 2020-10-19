@@ -41,7 +41,26 @@ class Navigator {
    */
   Navigator(Controller& controller_, bool isLeftCourse_);
 
+  /**
+   * @brief 動作命令に対応する動作を実行する
+   * @param motionCommandList [動作命令リスト]
+   */
   void execMotion(vector<MotionCommand> const& motionCommandList);
+
+  /**
+   * @brief ビンゴエリアにまっすぐ進入する(Lコースなら(2,6)へ)
+   */
+  void enterStraight();
+
+  /**
+   * @brief ビンゴエリアに左斜めに進入する(Lコースなら(1,6)へ)
+   */
+  void enterLeft();
+
+  /**
+   * @brief ビンゴエリアに右斜めに進入する(Lコースなら(3,6)へ)
+   */
+  void enterRight();
 
  private:
   Controller& controller;
