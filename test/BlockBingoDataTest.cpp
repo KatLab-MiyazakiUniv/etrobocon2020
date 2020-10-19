@@ -5,6 +5,9 @@
  */
 #include "BlockBingoData.h"
 #include <gtest/gtest.h>
+#include <vector>
+
+using std::vector;
 
 namespace etrobocon2020_test {
 
@@ -391,5 +394,37 @@ namespace etrobocon2020_test {
     blockBingoData.setDirection(expected);
     actual = blockBingoData.getDirection();
     ASSERT_EQ(expected, actual);
+  }
+
+  TEST(BlockBingoData, calcNextDirectionTest)
+  {
+    Controller controller;
+    bool isLeftCourse = true;
+    BlockBingoData blockBingoData(controller, isLeftCourse);
+
+    Coordinate current = { 2, 2 };
+    vector<Coordinate> next
+        = { { 2, 1 }, { 3, 1 }, { 3, 2 }, { 3, 3 }, { 2, 3 }, { 1, 3 }, { 1, 2 }, { 1, 1 } };
+    vector<Direction> expected = { Direction::North, Direction::NEast, Direction::East,
+                                   Direction::SEast, Direction::South, Direction::SWest,
+                                   Direction::West,  Direction::NWest, Direction::North };
+    for(int i = 0; i < next.size(); i++) {
+      ASSERT_EQ(expected[i], blockBingoData.calcNextDirection(current, next[i]));
+    }
+  }
+
+  TEST(BlockBingoData, hasBlockTest)
+  {
+    Controller controller;
+    bool isLeftCourse = true;
+    BlockBingoData blockBingoData(controller, isLeftCourse);
+
+    Coordinate coordinateTrue(2, 6);
+    Block block(Color::blue, -1);
+    blockBingoData.setBlock(coordinateTrue, block);
+    ASSERT_TRUE(blockBingoData.hasBlock(coordinateTrue));
+
+    Coordinate coordinateFalse(0, 0);
+    ASSERT_FALSE(blockBingoData.hasBlock(coordinateFalse));
   }
 }  // namespace etrobocon2020_test
