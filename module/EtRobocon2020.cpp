@@ -7,6 +7,7 @@
 #include "EtRobocon2020.h"
 #include "Controller.h"
 #include "NormalCourse.h"
+#include "Parking.h"
 
 void EtRobocon2020::start()
 {
@@ -28,8 +29,12 @@ void EtRobocon2020::start()
   }
 
   // ノーマルコースの走行開始
-  NormalCourse normalCourse(controller, isLeftCourse, targetBrightness);
-  normalCourse.runNormalCourse();
+  // NormalCourse normalCourse(controller, isLeftCourse, targetBrightness);
+  // normalCourse.runNormalCourse();
+
+  // ガレージ駐車開始
+  Parking parking(isLeftCourse, controller, targetBrightness);
+  parking.parkInGarage();
 
   // 競技終了通知を送信する
   controller.notifyCompleted();
