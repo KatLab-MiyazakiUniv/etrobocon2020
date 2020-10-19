@@ -278,3 +278,62 @@ Color BlockBingoData::getCrossCircleColor(Coordinate coordinate)
   return isLeftCourse ? crossCircleColorL[coordinate.y / 2][coordinate.x / 2]
                       : crossCircleColorR[coordinate.y / 2][coordinate.x / 2];
 }
+
+Direction BlockBingoData::calcNextDirection(Coordinate const& currentCoordinate,
+                                            Coordinate const& nextCoordinate)
+{
+  int xDiff = nextCoordinate.x - currentCoordinate.x;
+  int yDiff = nextCoordinate.y - currentCoordinate.y;
+
+  if(xDiff == 0 && yDiff == -1) {
+    return Direction::North;
+  } else if(xDiff == 1 && yDiff == -1) {
+    return Direction::NEast;
+  } else if(xDiff == 1 && yDiff == 0) {
+    return Direction::East;
+  } else if(xDiff == 1 && yDiff == 1) {
+    return Direction::SEast;
+  } else if(xDiff == 0 && yDiff == 1) {
+    return Direction::South;
+  } else if(xDiff == -1 && yDiff == 1) {
+    return Direction::SWest;
+  } else if(xDiff == -1 && yDiff == 0) {
+    return Direction::West;
+  } else {
+    return Direction::NWest;
+  }
+}
+
+bool BlockBingoData::setBlock(Coordinate const& coordinate, Block block)
+{
+  if(coordinate.x % 2 == 0 && coordinate.y % 2 == 0) {
+    crossCircleCoordinate[coordinate.y / 2][coordinate.x / 2].block = block;
+    return true;
+  } else if(coordinate.x % 2 == 1 && coordinate.y % 2 == 1) {
+    blockCircleCoordinate[(coordinate.y - 1) / 2][(coordinate.x - 1) / 2].block = block;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Block BlockBingoData::getBlock(Coordinate const& coordinate)
+{
+  NodeType nodeType = checkNode(coordinate);
+  if(nodeType == NodeType::crossCircle) {
+    return crossCircleCoordinate[coordinate.y / 2][coordinate.x / 2].block;
+  } else if(nodeType == NodeType::blockCircle) {
+    return blockCircleCoordinate[(coordinate.y - 1) / 2][(coordinate.x - 1) / 2].block;
+  } else {
+    return Block();
+  }
+}
+
+bool BlockBingoData::hasBlock(Coordinate const& coordinate)
+{
+  if(getBlock(coordinate).blockColor == Color::none) {
+    return false;
+  } else {
+    return true;
+  }
+}

@@ -10,6 +10,7 @@ APPL_CXXOBJS += \
     Distance.o \
     EtRobocon2020.o \
     Filter.o \
+    MotionSequencer.o \
     MoveStraight.o \
     LineTracer.o \
     NormalCourse.o \

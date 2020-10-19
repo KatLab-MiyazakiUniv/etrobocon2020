@@ -63,6 +63,8 @@ class Controller {
   int getLeftMotorCount();
   int getRightMotorCount();
   int getArmMotorCount();
+  int getTargetBrightness();
+  void setTargetBrightness(int brightness_);
   void setLeftMotorPwm(const int pwm);
   void setRightMotorPwm(const int pwm);
   void setArmMotorPwm(const int pwm);
@@ -103,6 +105,7 @@ class Controller {
   void notifyCompleted(void);
 
  private:
+  int targetBrightness = 127;
   HsvStatus hsv;
   Motor liftMotor;
   Motor rightWheel;

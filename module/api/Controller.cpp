@@ -210,6 +210,16 @@ int Controller::suppressPwmValue(const int value)
   return value;
 }
 
+int Controller::getTargetBrightness()
+{
+  return targetBrightness;
+}
+
+void Controller::setTargetBrightness(int brightness_)
+{
+  targetBrightness = brightness_;
+}
+
 void Controller::setLeftMotorPwm(const int pwm)
 {
   leftWheel.setPWM(suppressPwmValue(pwm));

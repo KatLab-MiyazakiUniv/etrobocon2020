@@ -376,5 +376,11 @@ class Controller {
    * @note    dummy Contoellerでは、何もしない
    */
   void notifyCompleted(void);
+
+  int getTargetBrightness();
+  void setTargetBrightness(int brightness_);
+
+ private:
+  int targetBrightness;
 };
 #endif
