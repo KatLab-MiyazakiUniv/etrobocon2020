@@ -405,9 +405,9 @@ namespace etrobocon2020_test {
     Coordinate current = { 2, 2 };
     vector<Coordinate> next
         = { { 2, 1 }, { 3, 1 }, { 3, 2 }, { 3, 3 }, { 2, 3 }, { 1, 3 }, { 1, 2 }, { 1, 1 } };
-    vector<Direction> expected = { Direction::North, Direction::NEast, Direction::East,
-                                   Direction::SEast, Direction::South, Direction::SWest,
-                                   Direction::West,  Direction::NWest, Direction::North };
+    vector<Direction> expected
+        = { Direction::North, Direction::NEast, Direction::East, Direction::SEast,
+            Direction::South, Direction::SWest, Direction::West, Direction::NWest };
     for(int i = 0; i < next.size(); i++) {
       ASSERT_EQ(expected[i], blockBingoData.calcNextDirection(current, next[i]));
     }

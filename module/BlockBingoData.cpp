@@ -285,22 +285,29 @@ Direction BlockBingoData::calcNextDirection(Coordinate const& currentCoordinate,
   int xDiff = nextCoordinate.x - currentCoordinate.x;
   int yDiff = nextCoordinate.y - currentCoordinate.y;
 
-  if(xDiff == 0 && yDiff == -1) {
-    return Direction::North;
-  } else if(xDiff == 1 && yDiff == -1) {
-    return Direction::NEast;
-  } else if(xDiff == 1 && yDiff == 0) {
-    return Direction::East;
-  } else if(xDiff == 1 && yDiff == 1) {
-    return Direction::SEast;
-  } else if(xDiff == 0 && yDiff == 1) {
-    return Direction::South;
-  } else if(xDiff == -1 && yDiff == 1) {
-    return Direction::SWest;
-  } else if(xDiff == -1 && yDiff == 0) {
-    return Direction::West;
+  if(xDiff < 0) {
+    if(yDiff < 0) {
+      return Direction::NWest;
+    } else if(yDiff == 0) {
+      return Direction::West;
+    } else {
+      return Direction::SWest;
+    }
+  } else if(xDiff == 0) {
+    if(yDiff <= 0) {
+      // currentCoordinate == nextCoordinatteのときもNorthを返す
+      return Direction::North;
+    } else {
+      return Direction::South;
+    }
   } else {
-    return Direction::NWest;
+    if(yDiff < 0) {
+      return Direction::NEast;
+    } else if(yDiff == 0) {
+      return Direction::East;
+    } else {
+      return Direction::SEast;
+    }
   }
 }
 
