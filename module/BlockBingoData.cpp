@@ -6,13 +6,18 @@
 #include "BlockBingoData.h"
 
 BlockBingoData::BlockBingoData(Controller& controller_, bool isLeftCourse_)
-  : controller(controller_), isLeftCourse(isLeftCourse_), cardNumber(-1)
+  : controller(controller_),
+    isLeftCourse(isLeftCourse_),
+    cardNumber(-1),
+    coordinate(isLeftCourse ? Coordinate(2, 6) : Coordinate(4, 6))
 {
 }
 
 NodeType BlockBingoData::checkNode(Coordinate coordinate)
 {
-  if((coordinate.x % 2 == 0) && (coordinate.y % 2 == 0)) {
+  if((coordinate.x < 0) || (coordinate.x >= 7) || (coordinate.y < 0) || (coordinate.y >= 7)) {
+    return NodeType::none;
+  } else if((coordinate.x % 2 == 0) && (coordinate.y % 2 == 0)) {
     return NodeType::crossCircle;
   } else if((coordinate.x % 2 == 1) && (coordinate.y % 2 == 1)) {
     return NodeType::blockCircle;
@@ -187,71 +192,72 @@ void BlockBingoData::initBlock(Color initColor, int coordinate)
   BlockCircle blockCircle;
   CrossCircle crossCircle;
 
-  switch(coordinate) {
-      // ブロックサークル
-    case 49:  // 1のとき
-      initCoordinate = { 1, 1 };
-      break;
-    case 50:  // 2のとき
-      initCoordinate = { 3, 1 };
-      break;
-    case 51:  // 3のとき
-      initCoordinate = { 5, 1 };
-      break;
-    case 52:  // 4のとき
-      initCoordinate = { 0, 3 };
-      break;
-    case 53:  // 5のとき
-      initCoordinate = { 5, 3 };
-      break;
-    case 54:  // 6のとき
-      initCoordinate = { 0, 5 };
-      break;
-    case 55:  // 7のとき
-      initCoordinate = { 3, 5 };
-      break;
-    case 56:  // 8のとき
-      initCoordinate = { 5, 5 };
-      break;
-
-      // 交点サークル
-    case 65:  // Aのとき
-      initCoordinate = { 0, 0 };
-      break;
-    case 67:  // Cのとき
-      initCoordinate = { 4, 0 };
-      break;
-    case 70:  // Fのとき
-      initCoordinate = { 2, 2 };
-      break;
-    case 72:  // Hのとき
-      initCoordinate = { 6, 2 };
-      break;
-    case 74:  // Jのとき
-      initCoordinate = { 0, 4 };
-      break;
-    case 76:  // Lのとき
-      initCoordinate = { 4, 4 };
-      break;
-    case 81:  // Qのとき
-      initCoordinate = { 2, 6 };
-      break;
-    case 83:  // Sのとき
-      initCoordinate = { 6, 6 };
-      break;
-    default:
-      initCoordinate = { -1, -1 };
-      break;
-  }
-
   if((coordinate >= 49) && (coordinate <= 56)) {
+    initCoordinate = initBlockCircleCoordinate[coordinate - 49];
     blockCircle = getBlockCircle(initCoordinate);
     blockCircle.block.blockColor = initColor;
     setBlockCircle(initCoordinate, blockCircle);
-  } else {
+  } else if((coordinate >= 65) && (coordinate <= 83)) {
+    // 交点サークル
+    switch(coordinate) {
+      case 65:  // Aのとき
+        initCoordinate = { 0, 0 };
+        break;
+      case 66:  // Bのとき
+        initCoordinate = { 2, 0 };
+        break;
+      case 67:  // Cのとき
+        initCoordinate = { 4, 0 };
+        break;
+      case 68:  // Dのとき
+        initCoordinate = { 6, 0 };
+        break;
+      case 69:  // Eのとき
+        initCoordinate = { 0, 2 };
+        break;
+      case 70:  // Fのとき
+        initCoordinate = { 2, 2 };
+        break;
+      case 71:  // Gのとき
+        initCoordinate = { 4, 2 };
+        break;
+      case 72:  // Hのとき
+        initCoordinate = { 6, 2 };
+        break;
+      case 74:  // Jのとき
+        initCoordinate = { 0, 4 };
+        break;
+      case 75:  // Kのとき
+        initCoordinate = { 2, 4 };
+        break;
+      case 76:  // Lのとき
+        initCoordinate = { 4, 4 };
+        break;
+      case 77:  // Mのとき
+        initCoordinate = { 6, 4 };
+        break;
+      case 80:  // Pのとき
+        initCoordinate = { 0, 6 };
+        break;
+      case 81:  // Qのとき
+        initCoordinate = { 2, 6 };
+        break;
+      case 82:  // Rのとき
+        initCoordinate = { 4, 6 };
+        break;
+      case 83:  // Sのとき
+        initCoordinate = { 6, 6 };
+        break;
+      default:
+        initCoordinate = { -1, -1 };
+        printf("[ERROR] Faild initBlock");
+        break;
+    }
     crossCircle = getCrossCircle(initCoordinate);
     crossCircle.block.blockColor = initColor;
     setCrossCircle(initCoordinate, crossCircle);
+  } else {
+    printf("[ERROR] Faild initBlock");
   }
 }
 
@@ -311,6 +317,39 @@ Direction BlockBingoData::calcNextDirection(Coordinate const& currentCoordinate,
   }
 }
 
+bool BlockBingoData::moveBlock(Coordinate const& coordinateFrom, Coordinate const& coordinateTo)
+{
+  Block temp;
+  NodeType nodeTypeFrom = checkNode(coordinateFrom);
+  NodeType nodeTypeTo = checkNode(coordinateTo);
+  // 運搬元にブロックがない
+  if(!hasBlock(coordinateFrom)) {
+    printf("[ERROR] Don't have block\n");
+    return false;
+  }
+
+  Block blockFrom = getBlock(coordinateFrom);
+  if(nodeTypeFrom == NodeType::crossCircle) {
+    temp = crossCircleCoordinate[coordinateFrom.y / 2][coordinateFrom.x / 2].block;
+    crossCircleCoordinate[coordinateFrom.y / 2][coordinateFrom.x / 2].block = { Color::none, -1 };
+  } else if(nodeTypeFrom == NodeType::blockCircle) {
+    temp = blockCircleCoordinate[(coordinateFrom.y - 1) / 2][(coordinateFrom.x - 1) / 2].block;
+    blockCircleCoordinate[coordinateFrom.y / 2][coordinateFrom.x / 2].block = { Color::none, -1 };
+  }
+
+  if(blockFrom.blockColor == Color::black) {
+    // 黒ブロックは運搬しても運搬先の座標情報を書き換えない
+    return true;
+  } else {
+    if(nodeTypeTo == NodeType::crossCircle) {
+      crossCircleCoordinate[coordinateTo.y / 2][coordinateTo.x / 2].block = temp;
+    } else if(nodeTypeTo == NodeType::blockCircle) {
+      blockCircleCoordinate[(coordinateTo.y - 1) / 2][(coordinateTo.x - 1) / 2].block = temp;
+    }
+    return true;
+  }
+}
+
 bool BlockBingoData::setBlock(Coordinate const& coordinate, Block block)
 {
   if(coordinate.x % 2 == 0 && coordinate.y % 2 == 0) {
@@ -343,4 +382,39 @@ bool BlockBingoData::hasBlock(Coordinate const& coordinate)
   } else {
     return true;
   }
+}
+
+Coordinate BlockBingoData::getCoordinate()
+{
+  return coordinate;
+}
+
+bool BlockBingoData::setCoordinate(Coordinate coordinate_)
+{
+  if(checkNode(coordinate) != NodeType::none) {
+    coordinate = coordinate_;
+    return true;
+  } else {
+    printf("[ERROR] This coordinate is not of range\n");
+    return false;
+  }
+}
+
+Coordinate BlockBingoData::numberToCoordinate(int circleNumber)
+{
+  return initBlockCircleCoordinate[circleNumber - 1];
+}
+
+int BlockBingoData::calcRotationCount(Direction currentDirection, Direction nextDirection)
+{
+  constexpr int numDirection = 8;
+  int diffDirection = static_cast<int>(nextDirection) - static_cast<int>(currentDirection);
+
+  if(diffDirection > numDirection / 2) {
+    diffDirection -= numDirection;
+  } else if(diffDirection < -numDirection / 2) {
+    diffDirection += numDirection;
+  }
+
+  return diffDirection;
 }
