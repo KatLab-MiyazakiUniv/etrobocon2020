@@ -93,23 +93,10 @@ bool RouteCalculator::blockCheck(Coordinate coordinate)
     return false;  // ゴールノードの場合はブロックがあっても避けない
   }
   // 交点サークルの場合
-  if(blockBingoData.checkNode(coordinate) == NodeType::crossCircle) {
-    CrossCircle crossCircle = blockBingoData.getCrossCircle(coordinate);
-    if(crossCircle.block.blockColor != Color::none) {
-      return true;  // ブロックがあるのでこのノードの処理を終える
-    } else {
-      return false;  // ブロックがないので次の処理に移る
-    }
-    // ブロックサークルの場合
-  } else if(blockBingoData.checkNode(coordinate) == NodeType::blockCircle) {
-    BlockCircle blockCircle = blockBingoData.getBlockCircle(coordinate);
-    if(blockCircle.block.blockColor != Color::none) {
-      return true;  //ブロックがあるのでこのノードの処理を終える
-    } else {
-      return false;  // ブロックがないので次の処理に移る
-    }
+  if(blockBingoData.hasBlock(coordinate)) {
+    return true;  // ブロックがあるのでこのノードの処理を終える
   } else {
-    return false;  //交点サークルでもブロックサークルでもない場合ブロックがないので次の処理に移る
+    return false;  // ブロックがないので次の処理に移る
   }
 }
 

@@ -18,6 +18,7 @@ APPL_CXXOBJS += \
     TurnControl.o \
     Navigator.o \
     Rotation.o \
+    BlockBingo.o \
     BlockBingoData.o \
     RouteCalculator.o \
     Parking.o \

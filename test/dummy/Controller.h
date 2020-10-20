@@ -70,13 +70,28 @@ class TouchSensor {
 };
 
 class ColorSensor {
+ private:
+  int count = 0;
+
  public:
   int getBrightness() { return brightness; }
   void getRawColor(rgb_raw_t& rgb)
   {
-    rgb.r = 1;
-    rgb.g = 1;
-    rgb.b = 1;
+    if(count % 6 == 0) {
+      rgb = { 255, 0, 0 };
+    } else if(count % 6 == 1) {
+      rgb = { 0, 255, 0 };
+    } else if(count % 6 == 2) {
+      rgb = { 0, 0, 255 };
+    } else if(count % 6 == 3) {
+      rgb = { 255, 255, 0 };
+    } else if(count % 6 == 4) {
+      rgb = { 255, 255, 255 };
+    } else {
+      rgb = { 0, 0, 0 };
+      count = -1;
+    }
+    count++;
   }
   int brightness = 0;
 };
@@ -93,6 +108,7 @@ class Controller {
   Motor rightWheel;
   Motor leftWheel;
   Motor liftMotor;
+  int targetBrightness;
 
  public:
   HsvStatus hsv;
@@ -379,8 +395,5 @@ class Controller {
 
   int getTargetBrightness();
   void setTargetBrightness(int brightness_);
-
- private:
-  int targetBrightness;
 };
 #endif

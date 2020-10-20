@@ -7,6 +7,7 @@
 #define BLOCK_BINGO_DATA_H
 
 #include "Controller.h"
+#include <array>
 
 struct Block {
   Color blockColor;
@@ -39,11 +40,16 @@ struct Coordinate {
   {
     return ((x == another.x) && (y == another.y));
   }
+
+  bool operator!=(const Coordinate& another) const
+  {
+    return ((x != another.x) || (y != another.y));
+  }
 };
 
 enum class Direction { North, NEast, East, SEast, South, SWest, West, NWest };
 
-enum class NodeType { blockCircle, crossCircle, middlePoint };
+enum class NodeType { blockCircle, crossCircle, middlePoint, none };
 
 class BlockBingoData {
  public:
@@ -137,11 +143,19 @@ class BlockBingoData {
                               Coordinate const& nextCoordinate);
 
   /**
-   *  @brief 座標の交点サークルまたはブロックサークルにブロックを設定する
-   *  @param coordinate [設定先サークルの座標]
-   *  @param block      [設定するブロック]
-   *  @return ブロック設定の成否
-   */
+   * @brief 運搬したブロック情報を更新する
+   * @param coordinateFrom [運搬元座標]
+   * @param coordinateTo [運搬先座標]
+   * @return ブロック設定の成否
+   **/
+  bool moveBlock(Coordinate const& coordinateFrom, Coordinate const& coordinateTo);
+
+  /**
+   * @brief 座標の交点サークルまたはブロックサークルにブロックを設定する
+   * @param coordinate [設定先サークルの座標]
+   * @param block      [設定するブロック]
+   * @return ブロック設定の成否
+   **/
   bool setBlock(Coordinate const& coordinate, Block block);
 
   /**
@@ -158,10 +172,38 @@ class BlockBingoData {
    */
   bool hasBlock(Coordinate const& coordinate);
 
+  /**
+   *  @brief 走行体の現在座標を取得する
+   *  @return 走行体の現在座標
+   */
+  Coordinate getCoordinate();
+
+  /**
+   *  @brief 走行体の現在座標をセットする
+   *  @param coordinate_ [現在座標]
+   *  @return セットの成否
+   */
+  bool setCoordinate(Coordinate coordinate_);
+
+  /** @brief 指定数字のサークルの座標を返す
+   *  @param circleNumber [サークル数字]
+   *  @return ブロックサークルの座標
+   */
+  Coordinate numberToCoordinate(int circleNumber);
+
+  /**
+   * @brief 45°方向転換を行う回数と、方向転換の向き(時計回り/反時計回り)を計算する
+   * @param currentDirection  [現在の走行体の方向]
+   * @param nextDirection     [現在座標から見た、次の座標の方向]
+   * @return  45°方向転換を行う回数(正=時計回り,負=反時計回り)
+   **/
+  int calcRotationCount(Direction currentDirection, Direction nextDirection);
+
  private:
   Controller& controller;
   bool isLeftCourse;
   int cardNumber;                                  // 数字カード
+  Coordinate coordinate;                           // 走行体の向き
   struct BlockCircle blockCircleCoordinate[3][3];  // ブロックサークル情報
   struct CrossCircle crossCircleCoordinate[4][4];  // 交点サークル情報
   Direction direction = Direction::North;          // 走行体の向き
@@ -182,6 +224,9 @@ class BlockBingoData {
                                     { Color::blue, Color::blue, Color::red, Color::red },
                                     { Color::green, Color::green, Color::yellow, Color::yellow },
                                     { Color::green, Color::green, Color::yellow, Color::yellow } };
+
+  std::array<Coordinate, 8> initBlockCircleCoordinate
+      = { { { 1, 1 }, { 3, 1 }, { 5, 1 }, { 1, 3 }, { 5, 3 }, { 1, 5 }, { 3, 5 }, { 5, 5 } } };
 
   /**
    *  @brief 数字カードを初期化する
