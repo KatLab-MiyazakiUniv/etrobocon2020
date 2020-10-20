@@ -1,8 +1,8 @@
 /**
- *  *  @file   BlockBingo.h
- *   *  @brief	ビンゴエリアを攻略する
- *    *  @author mutotaka0426
- *     */
+ *  @file   BlockBingo.h
+ *  @brief	ビンゴエリアを攻略する
+ *  @author mutotaka0426
+ */
 #ifndef BLOCK_BINGO_H
 #define BLOCK_BINGO_H
 

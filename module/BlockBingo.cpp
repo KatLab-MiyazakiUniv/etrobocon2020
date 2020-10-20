@@ -1,6 +1,6 @@
 /**
  *  @file   BlockBingo.cpp
- *  @brief ビンゴエリアを攻略する
+ *  @brief  ビンゴエリアを攻略する
  *  @author mutotaka0426
  */
 #include "BlockBingo.h"

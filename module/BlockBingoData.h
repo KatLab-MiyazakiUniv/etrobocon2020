@@ -7,6 +7,7 @@
 #define BLOCK_BINGO_DATA_H
 
 #include "Controller.h"
+#include <array>
 
 struct Block {
   Color blockColor;
@@ -223,6 +224,9 @@ class BlockBingoData {
                                     { Color::blue, Color::blue, Color::red, Color::red },
                                     { Color::green, Color::green, Color::yellow, Color::yellow },
                                     { Color::green, Color::green, Color::yellow, Color::yellow } };
+
+  std::array<Coordinate, 8> initBlockCircleCoordinate
+      = { { { 1, 1 }, { 3, 1 }, { 5, 1 }, { 1, 3 }, { 5, 3 }, { 1, 5 }, { 3, 5 }, { 5, 5 } } };
 
   /**
    *  @brief 数字カードを初期化する

@@ -192,71 +192,72 @@ void BlockBingoData::initBlock(Color initColor, int coordinate)
   BlockCircle blockCircle;
   CrossCircle crossCircle;
 
-  switch(coordinate) {
-      // ブロックサークル
-    case 49:  // 1のとき
-      initCoordinate = { 1, 1 };
-      break;
-    case 50:  // 2のとき
-      initCoordinate = { 3, 1 };
-      break;
-    case 51:  // 3のとき
-      initCoordinate = { 5, 1 };
-      break;
-    case 52:  // 4のとき
-      initCoordinate = { 1, 3 };
-      break;
-    case 53:  // 5のとき
-      initCoordinate = { 5, 3 };
-      break;
-    case 54:  // 6のとき
-      initCoordinate = { 1, 5 };
-      break;
-    case 55:  // 7のとき
-      initCoordinate = { 3, 5 };
-      break;
-    case 56:  // 8のとき
-      initCoordinate = { 5, 5 };
-      break;
-
-      // 交点サークル
-    case 65:  // Aのとき
-      initCoordinate = { 0, 0 };
-      break;
-    case 67:  // Cのとき
-      initCoordinate = { 4, 0 };
-      break;
-    case 70:  // Fのとき
-      initCoordinate = { 2, 2 };
-      break;
-    case 72:  // Hのとき
-      initCoordinate = { 6, 2 };
-      break;
-    case 74:  // Jのとき
-      initCoordinate = { 0, 4 };
-      break;
-    case 76:  // Lのとき
-      initCoordinate = { 4, 4 };
-      break;
-    case 81:  // Qのとき
-      initCoordinate = { 2, 6 };
-      break;
-    case 83:  // Sのとき
-      initCoordinate = { 6, 6 };
-      break;
-    default:
-      initCoordinate = { -1, -1 };
-      break;
-  }
-
   if((coordinate >= 49) && (coordinate <= 56)) {
+    initCoordinate = initBlockCircleCoordinate[coordinate - 49];
     blockCircle = getBlockCircle(initCoordinate);
     blockCircle.block.blockColor = initColor;
     setBlockCircle(initCoordinate, blockCircle);
-  } else {
+  } else if((coordinate >= 65) && (coordinate <= 83)) {
+    // 交点サークル
+    switch(coordinate) {
+      case 65:  // Aのとき
+        initCoordinate = { 0, 0 };
+        break;
+      case 66:  // Bのとき
+        initCoordinate = { 2, 0 };
+        break;
+      case 67:  // Cのとき
+        initCoordinate = { 4, 0 };
+        break;
+      case 68:  // Dのとき
+        initCoordinate = { 6, 0 };
+        break;
+      case 69:  // Eのとき
+        initCoordinate = { 0, 2 };
+        break;
+      case 70:  // Fのとき
+        initCoordinate = { 2, 2 };
+        break;
+      case 71:  // Gのとき
+        initCoordinate = { 4, 2 };
+        break;
+      case 72:  // Hのとき
+        initCoordinate = { 6, 2 };
+        break;
+      case 74:  // Jのとき
+        initCoordinate = { 0, 4 };
+        break;
+      case 75:  // Kのとき
+        initCoordinate = { 2, 4 };
+        break;
+      case 76:  // Lのとき
+        initCoordinate = { 4, 4 };
+        break;
+      case 77:  // Mのとき
+        initCoordinate = { 6, 4 };
+        break;
+      case 80:  // Pのとき
+        initCoordinate = { 0, 6 };
+        break;
+      case 81:  // Qのとき
+        initCoordinate = { 2, 6 };
+        break;
+      case 82:  // Rのとき
+        initCoordinate = { 4, 6 };
+        break;
+      case 83:  // Sのとき
+        initCoordinate = { 6, 6 };
+        break;
+      default:
+        initCoordinate = { -1, -1 };
+        printf("[ERROR] Faild initBlock");
+        break;
+    }
     crossCircle = getCrossCircle(initCoordinate);
     crossCircle.block.blockColor = initColor;
     setCrossCircle(initCoordinate, crossCircle);
+  } else {
+    printf("[ERROR] Faild initBlock");
   }
 }
 
@@ -401,28 +402,7 @@ bool BlockBingoData::setCoordinate(Coordinate coordinate_)
 
 Coordinate BlockBingoData::numberToCoordinate(int circleNumber)
 {
-  switch(circleNumber) {
-      // ブロックサークル
-    case 1:
-      return { 1, 1 };
-    case 2:
-      return { 3, 1 };
-    case 3:
-      return { 5, 1 };
-    case 4:
-      return { 1, 3 };
-    case 5:
-      return { 5, 3 };
-    case 6:
-      return { 1, 5 };
-    case 7:
-      return { 3, 5 };
-    case 8:
-      return { 5, 5 };
-    default:
-      printf("[ERROR] Number is not in BlockCircle\n");
-      return { -1, -1 };
-  }
+  return initBlockCircleCoordinate[circleNumber - 1];
 }
 
 int BlockBingoData::calcRotationCount(Direction currentDirection, Direction nextDirection)
