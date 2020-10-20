@@ -269,7 +269,6 @@ namespace etrobocon2020_test {
     Controller controller;
     bool isLeftCourse = true;
     BlockBingoData blockBingoData(controller, isLeftCourse);
-    ;
 
     Color expectedCircleColor;
     int expectedCircleNumber;
