@@ -6,13 +6,18 @@
 #include "BlockBingoData.h"
 
 BlockBingoData::BlockBingoData(Controller& controller_, bool isLeftCourse_)
-  : controller(controller_), isLeftCourse(isLeftCourse_), cardNumber(-1)
+  : controller(controller_),
+    isLeftCourse(isLeftCourse_),
+    cardNumber(-1),
+    coordinate(isLeftCourse ? Coordinate(2, 6) : Coordinate(4, 6))
 {
 }
 
 NodeType BlockBingoData::checkNode(Coordinate coordinate)
 {
-  if((coordinate.x % 2 == 0) && (coordinate.y % 2 == 0)) {
+  if((coordinate.x < 0) || (coordinate.x >= 7) || (coordinate.y < 0) || (coordinate.y >= 7)) {
+    return NodeType::none;
+  } else if((coordinate.x % 2 == 0) && (coordinate.y % 2 == 0)) {
     return NodeType::crossCircle;
   } else if((coordinate.x % 2 == 1) && (coordinate.y % 2 == 1)) {
     return NodeType::blockCircle;
@@ -199,13 +204,13 @@ void BlockBingoData::initBlock(Color initColor, int coordinate)
       initCoordinate = { 5, 1 };
       break;
     case 52:  // 4のとき
-      initCoordinate = { 0, 3 };
+      initCoordinate = { 1, 3 };
       break;
     case 53:  // 5のとき
       initCoordinate = { 5, 3 };
       break;
     case 54:  // 6のとき
-      initCoordinate = { 0, 5 };
+      initCoordinate = { 1, 5 };
       break;
     case 55:  // 7のとき
       initCoordinate = { 3, 5 };
@@ -311,6 +316,39 @@ Direction BlockBingoData::calcNextDirection(Coordinate const& currentCoordinate,
   }
 }
 
+bool BlockBingoData::moveBlock(Coordinate const& coordinateFrom, Coordinate const& coordinateTo)
+{
+  Block temp;
+  NodeType nodeTypeFrom = checkNode(coordinateFrom);
+  NodeType nodeTypeTo = checkNode(coordinateTo);
+  // 運搬元にブロックがない
+  if(!hasBlock(coordinateFrom)) {
+    printf("[ERROR] Don't have block\n");
+    return false;
+  }
+
+  Block blockFrom = getBlock(coordinateFrom);
+  if(nodeTypeFrom == NodeType::crossCircle) {
+    temp = crossCircleCoordinate[coordinateFrom.y / 2][coordinateFrom.x / 2].block;
+    crossCircleCoordinate[coordinateFrom.y / 2][coordinateFrom.x / 2].block = { Color::none, -1 };
+  } else if(nodeTypeFrom == NodeType::blockCircle) {
+    temp = blockCircleCoordinate[(coordinateFrom.y - 1) / 2][(coordinateFrom.x - 1) / 2].block;
+    blockCircleCoordinate[coordinateFrom.y / 2][coordinateFrom.x / 2].block = { Color::none, -1 };
+  }
+
+  if(blockFrom.blockColor == Color::black) {
+    // 黒ブロックは運搬しても運搬先の座標情報を書き換えない
+    return true;
+  } else {
+    if(nodeTypeTo == NodeType::crossCircle) {
+      crossCircleCoordinate[coordinateTo.y / 2][coordinateTo.x / 2].block = temp;
+    } else if(nodeTypeTo == NodeType::blockCircle) {
+      blockCircleCoordinate[(coordinateTo.y - 1) / 2][(coordinateTo.x - 1) / 2].block = temp;
+    }
+    return true;
+  }
+}
+
 bool BlockBingoData::setBlock(Coordinate const& coordinate, Block block)
 {
   if(coordinate.x % 2 == 0 && coordinate.y % 2 == 0) {
@@ -343,4 +381,60 @@ bool BlockBingoData::hasBlock(Coordinate const& coordinate)
   } else {
     return true;
   }
+}
+
+Coordinate BlockBingoData::getCoordinate()
+{
+  return coordinate;
+}
+
+bool BlockBingoData::setCoordinate(Coordinate coordinate_)
+{
+  if(checkNode(coordinate) != NodeType::none) {
+    coordinate = coordinate_;
+    return true;
+  } else {
+    printf("[ERROR] This coordinate is not of range\n");
+    return false;
+  }
+}
+
+Coordinate BlockBingoData::numberToCoordinate(int circleNumber)
+{
+  switch(circleNumber) {
+      // ブロックサークル
+    case 1:
+      return { 1, 1 };
+    case 2:
+      return { 3, 1 };
+    case 3:
+      return { 5, 1 };
+    case 4:
+      return { 1, 3 };
+    case 5:
+      return { 5, 3 };
+    case 6:
+      return { 1, 5 };
+    case 7:
+      return { 3, 5 };
+    case 8:
+      return { 5, 5 };
+    default:
+      printf("[ERROR] Number is not in BlockCircle\n");
+      return { -1, -1 };
+  }
+}
+
+int BlockBingoData::calcRotationCount(Direction currentDirection, Direction nextDirection)
+{
+  constexpr int numDirection = 8;
+  int diffDirection = static_cast<int>(nextDirection) - static_cast<int>(currentDirection);
+
+  if(diffDirection > numDirection / 2) {
+    diffDirection -= numDirection;
+  } else if(diffDirection < -numDirection / 2) {
+    diffDirection += numDirection;
+  }
+
+  return diffDirection;
 }

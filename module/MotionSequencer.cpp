@@ -17,7 +17,7 @@ Direction MotionSequencer::route2MotionCommand(vector<Coordinate> const& route,
     nextDirection = blockBingoData.calcNextDirection(currentCoordinate, nextCoordinate);
 
     // 次の座標の方向を向く
-    int rotationCount = calcRotationCount(currentDirection, nextDirection);
+    int rotationCount = blockBingoData.calcRotationCount(currentDirection, nextDirection);
     if(rotationCount > 0) {
       // 時計回りに方向転換 MotionCommand::RTは時計回りに45°方向転換
       for(int count = 0; count < abs(rotationCount); count++) {
@@ -72,18 +72,4 @@ Direction MotionSequencer::route2MotionCommand(vector<Coordinate> const& route,
     currentDirection = nextDirection;
   }
   return nextDirection;
-}
-
-int MotionSequencer::calcRotationCount(Direction currentDirection, Direction nextDirection)
-{
-  constexpr int numDirection = 8;
-  int diffDirection = static_cast<int>(nextDirection) - static_cast<int>(currentDirection);
-
-  if(diffDirection > numDirection / 2) {
-    diffDirection -= numDirection;
-  } else if(diffDirection < -numDirection / 2) {
-    diffDirection += numDirection;
-  }
-
-  return diffDirection;
 }

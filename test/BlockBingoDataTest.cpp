@@ -427,4 +427,26 @@ namespace etrobocon2020_test {
     Coordinate coordinateFalse(0, 0);
     ASSERT_FALSE(blockBingoData.hasBlock(coordinateFalse));
   }
+
+  TEST(BlockBingoData, moveBlockTest)
+  {
+    Controller controller;
+    bool isLeftCourse = true;
+    BlockBingoData blockBingoData(controller, isLeftCourse);
+    blockBingoData.initBlockBingoData();
+    Coordinate coordinateFrom, coordinateTo;
+
+    coordinateFrom = { 2, 6 };
+    coordinateTo = { 5, 5 };
+    ASSERT_TRUE(blockBingoData.moveBlock(coordinateFrom, coordinateTo));
+
+    // { 2, 6 }にブロックがなくなっている
+    coordinateFrom = { 2, 6 };
+    coordinateTo = { 5, 5 };
+    ASSERT_FALSE(blockBingoData.moveBlock(coordinateFrom, coordinateTo));
+
+    coordinateFrom = { 3, 5 };
+    coordinateTo = { 1, 5 };
+    ASSERT_TRUE(blockBingoData.moveBlock(coordinateFrom, coordinateTo));
+  }
 }  // namespace etrobocon2020_test
