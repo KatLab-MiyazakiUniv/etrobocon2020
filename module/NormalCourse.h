@@ -9,6 +9,7 @@
 #include "LineTracer.h"
 #include "Controller.h"
 #include "Rotation.h"
+#include "MoveStraight.h"
 
 class NormalCourse {
  public:

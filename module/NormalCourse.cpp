@@ -32,7 +32,7 @@ void NormalCourse::runNormalCourse()
 {
   printf("runNormalCourse\n");
   // 配列の個数
-  constexpr int arraySize = 15;
+  constexpr int arraySize = 18;
   constexpr int baseSpeed = 100;
   constexpr std::array<NormalCourseProperty, arraySize> normalCoursePropertyL
       /**
@@ -41,21 +41,24 @@ void NormalCourse::runNormalCourse()
        * 曲率は、直進のとき0.0を指定する
        */
       = { {
-          { 730, baseSpeed, 0.0, { 0.5, 0.005, 0.2 } },             // 第1区間
-          { 1000, baseSpeed, 0.003226, { 0.55, 0.005, 1.5 } },      // 第2区間
-          { 290, baseSpeed, 0.0, { 0.2, 0.005, 0.01 } },            // 第3区間
-          { 1000, baseSpeed, -0.002941, { 0.55, 0.005, 0.55 } },    // 第4区間
-          { 530, baseSpeed, 0.0, { 0.25, 0.005, 0.05 } },           // 第5区間
-          { 350, baseSpeed - 30, -0.004167, { 0.48, 0.33, 0.6 } },  // 第6区間
-          { 490, baseSpeed, 0.0, { 0.25, 0.005, 0.7 } },            // 第7区間
-          { 630, baseSpeed, 0.002439, { 0.65, 0.02, 1.5 } },        // 第8区間
-          { 175, baseSpeed, 0.0, { 0.35, 0.05, 0.7 } },             // 第9区間]
-          { 585, baseSpeed, 0.002439, { 0.55, 0.02, 0.8 } },        // 第10区間
-          { 390, baseSpeed, 0.0, { 0.2, 0.005, 0.4 } },             // 第11区間
-          { 620, baseSpeed, 0.002778, { 0.5, 0.02, 1.5 } },         // 第12区間
-          { 1410, baseSpeed, 0.0, { 0.25, 0.0, 0.4 } },             // 第13区間
-          { 520, baseSpeed - 30, -0.004167, { 0.48, 0.00, 0.5 } },  // 第14区間
-          { 740, baseSpeed, 0.0, { 0.2, 0.01, 0.4 } },              //進入ライン
+          { 250, baseSpeed - 40, 0.0, { 0.24, 0.005, 0.2 } },           // 第1区間
+          { 330, baseSpeed, 0.0, { 0.27, 0.005, 0.3 } },                // 第1区間
+          { 1020, baseSpeed - 30, 0.003226, { 0.56, 0.01, 0.2 } },      // 第2区間
+          { 275, baseSpeed, 0.0, { 0.2, 0.005, 0.1 } },                 // 第3区間
+          { 1220, baseSpeed - 30, -0.002941, { 0.565, 0.005, 0.25 } },  // 第4区間
+          { 405, baseSpeed, 0.0, { 0.2, 0.005, 0.1 } },                 // 第5区間
+          { 460, baseSpeed - 30, -0.004167, { 0.69, 0.005, 0.4 } },     // 第6区間
+          { 480, baseSpeed, 0.0, { 0.2, 0.005, 0.2 } },                 // 第7区間
+          { 610, baseSpeed - 30, 0.002439, { 0.5, 0.02, 0.2 } },        // 第8区間
+          { 185, baseSpeed - 30, 0.0, { 0.2, 0.05, 0.3 } },             // 第9区間
+          { 630, baseSpeed - 30, 0.002439, { 0.6, 0.02, 1.0 } },        // 第10区間
+          { 390, baseSpeed, 0.0, { 0.2, 0.005, 0.4 } },                 // 第11区間
+          { 620, baseSpeed - 30, 0.002778, { 0.5, 0.02, 1.5 } },        // 第12区間
+          { 1410, baseSpeed, 0.0, { 0.25, 0.0, 0.4 } },                 // 第13区間
+          { 520, baseSpeed - 30, -0.004167, { 0.69, 0.005, 0.4 } },     // 第14区間
+          { 805, baseSpeed, 0.0, { 0.2, 0.01, 0.4 } },                  //進入ライン
+          { 770, baseSpeed - 30, 0.00204081, { 0.5, 0.02, 1.5 } },      // ゴール後 カーブ
+          { 400, baseSpeed - 30, 0.0, { 0.2, 0.01, 0.4 } },             // ゴール後 第3区間
       } };
   constexpr std::array<NormalCourseProperty, arraySize> normalCoursePropertyR
       /**
@@ -64,32 +67,46 @@ void NormalCourse::runNormalCourse()
        * 曲率は、直進のとき0.0を指定する
        */
       = { {
-          { 720, baseSpeed, 0.0, { 0.4, 0.005, 0.2 } },            // 第1区間
-          { 950, baseSpeed, -0.003226, { 0.55, 0.005, 1.5 } },     // 第2区間
-          { 350, baseSpeed, 0.0, { 0.2, 0.005, 0.01 } },           // 第3区間
-          { 1030, baseSpeed, 0.002941, { 0.55, 0.005, 0.55 } },    // 第4区間
-          { 560, baseSpeed, 0.0, { 0.25, 0.005, 0.05 } },          // 第5区間
-          { 370, baseSpeed - 30, 0.004167, { 0.48, 0.33, 0.6 } },  // 第6区間
-          { 480, baseSpeed, 0.0, { 0.25, 0.005, 0.5 } },           // 第7区間
-          { 620, baseSpeed, -0.002439, { 0.65, 0.02, 1.5 } },      // 第8区間
-          { 150, baseSpeed, 0.0, { 0.35, 0.05, 0.7 } },            // 第9区間]
-          { 580, baseSpeed, -0.002439, { 0.55, 0.02, 0.8 } },      // 第10区間
-          { 390, baseSpeed, 0.0, { 0.2, 0.005, 0.4 } },            // 第11区間
-          { 630, baseSpeed, -0.002778, { 0.5, 0.02, 1.5 } },       // 第12区間
-          { 1410, baseSpeed, 0.0, { 0.25, 0.0, 0.4 } },            // 第13区間
-          { 510, baseSpeed - 30, 0.004167, { 0.48, 0.00, 0.5 } },  // 第14区間
-          { 740, baseSpeed, 0.0, { 0.2, 0.01, 0.4 } },
+          { 250, baseSpeed - 40, 0.0, { 0.24, 0.005, 0.2 } },           // 第1区間
+          { 330, baseSpeed, 0.0, { 0.27, 0.005, 0.3 } },                // 第1区間
+          { 1020, baseSpeed - 30, 0.003226, { 0.56, 0.01, 0.2 } },      // 第2区間
+          { 275, baseSpeed, 0.0, { 0.2, 0.005, 0.1 } },                 // 第3区間
+          { 1220, baseSpeed - 30, -0.002941, { 0.565, 0.005, 0.25 } },  // 第4区間
+          { 405, baseSpeed, 0.0, { 0.2, 0.005, 0.1 } },                 // 第5区間
+          { 460, baseSpeed - 30, -0.004167, { 0.69, 0.005, 0.4 } },     // 第6区間
+          { 480, baseSpeed, 0.0, { 0.2, 0.005, 0.2 } },                 // 第7区間
+          { 610, baseSpeed - 30, 0.002439, { 0.5, 0.02, 0.2 } },        // 第8区間
+          { 185, baseSpeed - 30, 0.0, { 0.2, 0.05, 0.3 } },             // 第9区間
+          { 630, baseSpeed - 30, 0.002439, { 0.6, 0.02, 1.0 } },        // 第10区間
+          { 390, baseSpeed, 0.0, { 0.2, 0.005, 0.4 } },                 // 第11区間
+          { 620, baseSpeed - 30, 0.002778, { 0.5, 0.02, 1.5 } },        // 第12区間
+          { 1410, baseSpeed, 0.0, { 0.25, 0.0, 0.4 } },                 // 第13区間
+          { 520, baseSpeed - 30, -0.004167, { 0.69, 0.005, 0.4 } },     // 第14区間
+          { 805, baseSpeed, 0.0, { 0.2, 0.01, 0.4 } },                  //進入ライン
+          { 770, baseSpeed - 30, 0.00204081, { 0.5, 0.02, 1.5 } },      // ゴール後 カーブ
+          { 400, baseSpeed - 30, 0.0, { 0.2, 0.01, 0.4 } },             // ゴール後 第3区間
       } };
 
   // LコースならLコースのPID値を採用する。RコースならRコースのPID値を採用する。
   const std::array<NormalCourseProperty, arraySize> normalCourseProperty
       = isLeftCourse ? normalCoursePropertyL : normalCoursePropertyR;
   LineTracer lineTracer(controller, targetBrightness, isLeftCourse);
+  MoveStraight movestraight(controller);
+  Rotation rotation(controller);
   for(const auto& ncp : normalCourseProperty) {
     lineTracer.run(ncp);
   }
-  Rotation rotation(controller);
+
+  // ブロックビンゴエリア手前の黄色サークルまで移動する
+  lineTracer.runToSpecifiedColor(Color::yellow, 20, 0.15, 0.0, 0.005, 0.0);
+
+  // 位置を微調整し、機体をブロックビンゴエリアの方向へ向かせる
+  movestraight.moveTo(50);
   rotation.rotate(90, isLeftCourse);
+
+  // モータ回転数をリセットし、ブロックビンゴエリア手前の黒線の半分をライントレースする
+  controller.resetMotorCount();
+  lineTracer.run({ 70, baseSpeed - 70, 0.0, { 0.2, 0.01, 0.4 } });
 }
 
 /**
