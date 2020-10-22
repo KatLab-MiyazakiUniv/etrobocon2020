@@ -21,7 +21,7 @@ class Curvature {
 
  public:
   Curvature(double targetCurvature, double Kp, double Ki, double Kd);
-  double control(int leftAngle, int rightAngle, int velocity = 600);
+  double control(int leftAngle, int rightAngle, int velocity = 436);
 };
 
 #endif
