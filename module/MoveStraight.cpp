@@ -12,11 +12,11 @@ MoveStraight::MoveStraight(Controller& controller_)
 
 void MoveStraight::moveTo(int destination, unsigned int maxPwm)
 {
-  controller.resetMotorCount();
-
   int presPos = 0;
   int correction = 0;  // 曲率PIDによる補正値
   int currentPwm = 0;
+
+  controller.resetMotorCount();
 
   if(destination > 0) {             // 目的位置が走行体より前方
     while(presPos < destination) {  // 目的位置にたどり着くまで前進
@@ -86,14 +86,24 @@ void MoveStraight::moveTo(Color destColor, unsigned int pwm)
 int MoveStraight::calcPwm(int presPos, int destination, int maxPwm)
 {
   int minPwm = 10;
+  int pwm = 10;
+  constexpr int changePwm = 10;
+  constexpr float changeDis = 30.0;
+  const float a = changePwm / changeDis;
   if(maxPwm < minPwm) minPwm = maxPwm;
 
-  // 二次関数の式 y = a(x - p)^2 + q を利用して、走行距離に応じてPWM値を放物線のように変化させる。
-  // 放物線は、次の点を通る。(0, minPwm) (destination/2, maxPwm) (destination, minPwm)
-  // pwm = a(presPos - destination/2)^2 + maxPwm
-  // a = 4(minPwm - maxPwm) / destination^2
-  const double a = 4.0 * (minPwm - maxPwm) / (destination * destination);
-  double pwm = a * (presPos - destination / 2) * (presPos - destination / 2) + maxPwm;
+  if(presPos < destination / 2) {
+    // y = ax + b
+    pwm = a * presPos + minPwm;
+  } else {
+    // y = -ax + b
+    pwm = -a * presPos + (a * destination + minPwm);
+  }
 
-  return static_cast<int>(pwm);
+  if(pwm < minPwm) {
+    pwm = minPwm;
+  } else if(pwm > maxPwm) {
+    pwm = maxPwm;
+  }
+  return pwm;
 }
