@@ -9,9 +9,8 @@
 Navigator::Navigator(Controller& controller_, bool isLeftCourse_)
   : controller(controller_),
     isLeftCourse(isLeftCourse_),
-    isLeftEdge(!isLeftCourse_),
     moveStraight(controller_),
-    lineTracer(controller_, controller_.getTargetBrightness(), !isLeftCourse_),
+    lineTracer(controller_, controller_.getTargetBrightness(), isLeftCourse_),
     rotation(controller_)
 {
 }
@@ -24,14 +23,15 @@ void Navigator::execMotion(vector<MotionCommand> const& motionCommandList)
     int armCount;
     while((armCount = controller.getArmMotorCount()) != -45) {
       if(armCount < -45) {
-        controller.setArmMotorPwm(30);
+        controller.setArmMotorPwm(50);
       } else {
-        controller.setArmMotorPwm(-30);
+        controller.setArmMotorPwm(-50);
       }
       controller.tslpTsk(4000);
     }
-    //
     controller.setArmMotorPwm(0);
+    //
+
     MotionCommand motionCommand = motionCommandList[i];
     int countRepeated = 0;
     switch(motionCommand) {
@@ -78,18 +78,18 @@ void Navigator::execMotion(vector<MotionCommand> const& motionCommandList)
         break;
     }
     controller.tslpTsk(4000);
-    // controller.stopMotor();
-    // while(!controller.touchSensor.isPressed()) {
-    //  controller.tslpTsk(4000);
-    //}
+    controller.stopMotor();
+    while(!controller.touchSensor.isPressed()) {
+      controller.tslpTsk(4000);
+    }
   }
 }
 
 void Navigator::enterStraight()
 {
   controller.resetMotorCount();
-  lineTracer.runToColor(10, 0.2, 0.005, 0.1, 0.0);
-  moveStraight.moveTo(100, 100);
+  lineTracer.runToColor(30, 0.2, 0.005, 0.01, 0.0);
+  moveStraight.moveTo(80, 100);
   printf("ビンゴエリアにまっすぐ進入\n");
 }
 
@@ -164,8 +164,8 @@ void Navigator::getBlockFromM()
 
 void Navigator::setBlockFromM()
 {
-  moveStraight.moveTo(125, 30);
-  moveStraight.moveTo(-125, 30);
+  moveStraight.moveTo(100, 30);
+  moveStraight.moveTo(-100, 30);
   printf("中点からブロックサークルにブロックを設置\n");
 }
 

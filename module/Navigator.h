@@ -65,7 +65,6 @@ class Navigator {
  private:
   Controller& controller;
   bool isLeftCourse;
-  bool isLeftEdge;
   MoveStraight moveStraight;
   LineTracer lineTracer;
   Rotation rotation;
