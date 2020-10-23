@@ -37,6 +37,9 @@ class Rotation {
    *  @param pwm [モーターパワー(PWMの最大値）]
    */
   void rotate(int angle, bool clockwise, int pwm = 100);
+
+  void pivotTurn(double angle, bool clockwise, int pwm = 30);
+  void pivotTurnBack(double angle, bool clockwise, int pwm = 30);
 };
 
 #endif

@@ -44,6 +44,20 @@ void Rotation::rotate(int angle, bool clockwise, int pwm)
   controller.stopMotor();
 }
 
+void Rotation::pivotTurn(double angle, bool clockwise, int pwm)
+{
+  int left_pwm = clockwise ? pwm : 0;
+  int right_pwm = clockwise ? 0 : pwm;
+  this->run(angle, left_pwm, right_pwm);
+}
+
+void Rotation::pivotTurnBack(double angle, bool clockwise, int pwm)
+{
+  int left_pwm = clockwise ? 0 : -pwm;
+  int right_pwm = clockwise ? -pwm : 0;
+  this->run(angle, left_pwm, right_pwm);
+}
+
 double Rotation::calculate(int angle)
 {
   // @see docs/Odometry/odometry.pdf

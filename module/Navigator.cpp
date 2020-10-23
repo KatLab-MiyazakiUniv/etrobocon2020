@@ -89,7 +89,7 @@ void Navigator::enterStraight()
 {
   controller.resetMotorCount();
   lineTracer.runToColor(30, 0.2, 0.005, 0.01, 0.0);
-  moveStraight.moveTo(80, 100);
+  // moveStraight.moveTo(80, 100);
   printf("ビンゴエリアにまっすぐ進入\n");
 }
 
@@ -120,12 +120,27 @@ int Navigator::countRepeatedCommand(vector<MotionCommand> const& motionCommandLi
 
 void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise)
 {
-  rotation.rotate(rotationAngle, clockwise, 15);
+  if(rotationAngle == 45) {
+    moveStraight.moveTo(100, 30);
+    rotation.rotate(rotationAngle, clockwise);
+  } else if(rotationAngle == 90) {
+    rotation.pivotTurn(rotationAngle, clockwise, 30);
+    // エッジをclockwiseにする(右ピボット＝右エッジ)
+  } else if(rotationAngle == 135) {
+    rotation.pivotTurn(90, clockwise, 30);
+    rotation.rotate(45, clockwise, 15);
+  } else if(rotationAngle == 180) {
+    rotation.pivotTurn(90, clockwise, 30);
+    rotation.rotate(90, clockwise, 15);
+    // エッジを逆にする
+  }
+  // rotation.rotate(rotationAngle, clockwise, 15);
   printf("方向転換 %d° %d\n", rotationAngle, clockwise);
 }
 
 void Navigator::moveC2M()
 {
+  moveStraight.moveTo(100, 30);
   lineTracer.run({ 175, 30, 0.0, { 0.2, 0.005, 0.01 } });
   printf("交点サークルから中点への移動\n");
 }
@@ -146,7 +161,6 @@ void Navigator::setBlockFromC()
 void Navigator::moveM2C()
 {
   lineTracer.runToColor(30, 0.2, 0.005, 0.01, 0.0);
-  moveStraight.moveTo(100, 30);
   printf("中点から交点サークルへの移動\n");
 }
 
