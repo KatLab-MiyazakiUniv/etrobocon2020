@@ -19,6 +19,18 @@ void BlockBingo::runBlockBingo()
   Navigator navigator(controller, isLeftCourse);
 
   blockBingoData.initBlockBingoData();
+  // ここは後で消せよーーーーーーーーーーーーーーーーーーーーーー
+  blockBingoData.setBlock(Coordinate(0, 0), Block(Color::blue, -1));
+  blockBingoData.setBlock(Coordinate(4, 0), Block(Color::black, -1));
+  blockBingoData.setBlock(Coordinate(2, 2), Block(Color::green, -1));
+  blockBingoData.setBlock(Coordinate(6, 2), Block(Color::red, -1));
+  blockBingoData.setBlock(Coordinate(0, 4), Block(Color::red, -1));
+  blockBingoData.setBlock(Coordinate(4, 4), Block(Color::yellow, -1));
+  blockBingoData.setBlock(Coordinate(2, 6), Block(Color::blue, -1));
+  blockBingoData.setBlock(Coordinate(6, 6), Block(Color::black, 6));
+  blockBingoData.setBlock(Coordinate(5, 3), Block(Color::yellow, -1));
+  blockBingoData.setBlock(Coordinate(3, 5), Block(Color::green, -1));
+  // ここまで消せよーーーーーーーーーーーーーーーーーーーーーーー
   array<array<Coordinate, 2>, 5> blockColorList;       // 色別のブロック座標リスト
   array<array<Coordinate, 2>, 5> circleColorList;      // 色別のサークルの座標リスト
   vector<pair<Coordinate, Coordinate>> transportList;  // 運搬先リスト
@@ -79,6 +91,13 @@ void BlockBingo::runBlockBingo()
     // ブロックを運搬する
     current = blockBingoData.getCoordinate();                 // 現在地を取得
     routeCalculator.solveBlockBingo(routeList, start, goal);  //ブロック→運搬先の経路計算
+    // ここは後で消せよーーーーーーーーーーーーーーーーーーーーーー
+    printf("(%d,%d)", routeList[0].x, routeList[0].y);
+    for(int k = 1; k < (int)routeList.size(); k++) {
+      printf("→(%d,%d)", routeList[k].x, routeList[k].y);
+    }
+    printf("\n");
+    // ここまで消せよーーーーーーーーーーーーーーーーーーーーーーー
     motionCommandList.clear();
     direction = motionSequencer.route2MotionCommand(routeList, motionCommandList);
     navigator.execMotion(motionCommandList);

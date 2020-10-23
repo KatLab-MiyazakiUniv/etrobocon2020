@@ -6,7 +6,7 @@
 #include "MoveStraight.h"
 
 MoveStraight::MoveStraight(Controller& controller_)
-  : controller(controller_), odometer(), curvature(0.0, 4.0, 1.0, 0.0)
+  : controller(controller_), odometer(), curvature(0.0, 2.5, 1.8, 0.0)
 {
 }
 
@@ -21,9 +21,10 @@ void MoveStraight::moveTo(int destination, unsigned int maxPwm)
   if(destination > 0) {             // 目的位置が走行体より前方
     while(presPos < destination) {  // 目的位置にたどり着くまで前進
       currentPwm = calcPwm(presPos, destination, maxPwm);
-      correction
-          = curvature.control(controller.getLeftMotorCount(), controller.getRightMotorCount());
+      // correction = static_cast<int>(
+      //    curvature.control(controller.getLeftMotorCount(), controller.getRightMotorCount()));
 
+      // printf("currentPwm:%d correction:%d\n", currentPwm, correction);
       controller.setLeftMotorPwm(currentPwm + correction);
       controller.setRightMotorPwm(currentPwm - correction);
 
@@ -36,8 +37,8 @@ void MoveStraight::moveTo(int destination, unsigned int maxPwm)
     //目的位置が走行体より後方
     while(presPos > destination) {  // 目的位置にたどり着くまで後退
       currentPwm = calcPwm(presPos, destination, maxPwm);
-      correction
-          = curvature.control(controller.getLeftMotorCount(), controller.getRightMotorCount());
+      // correction
+      //    = curvature.control(controller.getLeftMotorCount(), controller.getRightMotorCount());
 
       controller.setLeftMotorPwm(-(currentPwm + correction));
       controller.setRightMotorPwm(-(currentPwm - correction));

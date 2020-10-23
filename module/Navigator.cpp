@@ -19,6 +19,19 @@ Navigator::Navigator(Controller& controller_, bool isLeftCourse_)
 void Navigator::execMotion(vector<MotionCommand> const& motionCommandList)
 {
   for(unsigned int i = 0; i < motionCommandList.size(); i++) {
+    controller.resetMotorCount();
+    //
+    int armCount;
+    while((armCount = controller.getArmMotorCount()) != -45) {
+      if(armCount < -45) {
+        controller.setArmMotorPwm(30);
+      } else {
+        controller.setArmMotorPwm(-30);
+      }
+      controller.tslpTsk(4000);
+    }
+    //
+    controller.setArmMotorPwm(0);
     MotionCommand motionCommand = motionCommandList[i];
     int countRepeated = 0;
     switch(motionCommand) {
@@ -65,13 +78,18 @@ void Navigator::execMotion(vector<MotionCommand> const& motionCommandList)
         break;
     }
     controller.tslpTsk(4000);
+    // controller.stopMotor();
+    // while(!controller.touchSensor.isPressed()) {
+    //  controller.tslpTsk(4000);
+    //}
   }
 }
 
 void Navigator::enterStraight()
 {
-  lineTracer.runToColor(30, 0.2, 0.005, 0.01, 0.0);
-  moveStraight.moveTo(250, 30);
+  controller.resetMotorCount();
+  lineTracer.runToColor(10, 0.2, 0.005, 0.1, 0.0);
+  moveStraight.moveTo(100, 100);
   printf("ビンゴエリアにまっすぐ進入\n");
 }
 
@@ -114,14 +132,14 @@ void Navigator::moveC2M()
 
 void Navigator::getBlockFromC()
 {
-  moveStraight.moveTo(186, 30);
+  moveStraight.moveTo(230, 30);
   printf("交点サークルからブロックサークルのブロックを取得\n");
 }
 
 void Navigator::setBlockFromC()
 {
-  moveStraight.moveTo(185, 15);
-  moveStraight.moveTo(-170, 15);
+  moveStraight.moveTo(150, 15);
+  moveStraight.moveTo(-160, 15);
   printf("交点サークルからブロックサークルにブロックを設置\n");
 }
 
@@ -146,8 +164,8 @@ void Navigator::getBlockFromM()
 
 void Navigator::setBlockFromM()
 {
-  moveStraight.moveTo(145, 30);
-  moveStraight.moveTo(-145, 30);
+  moveStraight.moveTo(125, 30);
+  moveStraight.moveTo(-125, 30);
   printf("中点からブロックサークルにブロックを設置\n");
 }
 
@@ -159,6 +177,6 @@ void Navigator::moveB2C()
 
 void Navigator::moveB2M()
 {
-  moveStraight.moveTo(145, 30);
+  moveStraight.moveTo(185, 30);
   printf("ブロックサークルから中点への移動\n");
 }
