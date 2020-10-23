@@ -121,8 +121,8 @@ int Navigator::countRepeatedCommand(vector<MotionCommand> const& motionCommandLi
 void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise)
 {
   if(rotationAngle == 45) {
-    moveStraight.moveTo(100, 30);
-    rotation.rotate(rotationAngle, clockwise);
+    moveStraight.moveTo(Color::black, 15);
+    rotation.rotate(rotationAngle, clockwise, 15);
   } else if(rotationAngle == 90) {
     rotation.pivotTurn(rotationAngle, clockwise, 30);
     // エッジをclockwiseにする(右ピボット＝右エッジ)
@@ -140,8 +140,8 @@ void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise)
 
 void Navigator::moveC2M()
 {
-  moveStraight.moveTo(100, 30);
-  lineTracer.run({ 175, 30, 0.0, { 0.2, 0.005, 0.01 } });
+  moveStraight.moveTo(Color::black, 15);
+  lineTracer.run({ 50, 30, 0.0, { 0.2, 0.005, 0.01 } });
   printf("交点サークルから中点への移動\n");
 }
 

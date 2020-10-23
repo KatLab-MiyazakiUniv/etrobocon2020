@@ -23,6 +23,7 @@ class Rotation {
    *  @return 片輪の回転角度(回転方向に関わらず正の数)
    */
   double calculate(int angle);
+  double calculate(const int leftAngle, const int rightAngle);
 
  public:
   /**　コンストラクタ

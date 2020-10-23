@@ -48,14 +48,22 @@ void Rotation::pivotTurn(double angle, bool clockwise, int pwm)
 {
   int left_pwm = clockwise ? pwm : 0;
   int right_pwm = clockwise ? 0 : pwm;
-  this->run(angle, left_pwm, right_pwm);
+  while(calculate(controller.getLeftMotorCount(), controller.getRightMotorCount()) < angle) {
+    controller.setLeftMotorPwm(left_pwm);
+    controller.setRightMotorPwm(right_pwm);
+    controller.tslpTsk(4000);
+  }
 }
 
 void Rotation::pivotTurnBack(double angle, bool clockwise, int pwm)
 {
   int left_pwm = clockwise ? 0 : -pwm;
   int right_pwm = clockwise ? -pwm : 0;
-  this->run(angle, left_pwm, right_pwm);
+  while(calculate(controller.getLeftMotorCount(), controller.getRightMotorCount()) < angle) {
+    controller.setLeftMotorPwm(left_pwm);
+    controller.setRightMotorPwm(right_pwm);
+    controller.tslpTsk(4000);
+  }
 }
 
 double Rotation::calculate(int angle)
@@ -63,4 +71,13 @@ double Rotation::calculate(int angle)
   // @see docs/Odometry/odometry.pdf
   const double transform = 2.0 * Radius / Tread;
   return angle / transform;
+}
+
+double Rotation::calculate(const int leftAngle, const int rightAngle)
+{
+  // 両輪の回転角から回転角度を取得
+  // @see docs/Odometry/odometry.pdf
+  const double transform = 2.0 * Radius / Tread;
+  double WheelAngle = (std::abs(leftAngle) + std::abs(rightAngle)) / 2;
+  return transform * WheelAngle;
 }
