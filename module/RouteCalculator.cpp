@@ -122,9 +122,6 @@ int RouteCalculator::moveCost(Coordinate coordinate, Coordinate nextCoordinate,
   int cost = 0;
   bool isNext = (coordinate.x == nextCoordinate.x) || (coordinate.y == nextCoordinate.y);
   bool blockCircleNode = (nextCoordinate.x % 2 == 1) && (nextCoordinate.y % 2 == 1);
-  // castDirection[Y][X]で向くべき方向を返す
-  int castDirection[3][3] = { { 3, 4, 5 }, { 2, -1, 6 }, { 1, 0, 7 } };
-  int X, Y;
 
   if(isNext) {  //横縦移動の時
     cost += 1;
@@ -138,30 +135,16 @@ int RouteCalculator::moveCost(Coordinate coordinate, Coordinate nextCoordinate,
   }
 
   // 回頭のコストの設定
-  if(coordinate.x < nextCoordinate.x) {
-    X = 0;
-  } else if(coordinate.x == nextCoordinate.x) {
-    X = 1;
-  } else {
-    X = 2;
+  Direction nextDirection = blockBingoData.calcNextDirection(coordinate, nextCoordinate);
+  int diffDirection = abs(blockBingoData.calcRotationCount(
+      route[coordinate.y][coordinate.x].currentDirection, nextDirection));
+  cost += diffDirection;    // 45度でコスト+1
+  if(diffDirection == 4) {  // 180度回頭はコストを高く設定する
+    cost += 3;
   }
-  if(coordinate.y < nextCoordinate.y) {
-    Y = 0;
-  } else if(coordinate.y == nextCoordinate.y) {
-    Y = 1;
-  } else {
-    Y = 2;
-  }
-  // 回頭の角度差
-  int diffAngle
-      = abs((int)route[coordinate.y][coordinate.x].currentDirection - castDirection[Y][X]);
-  // //printf("diffAngle:%d, X:%d, Y:%d, castDirection:%d\n", diffAngle, X, Y, castDirection[Y][X]);
-  if(diffAngle > 4) {
-    cost += 8 - diffAngle;
-  } else {
-    cost += diffAngle;
-  }
-  route[nextCoordinate.y][nextCoordinate.x].currentDirection = (Direction)castDirection[Y][X];
+
+  // nextCoordinateに到達したときの走行体の向きをセット
+  route[nextCoordinate.y][nextCoordinate.x].currentDirection = nextDirection;
 
   if((nextCoordinate == gCoordinate)) {
     return 0;

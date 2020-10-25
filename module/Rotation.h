@@ -64,6 +64,13 @@ class Rotation {
    *  @param pwm [モーターパワー]
    */
   void pivotTurnBack(int angle, bool clockwise, int pwm = 50);
-};
 
+  /**
+   *  @brief アームを上げながら走行体をピボットターンさせる
+   *  @param angle [回頭角度]
+   *  @param clockwise [回転方向(Trueが時計回り)]
+   *  @param pwm [モーターパワー]
+   */
+  void pivotTurnArm(int angle, bool clockwise, int pwm = 50);
+};
 #endif
