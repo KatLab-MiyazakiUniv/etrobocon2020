@@ -20,7 +20,7 @@ LineTracer::LineTracer(Controller& controller_, int targetBrightness_, bool isLe
 
 void LineTracer::run(const NormalCourseProperty& settings)
 {
-  printf("LineTracer:run\n");
+  // printf("LineTracer:run\n");
 
   // 関数呼び出し時の走行距離を取得・設定
   int initialDistance
@@ -59,7 +59,7 @@ void LineTracer::run(const NormalCourseProperty& settings)
     currentDistance
         = distance.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
 
-    controller.tslpTsk(4000);
+    controller.tslpTsk();
   }
 }
 
@@ -122,7 +122,7 @@ void LineTracer::runToColor(int targetSpeed, double pGain, double iGain, double 
     // 現在のラインの色の取得
     currentColor = controller.getColor();
 
-    controller.tslpTsk(4000);
+    controller.tslpTsk();
   }
 }
 
@@ -160,7 +160,7 @@ void LineTracer::runToSpecifiedColor(Color targetColor, int targetSpeed, double 
     // 現在のラインの色の取得
     currentColor = controller.getColor();
 
-    controller.tslpTsk(4000);
+    controller.tslpTsk();
   }
 }
 

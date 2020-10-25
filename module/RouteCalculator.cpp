@@ -166,7 +166,7 @@ void RouteCalculator::setRoute(vector<Coordinate>& list, Route route[AREASIZE][A
 {
   // (x,y)を通っていないときのエラー処理
   if(route[coordinate.y][coordinate.x].parent == Coordinate{ -1, -1 }) {
-    printf("[ERROR] This coordinate does not pass.\n");
+    // printf("[ERROR] This coordinate does not pass.\n");
   } else if(route[coordinate.y][coordinate.x].parent == coordinate) {  // スタートノードの場合
     list.push_back(coordinate);
   } else {

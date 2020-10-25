@@ -26,12 +26,12 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
       }else{
         controller.setArmMotorPwm(-30);
       }
-      controller.tslpTsk(4000);
+      controller.tslpTsk();
     }
     controller.setArmMotorPwm(0);
 
     // while(!controller.touchSensor.isPressed()) {
-    //   controller.tslpTsk(4000);
+    //   controller.tslpTsk();
     // }
 
     // 実験用
@@ -68,7 +68,7 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
 
     //
     // while(!controller.touchSensor.isPressed()) {
-    //   controller.tslpTsk(4000);
+    //   controller.tslpTsk();
     // }
     //
 
@@ -136,7 +136,7 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
 
     currentCoordinate = nextCoordinate;
     currentDirection = nextDirection;
-    controller.tslpTsk(4000);
+    controller.tslpTsk();
   }
   return nextDirection;
 }

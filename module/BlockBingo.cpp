@@ -24,23 +24,23 @@ void BlockBingo::runBlockBingo()
   vector<pair<Coordinate, Coordinate>> transportList;  // 運搬先リスト
 
   // 実験用
-  blockBingoData.setBlock(Coordinate(0, 0), Block(Color::blue, -1));
-  blockBingoData.setBlock(Coordinate(4, 0), Block(Color::black, -1));
-  blockBingoData.setBlock(Coordinate(2, 2), Block(Color::green, -1));
-  blockBingoData.setBlock(Coordinate(6, 2), Block(Color::red, -1));
-  blockBingoData.setBlock(Coordinate(0, 4), Block(Color::red, -1));
-  blockBingoData.setBlock(Coordinate(4, 4), Block(Color::yellow, -1));
-  blockBingoData.setBlock(Coordinate(2, 6), Block(Color::blue, -1));
-  blockBingoData.setBlock(Coordinate(6, 6), Block(Color::black, 6));
-  blockBingoData.setBlock(Coordinate(5, 3), Block(Color::yellow, -1));
-  blockBingoData.setBlock(Coordinate(3, 5), Block(Color::green, -1));
+  // blockBingoData.setBlock(Coordinate(0, 0), Block(Color::blue, -1));
+  // blockBingoData.setBlock(Coordinate(4, 0), Block(Color::black, -1));
+  // blockBingoData.setBlock(Coordinate(2, 2), Block(Color::green, -1));
+  // blockBingoData.setBlock(Coordinate(6, 2), Block(Color::red, -1));
+  // blockBingoData.setBlock(Coordinate(0, 4), Block(Color::red, -1));
+  // blockBingoData.setBlock(Coordinate(4, 4), Block(Color::yellow, -1));
+  // blockBingoData.setBlock(Coordinate(2, 6), Block(Color::blue, -1));
+  // blockBingoData.setBlock(Coordinate(6, 6), Block(Color::black, 6));
+  // blockBingoData.setBlock(Coordinate(5, 3), Block(Color::yellow, -1));
+  // blockBingoData.setBlock(Coordinate(3, 5), Block(Color::green, -1));
   //　実験用
 
   // 運搬先リストを生成
   setColorList(blockColorList, circleColorList);
   transportList = transportCalculate(blockColorList, circleColorList);
   for(int i=0;i<(int )transportList.size();i++){
-  printf("\n(%d,%d)→(%d,%d)\n",transportList[i].first.x,transportList[i].first.y,transportList[i].second.x,transportList[i].second.y);
+  // printf("\n(%d,%d)→(%d,%d)\n",transportList[i].first.x,transportList[i].first.y,transportList[i].second.x,transportList[i].second.y);
 }
   // ビンゴエリアに進入
   int entranceX = isLeftCourse ? 2 : 4;
@@ -79,11 +79,11 @@ void BlockBingo::runBlockBingo()
     current = blockBingoData.getCoordinate();                    // 現在地を取得
     routeCalculator.solveBlockBingo(routeList, current, start);  //現在地→ブロックの経路計算
     // ここは後で消せよーーーーーーーーーーーーーーーーーーーーーー
-    printf("(%d,%d)", routeList[0].x, routeList[0].y);
-    for(int k = 1; k < (int)routeList.size(); k++) {
-      printf("→(%d,%d)", routeList[k].x, routeList[k].y);
-    }
-    printf("\n");
+    // printf("(%d,%d)", routeList[0].x, routeList[0].y);
+    // for(int k = 1; k < (int)routeList.size(); k++) {
+    //   printf("→(%d,%d)", routeList[k].x, routeList[k].y);
+    // }
+    // printf("\n");
     // ここまで消せよーーーーーーーーーーーーーーーーーーーーーーー
     direction = motionSequencer.route2Motion(routeList, motionCommandList);
     blockBingoData.setCoordinate(start);     // 現在地を更新
@@ -93,11 +93,11 @@ void BlockBingo::runBlockBingo()
     current = blockBingoData.getCoordinate();                 // 現在地を取得
     routeCalculator.solveBlockBingo(routeList, start, goal);  //ブロック→運搬先の経路計算
     // ここは後で消せよーーーーーーーーーーーーーーーーーーーーーー
-    printf("(%d,%d)", routeList[0].x, routeList[0].y);
-    for(int k = 1; k < (int)routeList.size(); k++) {
-      printf("→(%d,%d)", routeList[k].x, routeList[k].y);
-    }
-    printf("\n");
+    // printf("(%d,%d)", routeList[0].x, routeList[0].y);
+    // for(int k = 1; k < (int)routeList.size(); k++) {
+    //   printf("→(%d,%d)", routeList[k].x, routeList[k].y);
+    // }
+    // printf("\n");
     // ここまで消せよーーーーーーーーーーーーーーーーーーーーーーー
     motionCommandList.clear();
     direction = motionSequencer.route2Motion(routeList, motionCommandList);
@@ -174,7 +174,7 @@ vector<pair<Coordinate, Coordinate>> BlockBingo::transportCalculate(
   int candidate1, candidate2;
   int cardNumber = blockBingoData.getCardNumber();
 
-  setPair1 = { blockList[0][0], blockBingoData.numberToCoordinate(3) };
+  setPair1 = { blockList[0][0], blockBingoData.numberToCoordinate(cardNumber) };
   transportList.push_back(setPair1);
 
   for(int i = 1; i < 5; i++) {

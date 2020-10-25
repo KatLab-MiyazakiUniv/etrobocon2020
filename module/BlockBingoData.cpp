@@ -29,19 +29,19 @@ NodeType BlockBingoData::checkNode(Coordinate coordinate)
 bool BlockBingoData::setBlockCircle(Coordinate coordinate, BlockCircle blockCircle)
 {
   if(checkNode(coordinate) != NodeType::blockCircle) {
-    printf("[ERROR] Not BlockCircle\n");
+    // printf("[ERROR] Not BlockCircle\n");
     return false;
   }
 
   //ブロックサークルの色のエラー処理
   if(blockCircle.blockCircleColor == Color::black || blockCircle.blockCircleColor == Color::white) {
-    printf("[ERROR] Unexpected color\n");
+    // printf("[ERROR] Unexpected color\n");
     return false;
   }
 
   //ブロックの色のエラー処理
   if(blockCircle.block.blockColor == Color::white) {
-    printf("[ERROR] Unexpected color\n");
+    // printf("[ERROR] Unexpected color\n");
     return false;
   }
 
@@ -65,20 +65,20 @@ bool BlockBingoData::setBlockCircle(Coordinate coordinate, BlockCircle blockCirc
 bool BlockBingoData::setCrossCircle(Coordinate coordinate, CrossCircle crossCircle)
 {
   if(checkNode(coordinate) != NodeType::crossCircle) {
-    printf("[ERROR] Not CrossCircle\n");
+    // printf("[ERROR] Not CrossCircle\n");
     return false;
   }
 
   //交点サークルの色のエラー処理
   if(crossCircle.crossCircleColor == Color::none || crossCircle.crossCircleColor == Color::black
      || crossCircle.crossCircleColor == Color::white) {
-    printf("[ERROR] Unexpected color\n");
+    // printf("[ERROR] Unexpected color\n");
     return false;
   }
 
   //ブロックの色のエラー処理
   if(crossCircle.block.blockColor == Color::white) {
-    printf("[ERROR] Unexpected color\n");
+    // printf("[ERROR] Unexpected color\n");
     return false;
   }
 
@@ -102,7 +102,7 @@ bool BlockBingoData::setCrossCircle(Coordinate coordinate, CrossCircle crossCirc
 BlockCircle BlockBingoData::getBlockCircle(Coordinate coordinate)
 {
   if(checkNode(coordinate) != NodeType::blockCircle) {
-    printf("[ERROR] Coordinate is not BlockCircle\n");
+    // printf("[ERROR] Coordinate is not BlockCircle\n");
 
     return BlockCircle{ Color::none, -1, Block{ Color::none, -1 } };
   }
@@ -113,7 +113,7 @@ BlockCircle BlockBingoData::getBlockCircle(Coordinate coordinate)
 CrossCircle BlockBingoData::getCrossCircle(Coordinate coordinate)
 {
   if(checkNode(coordinate) != NodeType::crossCircle) {
-    printf("[ERROR] Coordinate is not CrossCircle\n");
+    // printf("[ERROR] Coordinate is not CrossCircle\n");
     return CrossCircle{ Color::none, Block{ Color::none, -1 } };
   }
 
@@ -250,14 +250,14 @@ void BlockBingoData::initBlock(Color initColor, int coordinate)
         break;
       default:
         initCoordinate = { -1, -1 };
-        printf("[ERROR] Faild initBlock");
+        // printf("[ERROR] Faild initBlock");
         break;
     }
     crossCircle = getCrossCircle(initCoordinate);
     crossCircle.block.blockColor = initColor;
     setCrossCircle(initCoordinate, crossCircle);
   } else {
-    printf("[ERROR] Faild initBlock");
+    // printf("[ERROR] Faild initBlock");
   }
 }
 
@@ -324,7 +324,7 @@ bool BlockBingoData::moveBlock(Coordinate const& coordinateFrom, Coordinate cons
   NodeType nodeTypeTo = checkNode(coordinateTo);
   // 運搬元にブロックがない
   if(!hasBlock(coordinateFrom)) {
-    printf("[ERROR] Don't have block\n");
+    // printf("[ERROR] Don't have block\n");
     return false;
   }
 
@@ -395,7 +395,7 @@ bool BlockBingoData::setCoordinate(Coordinate coordinate_)
     coordinate = coordinate_;
     return true;
   } else {
-    printf("[ERROR] This coordinate is not of range\n");
+    // printf("[ERROR] This coordinate is not of range\n");
     return false;
   }
 }

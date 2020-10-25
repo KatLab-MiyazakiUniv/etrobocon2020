@@ -35,7 +35,7 @@ namespace etrobocon2020_test {
       int pwm = 30;
       controller.setLeftMotorPwm(pwm);
       controller.setRightMotorPwm(pwm - 1);
-      controller.tslpTsk(4000);
+      controller.tslpTsk();
     }
 
     double pidValue

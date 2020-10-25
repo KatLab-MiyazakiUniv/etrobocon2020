@@ -316,12 +316,12 @@ void Controller::moveArm(int count, int pwm)
   if(count >= 0) {
     this->setArmMotorPwm(pwm);
     while(this->getArmMotorCount() < count) {
-      this->tslpTsk(4000);
+      this->tslpTsk();
     }
   } else {
     this->setArmMotorPwm(-pwm);
     while(this->getArmMotorCount() > count) {
-      this->tslpTsk(4000);
+      this->tslpTsk();
     }
   }
 
@@ -369,7 +369,7 @@ void Controller::keepArm(void)
     } else {
       this->setArmMotorPwm(-30);
     }
-    this->tslpTsk(4000);
+    this->tslpTsk();
   }
   this->setArmMotorPwm(0);
 }

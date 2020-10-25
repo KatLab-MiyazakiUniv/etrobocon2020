@@ -26,7 +26,7 @@ void EtRobocon2020::start()
 
   // タッチセンサーが押されるまで待機
   while(!controller.touchSensor.isPressed()) {
-    controller.tslpTsk(4000);
+    controller.tslpTsk();
   }
 
   // ノーマルコースの走行開始

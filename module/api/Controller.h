@@ -52,7 +52,7 @@ class Controller {
   bool buttonIsPressedLeft();
   bool buttonIsPressedEnter();
   static float getBatteryVoltage();
-  static void tslpTsk(int time);  // 引数はマイクロ秒で指定する
+  static void tslpTsk(int time = 10000);  // 引数はマイクロ秒で指定する
   void getRawColor(int& r, int& g, int& b);
   void convertHsv(int& r, int& g, int& b);  // RGBをHSV変換する
   HsvStatus getHsv() const;

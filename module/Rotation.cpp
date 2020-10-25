@@ -32,7 +32,7 @@ void Rotation::rotate(int angle, bool clockwise, int pwm)
 
     controller.setLeftMotorPwm(leftPwm);
     controller.setRightMotorPwm(rightPwm);
-    controller.tslpTsk(4000);
+    controller.tslpTsk();
 
     if(abs(controller.getLeftMotorCount()) >= targetMotorCount) {
       leftSign = 0;
@@ -73,7 +73,7 @@ void Rotation::pivotTurnRun(int angle, int leftPwm, int rightPwm, int targetMoto
   while(motorCountAve < targetMotorCount) {
     controller.setLeftMotorPwm(leftPwm);
     controller.setRightMotorPwm(rightPwm);
-    controller.tslpTsk(4000);
+    controller.tslpTsk();
 
     motorCountAve
         = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
@@ -97,7 +97,7 @@ void Rotation::pivotTurnArm(int angle, bool clockwise, int pwm)
     controller.setLeftMotorPwm(leftPwm);
     controller.setRightMotorPwm(rightPwm);
     controller.setArmMotorPwm(100);
-    controller.tslpTsk(4000);
+    controller.tslpTsk();
 
     motorCountAve
         = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;

@@ -27,7 +27,7 @@ void MoveStraight::moveTo(int destination, unsigned int maxPwm)
       presPos
           = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
 
-      controller.tslpTsk(2000);  // 実機では4000に
+      controller.tslpTsk();  // 実機では4000に
     }
   } else {
     //目的位置が走行体より後方
@@ -40,7 +40,7 @@ void MoveStraight::moveTo(int destination, unsigned int maxPwm)
       presPos
           = odometer.getDistance(controller.getLeftMotorCount(), controller.getRightMotorCount());
 
-      controller.tslpTsk(2000);  // 実機では4000に
+      controller.tslpTsk();  // 実機では4000に
     }
   }
   // 目的位置に到着
@@ -57,7 +57,7 @@ void MoveStraight::moveWhileBW(unsigned int pwm)
   {
     controller.setLeftMotorPwm(pwm);
     controller.setRightMotorPwm(pwm);
-    controller.tslpTsk(2000);  // 実機では4000に
+    controller.tslpTsk();  // 実機では4000に
   }
   controller.stopMotor();
 }
@@ -68,7 +68,7 @@ void MoveStraight::moveTo(Color destColor, unsigned int pwm)
   {
     controller.setLeftMotorPwm(pwm);
     controller.setRightMotorPwm(pwm);
-    controller.tslpTsk(2000);  // 実機では4000に
+    controller.tslpTsk();  // 実機では4000に
   }
   controller.stopMotor();
 }
