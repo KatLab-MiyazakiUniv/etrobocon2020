@@ -39,7 +39,9 @@ void BlockBingo::runBlockBingo()
   // 運搬先リストを生成
   setColorList(blockColorList, circleColorList);
   transportList = transportCalculate(blockColorList, circleColorList);
-
+  for(int i=0;i<(int )transportList.size();i++){
+  printf("\n(%d,%d)→(%d,%d)\n",transportList[i].first.x,transportList[i].first.y,transportList[i].second.x,transportList[i].second.y);
+}
   // ビンゴエリアに進入
   int entranceX = isLeftCourse ? 2 : 4;
   int nearPoint = popCoordinate(transportList);
@@ -118,7 +120,7 @@ void BlockBingo::runBlockBingo()
   int rotationCount = blockBingoData.calcRotationCount(direction, lastDirection);
   int rotationAngle = rotationCount * 45;
   bool clockwise = rotationCount >= 0;
-  navigator.changeDirection(rotationAngle, clockwise);
+  navigator.changeDirection(rotationAngle, clockwise, 100, false);
 
   blockBingoData.setDirection(lastDirection);  // 現在の向きを更新
 }
@@ -172,7 +174,7 @@ vector<pair<Coordinate, Coordinate>> BlockBingo::transportCalculate(
   int candidate1, candidate2;
   int cardNumber = blockBingoData.getCardNumber();
 
-  setPair1 = { blockList[0][0], blockBingoData.numberToCoordinate(cardNumber) };
+  setPair1 = { blockList[0][0], blockBingoData.numberToCoordinate(3) };
   transportList.push_back(setPair1);
 
   for(int i = 1; i < 5; i++) {

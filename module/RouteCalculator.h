@@ -60,6 +60,7 @@ class RouteCalculator {
  private:
   BlockBingoData& blockBingoData;
   Coordinate gCoordinate;  //クラス内でゴールノードを共有しておく
+  bool hasBlock;
   static constexpr int AREASIZE = 7;
 
   /**

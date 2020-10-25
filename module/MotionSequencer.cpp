@@ -55,7 +55,9 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
         for(int i = 0; i < rotationCount; i++) motionCommandList.push_back(MotionCommand::RFWB);
       }
     } else if(rotationAngle > 0) {
-      navigator.changeDirection(rotationAngle, clockwise);
+      int pwm = hasBlock ? 10 : 100;
+      bool needCorrection = (currentType == NodeType::crossCircle && nextType == NodeType::middlePoint);
+      navigator.changeDirection(rotationAngle, clockwise, pwm, needCorrection);
       if(clockwise) {
         for(int i = 0; i < rotationCount; i++) motionCommandList.push_back(MotionCommand::RT);
       } else {
@@ -86,8 +88,11 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
         navigator.setBlockFromC(rotationAngle, clockwise);
         motionCommandList.push_back(MotionCommand::SC);
         if(rotationAngle == 135) {
-          nextDirection = blockBingoData.calcNextDirection(
-              currentCoordinate, Coordinate(currentCoordinate.x, currentCoordinate.y));
+          if(clockwise){
+            nextDirection = static_cast<Direction>((static_cast<int>(currentDirection) + 2) % 8);
+          } else {
+            nextDirection = static_cast<Direction>((static_cast<int>(currentDirection) - 2 + 8) % 8);
+          }
         }
       } else {
         // 交点サークルからブロックサークルのブロックを取得

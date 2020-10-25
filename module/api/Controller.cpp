@@ -359,3 +359,17 @@ void Controller::notifyCompleted(void)
 {
   ETRoboc_notifyCompletedToSimulator();
 }
+
+void Controller::keepArm(void)
+{
+  int armCount;
+  while((armCount = this->getArmMotorCount()) != -45) {
+    if(armCount < -45) {
+      this->setArmMotorPwm(30);
+    } else {
+      this->setArmMotorPwm(-30);
+    }
+    this->tslpTsk(4000);
+  }
+  this->setArmMotorPwm(0);
+}

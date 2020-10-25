@@ -71,8 +71,9 @@ class Navigator {
    * @brief 方向転換
    * @param rotationAngle [方向転換に必要な角度]
    * @param clockwise     [方向転換の向き、正=時計回り、負=反時計回り]
+   * @param pwm
    */
-  void changeDirection(unsigned int rotationAngle, bool clockwise);
+  void changeDirection(unsigned int rotationAngle, bool clockwise, int pwm, bool needCorrection);
 
   /**
    * @brief 方向転換(交点サークルにいる、かつ、ブロックを保持しているとき)
@@ -139,7 +140,6 @@ class Navigator {
  private:
   Controller& controller;
   bool isLeftCourse;
-  bool isLeftEdge;
   MoveStraight moveStraight;
   LineTracer lineTracer;
   Rotation rotation;

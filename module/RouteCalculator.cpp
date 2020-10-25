@@ -8,7 +8,7 @@
 using namespace std;
 
 RouteCalculator::RouteCalculator(BlockBingoData& blockBingoData_)
-  : blockBingoData(blockBingoData_), gCoordinate(0, 0)
+  : blockBingoData(blockBingoData_), gCoordinate(0, 0), hasBlock(false)
 {
 }
 
@@ -23,6 +23,7 @@ void RouteCalculator::solveBlockBingo(vector<Coordinate>& list, Coordinate start
 
   list.clear();
   gCoordinate = goalCoordinate;  // ゴールノードをセット
+  hasBlock = blockBingoData.hasBlock(startCoordinate);
 
   route[startCoordinate.y][startCoordinate.x].set(startCoordinate, 0);
   route[startCoordinate.y][startCoordinate.x].currentDirection = blockBingoData.getDirection();
@@ -138,9 +139,9 @@ int RouteCalculator::moveCost(Coordinate coordinate, Coordinate nextCoordinate,
   Direction nextDirection = blockBingoData.calcNextDirection(coordinate, nextCoordinate);
   int diffDirection = abs(blockBingoData.calcRotationCount(
       route[coordinate.y][coordinate.x].currentDirection, nextDirection));
-  cost += diffDirection;    // 45度でコスト+1
-  if(diffDirection == 4) {  // 180度回頭はコストを高く設定する
-    cost += 3;
+  cost += diffDirection;  // 45度でコスト+1
+  if((diffDirection == 4) && (hasBlock)) {
+    cost += 3;  // ブロックを持っているときの180度回頭はコストを高く設定する
   }
 
   // nextCoordinateに到達したときの走行体の向きをセット

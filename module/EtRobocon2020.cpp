@@ -30,8 +30,8 @@ void EtRobocon2020::start()
   }
 
   // ノーマルコースの走行開始
-  NormalCourse normalCourse(controller, isLeftCourse, targetBrightness);
-  normalCourse.runNormalCourse();
+  // NormalCourse normalCourse(controller, isLeftCourse, targetBrightness);
+  // normalCourse.runNormalCourse();
 
   // ビンゴエリアの攻略開始
   BlockBingo blockBingo(controller, isLeftCourse);
