@@ -100,6 +100,11 @@ class Controller {
   int getCourseInfo(ETROBOC_COURSE_INFO_ID id);
 
   /**
+   * @brief アームを水平にする
+   */
+  void keepArm(void);
+
+  /**
    * @brief   競技終了通知をシミュレータに送信する
    */
   void notifyCompleted(void);
