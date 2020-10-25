@@ -12,7 +12,9 @@ LineTracer::LineTracer(Controller& controller_, int targetBrightness_, bool isLe
     isLeftCourse(isLeftCourse_),
     isLeftEdge(!isLeftCourse_),
     distance(),
-    turnControl(targetBrightness_, 0.0, 0.0, 0.0)
+    turnControl(targetBrightness_, 0.0, 0.0, 0.0),
+    rotation(controller_),
+    moveStraight(controller)
 {
 }
 
@@ -170,4 +172,41 @@ bool LineTracer::getIsLeftEdge()
 void LineTracer::setIsLeftEdge(bool isLeftEdge_)
 {
   isLeftEdge = isLeftEdge_;
+}
+
+bool LineTracer::searchLineEdge()
+{
+  bool clockwise = isLeftEdge;
+  int angle = 0;
+  int maxAngle = 15;
+  Color currentColor;
+  while(maxAngle <= 15) {
+    while(controller.getColor() != Color::black && angle < maxAngle) {
+    rotation.rotate(5, clockwise, 10);
+    angle += 3;
+    }
+
+    if(angle < maxAngle){
+      return isLeftEdge;
+    }
+
+    rotation.rotate(30, !clockwise);
+    angle = 0;
+
+    while(controller.getColor() != Color::black && angle < maxAngle) {
+      rotation.rotate(3, !clockwise, 10);
+      angle += 3;
+    }
+
+    if(angle < maxAngle){
+      isLeftEdge = !isLeftEdge;
+      return !isLeftEdge;
+    }
+
+    rotation.rotate(30, clockwise);
+    angle = 0;
+
+    maxAngle += 30;
+    // moveStraight.moveTo(20);
+  }  
 }

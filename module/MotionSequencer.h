@@ -33,6 +33,7 @@ class MotionSequencer {
   Direction route2Motion(vector<Coordinate> const& route, vector<MotionCommand>& motionCommandList);
 
  private:
+  Controller& controller;
   Navigator navigator;
   BlockBingoData& blockBingoData;
 };

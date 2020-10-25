@@ -2,7 +2,7 @@
 
 MotionSequencer::MotionSequencer(Controller& controller_, bool isLeftCourse_,
                                  BlockBingoData& blockBingoData_)
-  : navigator(controller_, isLeftCourse_), blockBingoData(blockBingoData_)
+  : controller(controller_), navigator(controller_, isLeftCourse_), blockBingoData(blockBingoData_)
 {
 }
 
@@ -16,6 +16,26 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
   bool hasBlock = blockBingoData.hasBlock(currentCoordinate);
 
   for(unsigned int i = 1; i < route.size(); i++) {
+    // 実験用
+    controller.stopMotor();
+    controller.resetMotorCount();
+
+    while(controller.getArmMotorCount() != -45){
+      if(controller.getArmMotorCount() < -45){
+        controller.setArmMotorPwm(30);
+      }else{
+        controller.setArmMotorPwm(-30);
+      }
+      controller.tslpTsk(4000);
+    }
+    controller.setArmMotorPwm(0);
+
+    // while(!controller.touchSensor.isPressed()) {
+    //   controller.tslpTsk(4000);
+    // }
+
+    // 実験用
+
     nextCoordinate = route[i];
     nextDirection = blockBingoData.calcNextDirection(currentCoordinate, nextCoordinate);
     NodeType currentType = blockBingoData.checkNode(currentCoordinate);
@@ -42,6 +62,13 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
         for(int i = 0; i < rotationCount; i++) motionCommandList.push_back(MotionCommand::RF);
       }
     }
+    controller.resetMotorCount();
+
+    //
+    // while(!controller.touchSensor.isPressed()) {
+    //   controller.tslpTsk(4000);
+    // }
+    //
 
     // 現在座標から次の座標へ移動する。現在座標と次の座標の種類に応じて、移動方法を切り替える
     if(currentType == NodeType::crossCircle && nextType == NodeType::middlePoint) {
@@ -60,7 +87,7 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
         motionCommandList.push_back(MotionCommand::SC);
         if(rotationAngle == 135) {
           nextDirection = blockBingoData.calcNextDirection(
-              currentCoordinate, Coordinate(nextCoordinate.x, currentCoordinate.y));
+              currentCoordinate, Coordinate(currentCoordinate.x, currentCoordinate.y));
         }
       } else {
         // 交点サークルからブロックサークルのブロックを取得
@@ -69,7 +96,7 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
       }
     } else if(currentType == NodeType::middlePoint && nextType == NodeType::crossCircle) {
       // 中点から交点サークルへの移動
-      if(hasBlock) {
+      if(hasBlock || blockBingoData.hasBlock(nextCoordinate)) {
         navigator.moveM2CWithBlock();
         motionCommandList.push_back(MotionCommand::MCWB);
       } else {
@@ -99,9 +126,12 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
       navigator.moveB2M();
       motionCommandList.push_back(MotionCommand::BM);
     }
+    controller.resetMotorCount();
+
 
     currentCoordinate = nextCoordinate;
     currentDirection = nextDirection;
+    controller.tslpTsk(4000);
   }
   return nextDirection;
 }

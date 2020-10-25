@@ -75,7 +75,7 @@ void MoveStraight::moveTo(Color destColor, unsigned int pwm)
 
 int MoveStraight::calcPwm(int presPos, int destination, int maxPwm)
 {
-  int minPwm = 10;
+  int minPwm = 20;
   int pwm = 10;
   constexpr int changePwm = 10;
   constexpr float changeDis = 30.0;

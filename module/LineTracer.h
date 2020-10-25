@@ -11,6 +11,8 @@
 #include "TurnControl.h"
 #include "Pid.h"
 #include "Curvature.h"
+#include "Rotation.h"
+#include "MoveStraight.h"
 
 struct NormalCourseProperty {
   // 目標距離
@@ -86,6 +88,8 @@ class LineTracer {
 
   void setIsLeftEdge(bool isLeftEdge_);
 
+  bool searchLineEdge();
+
  private:
   Controller& controller;
   int targetBrightness;
@@ -93,6 +97,8 @@ class LineTracer {
   bool isLeftEdge;
   Distance distance;
   TurnControl turnControl;
+  Rotation rotation;
+  MoveStraight moveStraight;
 };
 
 #endif
