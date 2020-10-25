@@ -17,8 +17,8 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
 
   for(unsigned int i = 1; i < route.size(); i++) {
     // 実験用
-    controller.stopMotor();
-    controller.resetMotorCount();
+    // controller.stopMotor();
+    // controller.resetMotorCount();
 
     while(controller.getArmMotorCount() != -45){
       if(controller.getArmMotorCount() < -45){
@@ -132,7 +132,7 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
       motionCommandList.push_back(MotionCommand::BM);
     }
     controller.resetMotorCount();
-
+    // controller.stopMotor();
 
     currentCoordinate = nextCoordinate;
     currentDirection = nextDirection;

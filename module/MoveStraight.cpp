@@ -44,7 +44,7 @@ void MoveStraight::moveTo(int destination, unsigned int maxPwm)
     }
   }
   // 目的位置に到着
-  controller.stopMotor();
+  // controller.stopMotor();
   // ブレーキをかける
 }
 
@@ -59,7 +59,7 @@ void MoveStraight::moveWhileBW(unsigned int pwm)
     controller.setRightMotorPwm(pwm);
     controller.tslpTsk();  // 実機では4000に
   }
-  controller.stopMotor();
+  // controller.stopMotor();
 }
 
 void MoveStraight::moveTo(Color destColor, unsigned int pwm)
@@ -70,7 +70,7 @@ void MoveStraight::moveTo(Color destColor, unsigned int pwm)
     controller.setRightMotorPwm(pwm);
     controller.tslpTsk();  // 実機では4000に
   }
-  controller.stopMotor();
+  // controller.stopMotor();
 }
 
 int MoveStraight::calcPwm(int presPos, int destination, int maxPwm)

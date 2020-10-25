@@ -16,11 +16,11 @@ void Parking::parkInGarage()
   MoveStraight movestraight(controller);
   Rotation rotation(controller);
   LineTracer linetracer(controller, targetBrightness, isLeftCourse);
-  movestraight.moveTo(Color::black, 30);
+  movestraight.moveTo(Color::black, 50);
   rotation.rotate(90, isLeftCourse);
   controller.resetMotorCount();
-  linetracer.runToColor(20, 0.15, 0.0, 0.005, 0.0);
-  linetracer.runToSpecifiedColor(Color::black, 20, 0.15, 0.0, 0.005, 0.0);
-  linetracer.runToSpecifiedColor(Color::white, 20, 0.15, 0.0, 0.005, 0.0);
-  movestraight.moveTo(300);
+  linetracer.runToColor(30, 0.3, 0.0, 0.005, 0.0);
+  linetracer.runToSpecifiedColor(Color::black, 30, 0.3, 0.0, 0.005, 0.0);
+  linetracer.runToSpecifiedColor(Color::white, 30, 0.3, 0.0, 0.005, 0.0);
+  movestraight.moveTo(250);
 }

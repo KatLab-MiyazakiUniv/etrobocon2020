@@ -24,16 +24,16 @@ void BlockBingo::runBlockBingo()
   vector<pair<Coordinate, Coordinate>> transportList;  // 運搬先リスト
 
   // 実験用
-  // blockBingoData.setBlock(Coordinate(0, 0), Block(Color::blue, -1));
-  // blockBingoData.setBlock(Coordinate(4, 0), Block(Color::black, -1));
-  // blockBingoData.setBlock(Coordinate(2, 2), Block(Color::green, -1));
-  // blockBingoData.setBlock(Coordinate(6, 2), Block(Color::red, -1));
-  // blockBingoData.setBlock(Coordinate(0, 4), Block(Color::red, -1));
-  // blockBingoData.setBlock(Coordinate(4, 4), Block(Color::yellow, -1));
-  // blockBingoData.setBlock(Coordinate(2, 6), Block(Color::blue, -1));
-  // blockBingoData.setBlock(Coordinate(6, 6), Block(Color::black, 6));
-  // blockBingoData.setBlock(Coordinate(5, 3), Block(Color::yellow, -1));
-  // blockBingoData.setBlock(Coordinate(3, 5), Block(Color::green, -1));
+  blockBingoData.setBlock(Coordinate(0, 0), Block(Color::blue, -1));
+  blockBingoData.setBlock(Coordinate(4, 0), Block(Color::black, -1));
+  blockBingoData.setBlock(Coordinate(2, 2), Block(Color::green, -1));
+  blockBingoData.setBlock(Coordinate(6, 2), Block(Color::red, -1));
+  blockBingoData.setBlock(Coordinate(0, 4), Block(Color::red, -1));
+  blockBingoData.setBlock(Coordinate(4, 4), Block(Color::yellow, -1));
+  blockBingoData.setBlock(Coordinate(2, 6), Block(Color::blue, -1));
+  blockBingoData.setBlock(Coordinate(6, 6), Block(Color::black, 6));
+  blockBingoData.setBlock(Coordinate(5, 3), Block(Color::yellow, -1));
+  blockBingoData.setBlock(Coordinate(3, 5), Block(Color::green, -1));
   //　実験用
 
   // 運搬先リストを生成
@@ -61,6 +61,7 @@ void BlockBingo::runBlockBingo()
     blockBingoData.setDirection(Direction::NEast);
     blockBingoData.setCoordinate(Coordinate(entranceX + 1, 6));
   }
+  controller.resetMotorCount();
 
   // 実際に運搬を開始する
   Coordinate start, goal;                   // スタート座標,ゴール座標
@@ -174,7 +175,7 @@ vector<pair<Coordinate, Coordinate>> BlockBingo::transportCalculate(
   int candidate1, candidate2;
   int cardNumber = blockBingoData.getCardNumber();
 
-  setPair1 = { blockList[0][0], blockBingoData.numberToCoordinate(cardNumber) };
+  setPair1 = { blockList[0][0], blockBingoData.numberToCoordinate(3) };
   transportList.push_back(setPair1);
 
   for(int i = 1; i < 5; i++) {

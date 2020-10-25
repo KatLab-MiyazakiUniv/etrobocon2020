@@ -18,36 +18,33 @@ Navigator::Navigator(Controller& controller_, bool isLeftCourse_)
 void Navigator::enterStraight()
 {
   controller.resetMotorCount();
-  lineTracer.runToColor(30, 0.25, 0.005, 0.01, 0.0);
+  lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
   printf("ビンゴエリアにまっすぐ進入\n");
-  controller.stopMotor();
 }
 
 void Navigator::enterLeft()
 {
   controller.resetMotorCount();
-  lineTracer.run({ 70, 30, 0.0, { 0.25, 0.005, 0.01 } });
+  lineTracer.run({ 70, 30, 0.0, { 0.3, 0.005, 0.01 } });
   changeDirection(45, false, 100, false);
   moveStraight.moveTo(215, 30);
   printf("ビンゴエリアに左から進入\n");
-  controller.stopMotor();
 }
 
 void Navigator::enterRight()
 {
   controller.resetMotorCount();
-  lineTracer.run({ 70, 30, 0.0, { 0.25, 0.005, 0.01 } });
+  lineTracer.run({ 70, 30, 0.0, { 0.3, 0.005, 0.01 } });
   changeDirection(45, true, 100, false);
   moveStraight.moveTo(215, 30);
   printf("ビンゴエリアに右進入\n");
-  controller.stopMotor();
 }
 
 void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise, int pwm, bool needCorrection)
 {
   int correction = 0;
   if(needCorrection) {
-    int correction = (clockwise || lineTracer.getIsLeftEdge()) && (!clockwise || !lineTracer.getIsLeftEdge()) ? 3 : -3;
+    int correction = (clockwise || lineTracer.getIsLeftEdge()) && (!clockwise || !lineTracer.getIsLeftEdge()) ? 5 : -5;
     rotationAngle += correction;
   }
   rotation.rotate(rotationAngle, clockwise, pwm);
@@ -57,14 +54,14 @@ void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise, int 
 void Navigator::changeDirectionWithBlock(unsigned int rotationAngle, bool clockwise)
 {
   if(rotationAngle == 0) {
-    moveStraight.moveTo(250, 15);
+    moveStraight.moveTo(250, 30);
     // printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
   } else if(rotationAngle == 90) {
     rotation.pivotTurn(rotationAngle, clockwise, 30);
     lineTracer.setIsLeftEdge(!clockwise);
     // printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
   } else if(rotationAngle == 180) {
-    moveStraight.moveTo(40, 15);
+    moveStraight.moveTo(40, 30);
     rotation.rotate(rotationAngle, clockwise, 10);
     // printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
     lineTracer.setIsLeftEdge(!lineTracer.getIsLeftEdge());
@@ -77,27 +74,27 @@ void Navigator::changeDirectionWithBlock(unsigned int rotationAngle, bool clockw
 void Navigator::moveC2M()
 {
   
-  lineTracer.run({ 175, 20, 0.0, { 0.25, 0.005, 0.01 } });
+  lineTracer.run({ 175, 30, 0.0, { 0.3, 0.005, 0.01 } });
   // printf("交点サークルから中点への移動\n");
 }
 
 void Navigator::moveC2MWithBlock()
 {
   
-  lineTracer.run({ 100, 20, 0.0, { 0.25, 0.005, 0.01 } });
+  lineTracer.run({ 100, 30, 0.0, { 0.3, 0.005, 0.01 } });
   // printf("交点サークルから中点への移動withBlock\n");
 }
 
 void Navigator::getBlockFromC()
 {
-  moveStraight.moveTo(270, 20);
+  moveStraight.moveTo(270, 30);
   // printf("交点サークルからブロックサークルのブロックを取得\n");
 }
 
 void Navigator::setBlockFromC(int rotationAngle, bool clockwise)
 {
   if(rotationAngle == 45) {
-    moveStraight.moveTo(40, 30);
+    moveStraight.moveTo(50, 30);
     rotation.pivotTurnArm(45, clockwise, 60);
     lineTracer.setIsLeftEdge(!clockwise);
   } else if(rotationAngle == 135) {
@@ -115,15 +112,15 @@ void Navigator::setBlockFromC(int rotationAngle, bool clockwise)
 void Navigator::moveM2C()
 {
   
-  lineTracer.runToColor(20, 0.25, 0.005, 0.01, 0.0);
-  moveStraight.moveTo(100, 30);
+  lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
+  moveStraight.moveTo(90, 30);
   // printf("中点から交点サークルへの移動\n");
 }
 
 void Navigator::moveM2CWithBlock()
 {
   
-  lineTracer.runToColor(20, 0.25, 0.005, 0.01, 0.0);
+  lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
   // printf("中点から交点サークルへの移動withBlock\n");
 }
 
@@ -143,7 +140,7 @@ void Navigator::setBlockFromM()
 {
   moveStraight.moveTo(125, 30);
   controller.tslpTsk(500000);
-  moveStraight.moveTo(-100, 30);
+  moveStraight.moveTo(-125, 30);
   // printf("中点からブロックサークルにブロックを設置\n");
 }
 
