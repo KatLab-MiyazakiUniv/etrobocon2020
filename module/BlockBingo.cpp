@@ -54,7 +54,7 @@ void BlockBingo::runBlockBingo()
   vector<MotionCommand> motionCommandList;  // 動作変換結果を格納するリスト
   Direction direction;
   Coordinate afterGoal;  // ブロックを運搬後にいる座標
-  while((int)transportList.size() > 1) {
+  while((int)transportList.size() != 0) {
     nearPoint = popCoordinate(transportList);
     start = transportList[nearPoint].first;
     goal = transportList[nearPoint].second;
@@ -79,6 +79,13 @@ void BlockBingo::runBlockBingo()
     // ブロックを運搬する
     current = blockBingoData.getCoordinate();                 // 現在地を取得
     routeCalculator.solveBlockBingo(routeList, start, goal);  //ブロック→運搬先の経路計算
+    // ここは後で消せよーーーーーーーーーーーーーーーーーーーーーー
+    printf("(%d,%d)", routeList[0].x, routeList[0].y);
+    for(int k = 1; k < (int)routeList.size(); k++) {
+      printf("→(%d,%d)", routeList[k].x, routeList[k].y);
+    }
+    printf("\n");
+    // ここまで消せよーーーーーーーーーーーーーーーーーーーーーーー
     motionCommandList.clear();
     direction = motionSequencer.route2MotionCommand(routeList, motionCommandList);
     navigator.execMotion(motionCommandList);
@@ -196,7 +203,7 @@ int BlockBingo::manhattanDistance(Coordinate coordinateFrom, Coordinate coordina
 int BlockBingo::popCoordinate(vector<pair<Coordinate, Coordinate>> const& transportList)
 {
   Coordinate currentCoordinate = blockBingoData.getCoordinate();  //現在座標を取得
-  int minPoint = 1;  // リスト番号（0は黒ブロックの運搬先が入ってるのでスキップする）
+  int minPoint = 0;
   int min = manhattanDistance(currentCoordinate, transportList[minPoint].first);
   int temp;
   Block blockFrom, blockTo;
