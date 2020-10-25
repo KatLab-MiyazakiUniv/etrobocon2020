@@ -11,61 +11,9 @@ Navigator::Navigator(Controller& controller_, bool isLeftCourse_)
     isLeftCourse(isLeftCourse_),
     isLeftEdge(!isLeftCourse_),
     moveStraight(controller_),
-    lineTracer(controller_, controller_.getTargetBrightness(), !isLeftCourse_),
+    lineTracer(controller_, controller_.getTargetBrightness(), isLeftCourse_),
     rotation(controller_)
 {
-}
-
-void Navigator::execMotion(vector<MotionCommand> const& motionCommandList)
-{
-  for(unsigned int i = 0; i < motionCommandList.size(); i++) {
-    MotionCommand motionCommand = motionCommandList[i];
-    int countRepeated = 0;
-    switch(motionCommand) {
-      case MotionCommand::RT:
-        // 連続するRTはまとめて回頭する
-        countRepeated = countRepeatedCommand(motionCommandList, i);
-        changeDirection(abs(45 * countRepeated), true);
-        i += countRepeated - 1;
-        break;
-      case MotionCommand::RF:
-        // 連続するRFはまとめて回頭する
-        countRepeated = countRepeatedCommand(motionCommandList, i);
-        changeDirection(abs(45 * countRepeated), false);
-        i += countRepeated - 1;
-        break;
-      case MotionCommand::CM:
-        moveC2M();
-        break;
-      case MotionCommand::GC:
-        getBlockFromC();
-        break;
-      case MotionCommand::SC:
-        setBlockFromC();
-        break;
-      case MotionCommand::MC:
-        moveM2C();
-        break;
-      case MotionCommand::MM:
-        moveM2M();
-        break;
-      case MotionCommand::GM:
-        getBlockFromM();
-        break;
-      case MotionCommand::SM:
-        setBlockFromM();
-        break;
-      case MotionCommand::BC:
-        moveB2C();
-        break;
-      case MotionCommand::BM:
-        moveB2M();
-        break;
-      default:
-        break;
-    }
-    controller.tslpTsk(4000);
-  }
 }
 
 void Navigator::enterStraight()
@@ -89,21 +37,29 @@ void Navigator::enterRight()
   moveStraight.moveTo(215, 30);
 }
 
-int Navigator::countRepeatedCommand(vector<MotionCommand> const& motionCommandList, int startIndex)
-{
-  MotionCommand startCommand = motionCommandList[startIndex];
-  int count = 1;
-  for(unsigned int i = startIndex + 1; i < motionCommandList.size(); i++) {
-    if(motionCommandList[i] != startCommand) break;
-    count++;
-  }
-  return count;
-}
-
 void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise)
 {
   rotation.rotate(rotationAngle, clockwise, 15);
   printf("方向転換 %d° %d\n", rotationAngle, clockwise);
+}
+
+void Navigator::changeDirectionWithBlock(unsigned int rotationAngle, bool clockwise)
+{
+  if(rotationAngle == 0) {
+    moveStraight.moveTo(250, 15);
+    printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
+  } else if(rotationAngle == 90) {
+    // rotation.pivotTurn(rotationAngle, clockwise, 30);
+    lineTracer.setIsLeftEdge(!clockwise);
+    printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
+  } else if(rotationAngle == 180) {
+    rotation.rotate(rotationAngle, clockwise, 5);
+    printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
+    lineTracer.setIsLeftEdge(!lineTracer.getIsLeftEdge());
+  } else {
+    // 何もしない
+  }
+  // rotation.rotate(rotationAngle, clockwise, 15);
 }
 
 void Navigator::moveC2M()
@@ -112,17 +68,33 @@ void Navigator::moveC2M()
   printf("交点サークルから中点への移動\n");
 }
 
+void Navigator::moveC2MWithBlock()
+{
+  lineTracer.run({ 100, 30, 0.0, { 0.2, 0.005, 0.01 } });
+  printf("交点サークルから中点への移動withBlock\n");
+}
+
 void Navigator::getBlockFromC()
 {
   moveStraight.moveTo(186, 30);
   printf("交点サークルからブロックサークルのブロックを取得\n");
 }
 
-void Navigator::setBlockFromC()
+void Navigator::setBlockFromC(int rotationAngle, bool clockwise)
 {
-  moveStraight.moveTo(185, 15);
-  moveStraight.moveTo(-170, 15);
-  printf("交点サークルからブロックサークルにブロックを設置\n");
+  if(rotationAngle == 45) {
+    moveStraight.moveTo(40, 30);
+    // アーム有りピボットターン
+    // rotation.pivotTurn(45, clockwise, 60);
+  } else if(rotationAngle == 135) {
+    // rotation.pivotTurn(180, clockwise, 30);
+    // rotation.pivotTurnBack(90, !clockwise, 30);
+    moveStraight.moveTo(-50, 30);
+  } else {
+    // なし
+  }
+  printf("交点サークルからブロックサークルにブロックを設置 angle:%d clockwise:%d\n", rotationAngle,
+         clockwise);
 }
 
 void Navigator::moveM2C()
@@ -130,6 +102,12 @@ void Navigator::moveM2C()
   lineTracer.runToColor(30, 0.2, 0.005, 0.01, 0.0);
   moveStraight.moveTo(100, 30);
   printf("中点から交点サークルへの移動\n");
+}
+
+void Navigator::moveM2CWithBlock()
+{
+  lineTracer.runToColor(30, 0.2, 0.005, 0.01, 0.0);
+  printf("中点から交点サークルへの移動withBlock\n");
 }
 
 void Navigator::moveM2M()
@@ -161,4 +139,15 @@ void Navigator::moveB2M()
 {
   moveStraight.moveTo(145, 30);
   printf("ブロックサークルから中点への移動\n");
+}
+
+int Navigator::countRepeatedCommand(vector<MotionCommand> const& motionCommandList, int startIndex)
+{
+  MotionCommand startCommand = motionCommandList[startIndex];
+  int count = 1;
+  for(unsigned int i = startIndex + 1; i < motionCommandList.size(); i++) {
+    if(motionCommandList[i] != startCommand) break;
+    count++;
+  }
+  return count;
 }

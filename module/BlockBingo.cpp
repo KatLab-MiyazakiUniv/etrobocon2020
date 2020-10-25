@@ -15,13 +15,26 @@ BlockBingo::BlockBingo(Controller& controller_, bool isLeftCourse_)
 void BlockBingo::runBlockBingo()
 {
   RouteCalculator routeCalculator(blockBingoData);
-  MotionSequencer motionSequencer(blockBingoData);
+  MotionSequencer motionSequencer(controller, isLeftCourse, blockBingoData);
   Navigator navigator(controller, isLeftCourse);
 
   blockBingoData.initBlockBingoData();
   array<array<Coordinate, 2>, 5> blockColorList;       // 色別のブロック座標リスト
   array<array<Coordinate, 2>, 5> circleColorList;      // 色別のサークルの座標リスト
   vector<pair<Coordinate, Coordinate>> transportList;  // 運搬先リスト
+
+  // 実験用
+  blockBingoData.setBlock(Coordinate(0, 0), Block(Color::blue, -1));
+  blockBingoData.setBlock(Coordinate(4, 0), Block(Color::black, -1));
+  blockBingoData.setBlock(Coordinate(2, 2), Block(Color::green, -1));
+  blockBingoData.setBlock(Coordinate(6, 2), Block(Color::red, -1));
+  blockBingoData.setBlock(Coordinate(0, 4), Block(Color::red, -1));
+  blockBingoData.setBlock(Coordinate(4, 4), Block(Color::yellow, -1));
+  blockBingoData.setBlock(Coordinate(2, 6), Block(Color::blue, -1));
+  blockBingoData.setBlock(Coordinate(6, 6), Block(Color::black, 6));
+  blockBingoData.setBlock(Coordinate(5, 3), Block(Color::yellow, -1));
+  blockBingoData.setBlock(Coordinate(3, 5), Block(Color::green, -1));
+  //　実験用
 
   // 運搬先リストを生成
   setColorList(blockColorList, circleColorList);
@@ -51,7 +64,7 @@ void BlockBingo::runBlockBingo()
   Coordinate start, goal;                   // スタート座標,ゴール座標
   Coordinate current;                       // スタート座標,ゴール座標
   vector<Coordinate> routeList;             // 経路計算結果を格納するリスト
-  vector<MotionCommand> motionCommandList;  // 動作変換結果を格納するリスト
+  vector<MotionCommand> motionCommandList;  // 動作命令を格納するリスト
   Direction direction;
   Coordinate afterGoal;  // ブロックを運搬後にいる座標
   while((int)transportList.size() > 1) {
@@ -70,9 +83,7 @@ void BlockBingo::runBlockBingo()
     }
     printf("\n");
     // ここまで消せよーーーーーーーーーーーーーーーーーーーーーーー
-    motionCommandList.clear();
-    direction = motionSequencer.route2MotionCommand(routeList, motionCommandList);
-    navigator.execMotion(motionCommandList);
+    direction = motionSequencer.route2Motion(routeList, motionCommandList);
     blockBingoData.setCoordinate(start);     // 現在地を更新
     blockBingoData.setDirection(direction);  // 現在の向きを更新
 
@@ -80,8 +91,7 @@ void BlockBingo::runBlockBingo()
     current = blockBingoData.getCoordinate();                 // 現在地を取得
     routeCalculator.solveBlockBingo(routeList, start, goal);  //ブロック→運搬先の経路計算
     motionCommandList.clear();
-    direction = motionSequencer.route2MotionCommand(routeList, motionCommandList);
-    navigator.execMotion(motionCommandList);
+    direction = motionSequencer.route2Motion(routeList, motionCommandList);
     afterGoal = routeList[(int)routeList.size() - 2];  // 運搬先の一つ前にいた座標
     blockBingoData.setCoordinate(afterGoal);           // 現在地を更新
     blockBingoData.setDirection(direction);            // 現在の向きを更新
@@ -94,23 +104,15 @@ void BlockBingo::runBlockBingo()
   Coordinate last = isLeftCourse ? Coordinate(0, 6) : Coordinate(6, 6);
   routeCalculator.solveBlockBingo(routeList, current, last);  //現在地→ガレージ直前座標の経路計算
   motionCommandList.clear();
-  direction = motionSequencer.route2MotionCommand(routeList, motionCommandList);
-  navigator.execMotion(motionCommandList);
+  direction = motionSequencer.route2Motion(routeList, motionCommandList);
   blockBingoData.setCoordinate(start);     // 現在地を更新
   blockBingoData.setDirection(direction);  // 現在の向きを更新
   Direction lastDirection = isLeftCourse ? Direction::South : Direction::East;
   int rotationCount = blockBingoData.calcRotationCount(direction, lastDirection);
-  motionCommandList.clear();
-  if(rotationCount > 0) {
-    for(int count = 0; count < abs(rotationCount); count++) {
-      motionCommandList.push_back(MotionCommand::RT);
-    }
-  } else if(rotationCount < 0) {
-    for(int count = 0; count < abs(rotationCount); count++) {
-      motionCommandList.push_back(MotionCommand::RF);
-    }
-  }
-  navigator.execMotion(motionCommandList);
+  int rotationAngle = rotationCount * 45;
+  bool clockwise = rotationCount >= 0;
+  navigator.changeDirection(rotationAngle, clockwise);
+
   blockBingoData.setDirection(lastDirection);  // 現在の向きを更新
 }
 

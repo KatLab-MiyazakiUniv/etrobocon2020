@@ -17,22 +17,23 @@ using std::vector;
 
 class MotionSequencer {
  public:
-  /** コンストラクタ
+  /**
+   * @brief  コンストラクタ
    * @param　controller_
-   * @param isLeftCourse
-   * @param blockBingoData_
+   * @param  isLeftCourse
+   * @param  blockBingoData_
    **/
-  MotionSequencer(BlockBingoData& blockBingoData_);
+  MotionSequencer(Controller& controller, bool isLeftCourse, BlockBingoData& blockBingoData_);
 
-  /** 経路->動作命令リスト変換
-   * @param route             [経路]
-   * @param motionCommandList [動作命令リスト]
-   * @return 最終的な走行体の向き
+  /**
+   * @brief   経路->走行体動作に変換
+   * @param   route [経路]
+   * @return  最終的な走行体の向き
    **/
-  Direction route2MotionCommand(vector<Coordinate> const& route,
-                                vector<MotionCommand>& motionCommandList);
+  Direction route2Motion(vector<Coordinate> const& route, vector<MotionCommand>& motionCommandList);
 
  private:
+  Navigator navigator;
   BlockBingoData& blockBingoData;
 };
 #endif  // MOTIONSEQUENCER_H

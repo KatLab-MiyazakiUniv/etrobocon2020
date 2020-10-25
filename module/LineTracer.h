@@ -82,10 +82,15 @@ class LineTracer {
   void runToSpecifiedColor(Color lineColor, int targetSpeed, double pGain, double iGain,
                            double dGain, double curvatureValue);
 
+  bool getIsLeftEdge();
+
+  void setIsLeftEdge(bool isLeftEdge_);
+
  private:
   Controller& controller;
   int targetBrightness;
   bool isLeftCourse;
+  bool isLeftEdge;
   Distance distance;
   TurnControl turnControl;
 };

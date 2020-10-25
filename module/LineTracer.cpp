@@ -10,6 +10,7 @@ LineTracer::LineTracer(Controller& controller_, int targetBrightness_, bool isLe
   : controller(controller_),
     targetBrightness(targetBrightness_),
     isLeftCourse(isLeftCourse_),
+    isLeftEdge(!isLeftCourse_),
     distance(),
     turnControl(targetBrightness_, 0.0, 0.0, 0.0)
 {
@@ -39,14 +40,14 @@ void LineTracer::run(const NormalCourseProperty& settings)
                                    settings.turnPid.Ki, settings.turnPid.Kd);
 
     // モータ出力の計算
-    if(isLeftCourse) {
-      // Leftコースの場合
-      leftPWM = speedValue + turnValue;
-      rightPWM = speedValue - turnValue;
-    } else {
-      // Rightコースの場合
+    if(isLeftEdge) {
+      // 左エッジの場合
       leftPWM = speedValue - turnValue;
       rightPWM = speedValue + turnValue;
+    } else {
+      // 右エッジの場合
+      leftPWM = speedValue + turnValue;
+      rightPWM = speedValue - turnValue;
     }
     // PWM値の設定
     controller.setLeftMotorPwm(leftPWM);
@@ -103,14 +104,14 @@ void LineTracer::runToColor(int targetSpeed, double pGain, double iGain, double 
     turnValue = calculateTurnValue(speedValue, curvatureValue, pGain, iGain, dGain);
 
     // モータ出力の計算
-    if(isLeftCourse) {
-      // Leftコースの場合
-      leftPWM = speedValue + turnValue;
-      rightPWM = speedValue - turnValue;
-    } else {
-      // Rightコースの場合
+    if(isLeftEdge) {
+      // 左エッジの場合
       leftPWM = speedValue - turnValue;
       rightPWM = speedValue + turnValue;
+    } else {
+      // 右エッジの場合
+      leftPWM = speedValue + turnValue;
+      rightPWM = speedValue - turnValue;
     }
     // PWM値の設定
     controller.setLeftMotorPwm(leftPWM);
@@ -141,14 +142,14 @@ void LineTracer::runToSpecifiedColor(Color targetColor, int targetSpeed, double 
     turnValue = calculateTurnValue(speedValue, curvatureValue, pGain, iGain, dGain);
 
     // モータ出力の計算
-    if(isLeftCourse) {
-      // Leftコースの場合
-      leftPWM = speedValue + turnValue;
-      rightPWM = speedValue - turnValue;
-    } else {
-      // Rightコースの場合
+    if(isLeftEdge) {
+      // 左エッジの場合
       leftPWM = speedValue - turnValue;
       rightPWM = speedValue + turnValue;
+    } else {
+      // 右エッジの場合
+      leftPWM = speedValue + turnValue;
+      rightPWM = speedValue - turnValue;
     }
     // PWM値の設定
     controller.setLeftMotorPwm(leftPWM);
@@ -159,4 +160,14 @@ void LineTracer::runToSpecifiedColor(Color targetColor, int targetSpeed, double 
 
     controller.tslpTsk(4000);
   }
+}
+
+bool LineTracer::getIsLeftEdge()
+{
+  return isLeftEdge;
+}
+
+void LineTracer::setIsLeftEdge(bool isLeftEdge_)
+{
+  isLeftEdge = isLeftEdge_;
 }

@@ -16,13 +16,18 @@ using std::abs;
 using std::vector;
 
 enum class MotionCommand {
-  RT,  // 時計回りに45°方向転換(Rotation True)
-  RF,  // 反時計回りに45°方向転換(Rotation False)
-  CM,  // 交点サークル→中点の移動(Cross circle to Middle point)
+  RT,    // 時計回りに45°方向転換(Rotation True)
+  RF,    // 反時計回りに45°方向転換(Rotation False)
+  RTWB,  // ブロック有り時計回りに方向転換
+  RFWB,  // ブロック有り反時計回りに方向転換
+  RNWB,  // ブロック有り方向転換なし
+  CM,    // 交点サークル→中点の移動(Cross circle to Middle point)
+  CMWB,  // 交点サークル→中点の移動(ブロック有り)
   GC,  // 交点サークルからブロックサークルのブロックを取得する(Get block from Cross circle)
   SC,  // 交点サークルからブロックサークルにブロックを設置する(Set block from Cross circle)
   MC,  // 中点→交点サークルの移動(Middle point to Cross circle)
-  MM,  // 中点→中点の移動(Midlle point to Middle point)
+  MCWB,  // 中点→交点サークルの移動(ブロック有り)
+  MM,    // 中点→中点の移動(Midlle point to Middle point)
   GM,  // 中点からブロックサークルのブロックを取得する(Get block from Middle point)
   SM,  // 中点からブロックサークルにブロックを設置する(Set block from Middle point)
   BC,  // ブロックサークル→交点サークルの移動(Block circle to Cross circle)
@@ -62,21 +67,6 @@ class Navigator {
    */
   void enterRight();
 
- private:
-  Controller& controller;
-  bool isLeftCourse;
-  bool isLeftEdge;
-  MoveStraight moveStraight;
-  LineTracer lineTracer;
-  Rotation rotation;
-
-  /**
-   * @brief 同じ動作命令が連続して繰り返されている回数を数える
-   * @param motionCommandList [動作命令リスト]
-   * @param startIndex [カウントを始めるインデックス]
-   */
-  int countRepeatedCommand(vector<MotionCommand> const& motionCommandList, int startIndex);
-
   /**
    * @brief 方向転換
    * @param rotationAngle [方向転換に必要な角度]
@@ -85,9 +75,21 @@ class Navigator {
   void changeDirection(unsigned int rotationAngle, bool clockwise);
 
   /**
+   * @brief 方向転換(交点サークルにいる、かつ、ブロックを保持しているとき)
+   * @param rotationAngle [方向転換に必要な角度]
+   * @param clockwise     [方向転換の向き、正=時計回り、負=反時計回り]
+   */
+  void changeDirectionWithBlock(unsigned int rotationAngle, bool clockwise);
+
+  /**
    * @brief 交点サークルから中点への移動
    */
   void moveC2M();
+
+  /**
+   * @brief 交点サークルから中点への移動(ブロック保持時)
+   */
+  void moveC2MWithBlock();
 
   /**
    * @brief 交点サークルからブロックサークルのブロックを取得する
@@ -97,12 +99,17 @@ class Navigator {
   /**
    * @brief 交点サークルからブロックサークルにブロックを設置する
    */
-  void setBlockFromC();
+  void setBlockFromC(int rotationAngle, bool clockwise);
 
   /**
    * @brief 中点から交点サークルへの移動
    */
   void moveM2C();
+
+  /**
+   * @brief 中点から交点サークルへの移動(ブロック保持時)
+   */
+  void moveM2CWithBlock();
 
   /**
    * @brief 中点から中点への移動
@@ -128,6 +135,21 @@ class Navigator {
    * @brief ブロックサークルから中点への移動
    */
   void moveB2M();
+
+ private:
+  Controller& controller;
+  bool isLeftCourse;
+  bool isLeftEdge;
+  MoveStraight moveStraight;
+  LineTracer lineTracer;
+  Rotation rotation;
+
+  /**
+   * @brief 同じ動作命令が連続して繰り返されている回数を数える
+   * @param motionCommandList [動作命令リスト]
+   * @param startIndex [カウントを始めるインデックス]
+   */
+  int countRepeatedCommand(vector<MotionCommand> const& motionCommandList, int startIndex);
 };
 
 #endif
