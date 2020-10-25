@@ -66,7 +66,6 @@ void Rotation::pivotTurnBack(int angle, bool clockwise, int pwm)
 
 void Rotation::pivotTurnRun(int angle, int leftPwm, int rightPwm, int targetMotorCount)
 {
-  // angleの絶対値をとる
   int motorCountAve = 0;
   controller.resetMotorCount();
 
@@ -76,11 +75,35 @@ void Rotation::pivotTurnRun(int angle, int leftPwm, int rightPwm, int targetMoto
     controller.setRightMotorPwm(rightPwm);
     controller.tslpTsk(4000);
 
-    printf("left:%d, right:%d\n", controller.getLeftMotorCount(), controller.getRightMotorCount());
     motorCountAve
         = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
   }
   controller.stopMotor();
+}
+
+void Rotation::pivotTurnArm(int angle, bool clockwise, int pwm)
+{
+  // angleの絶対値をとる
+  angle = abs(angle);
+  int leftPwm = clockwise ? pwm : -1;
+  int rightPwm = clockwise ? -1 : pwm;
+  double targetMotorCount = calculate(angle);
+  int motorCountAve = 0;
+
+  controller.resetMotorCount();
+
+  // 両輪が止まるまでループ
+  while(motorCountAve < targetMotorCount) {
+    controller.setLeftMotorPwm(leftPwm);
+    controller.setRightMotorPwm(rightPwm);
+    controller.setArmMotorPwm(100);
+    controller.tslpTsk(4000);
+
+    motorCountAve
+        = (abs(controller.getLeftMotorCount()) + abs(controller.getRightMotorCount())) / 2;
+  }
+  controller.stopMotor();
+  controller.setArmMotorPwm(0);
 }
 
 double Rotation::calculate(int angle)
