@@ -116,7 +116,7 @@ void BlockBingo::runBlockBingo()
   direction = motionSequencer.route2Motion(routeList, motionCommandList);
   blockBingoData.setCoordinate(start);     // 現在地を更新
   blockBingoData.setDirection(direction);  // 現在の向きを更新
-  Direction lastDirection = isLeftCourse ? Direction::South : Direction::East;
+  Direction lastDirection = isLeftCourse ? Direction::West : Direction::East;
   int rotationCount = blockBingoData.calcRotationCount(direction, lastDirection);
   int rotationAngle = rotationCount * 45;
   bool clockwise = rotationCount >= 0;

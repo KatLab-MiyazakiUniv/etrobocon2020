@@ -45,20 +45,20 @@ namespace etrobocon2020_test {
     // PI制御を行なうオブジェクトの作成
     Pid pi(80, 0.6, 0.05);
     float sensor = 60;
-    float expected = (80 - sensor) * 0.6 + (80 - sensor) * 0.05 * 0.004;
+    float expected = (80 - sensor) * 0.6 + (80 - sensor) * 0.05 * 0.01;
     ASSERT_FLOAT_EQ(expected, pi.control(sensor));
   }
 
   TEST(Pid, pidControl)
   {
     // PID制御を行なうオブジェクトの作成
-    Pid pid(80, 0.6, 0.05, 0.004);
+    Pid pid(80, 0.6, 0.05, 0.01);
     float sensor = 60;
     float error = 80 - 60;
 
     float p = error * 0.6;
-    float i = error * 0.004 * 0.05;
-    float d = error / 0.004 * 0.004;
+    float i = error * 0.01 * 0.05;
+    float d = error / 0.01 * 0.01;
     float expected = p + i + d;
 
     ASSERT_FLOAT_EQ(expected, pid.control(sensor));

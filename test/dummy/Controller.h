@@ -269,7 +269,7 @@ class Controller {
     }
     return false;
   };
-  void tslpTsk(int time)
+  void tslpTsk(int time=10000)
   {
     exitCounter++;
     if(exitCounter > exitCountLimit) std::exit(1);
