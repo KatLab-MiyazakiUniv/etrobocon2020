@@ -141,7 +141,7 @@ int RouteCalculator::moveCost(Coordinate coordinate, Coordinate nextCoordinate,
       route[coordinate.y][coordinate.x].currentDirection, nextDirection));
   cost += diffDirection;  // 45度でコスト+1
   if((diffDirection == 4) && (hasBlock)) {
-    cost += 3;  // ブロックを持っているときの180度回頭はコストを高く設定する
+    cost += 50;  // ブロックを持っているときの180度回頭はコストを高く設定する
   }
 
   // nextCoordinateに到達したときの走行体の向きをセット
