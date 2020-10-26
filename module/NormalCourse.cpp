@@ -103,10 +103,6 @@ void NormalCourse::runNormalCourse()
   // 位置を微調整し、機体をブロックビンゴエリアの方向へ向かせる
   movestraight.moveTo(50);
   rotation.rotate(90, isLeftCourse);
-
-  // モータ回転数をリセットし、ブロックビンゴエリア手前の黒線の半分をライントレースする
-  controller.resetMotorCount();
-  lineTracer.run({ 70, baseSpeed - 70, 0.0, { 0.2, 0.01, 0.4 } });
 }
 
 /**
