@@ -59,7 +59,7 @@ void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise, int 
 void Navigator::changeDirectionWithBlock(unsigned int rotationAngle, bool clockwise)
 {
   if(rotationAngle == 0) {
-    moveStraight.moveTo(180, 30);
+    moveStraight.moveTo(150, 30);
   } else if(rotationAngle == 90) {
     rotation.pivotTurn(rotationAngle, clockwise, 30);
     lineTracer.setIsLeftEdge(!clockwise);
@@ -127,9 +127,9 @@ void Navigator::getBlockFromM()
 
 void Navigator::setBlockFromM()
 {
-  moveStraight.moveTo(125, 30);
+  moveStraight.moveTo(105, 30);
   controller.tslpTsk(500000);
-  moveStraight.moveTo(-125, 30);
+  moveStraight.moveTo(-105, 30);
 }
 
 void Navigator::moveB2C()
