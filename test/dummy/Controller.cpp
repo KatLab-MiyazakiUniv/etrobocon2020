@@ -52,3 +52,5 @@ void Controller::setTargetBrightness(int brightness_)
 {
   targetBrightness = brightness_;
 }
+
+void Controller::keepArm(void) {}

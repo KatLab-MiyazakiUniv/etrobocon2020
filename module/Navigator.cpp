@@ -17,6 +17,7 @@ Navigator::Navigator(Controller& controller_, bool isLeftCourse_)
 
 void Navigator::enterStraight()
 {
+  controller.keepArm();
   controller.resetMotorCount();
   lineTracer.runToColor(30, 0.25, 0.005, 0.01, 0.0);
   printf("ビンゴエリアにまっすぐ進入\n");
@@ -24,27 +25,41 @@ void Navigator::enterStraight()
 
 void Navigator::enterLeft()
 {
+<<<<<<< HEAD
   controller.resetMotorCount();
   lineTracer.run({ 70, 30, 0.0, { 0.25, 0.005, 0.01 } });
+=======
+  controller.keepArm();
+  moveStraight.moveTo(70);
+>>>>>>> 3877747a92e24cf6de781c5d9d8b8ec029e233ba
   changeDirection(45, false, 100, false);
-  moveStraight.moveTo(215, 30);
+  moveStraight.moveTo(250, 30);
   printf("ビンゴエリアに左から進入\n");
 }
 
 void Navigator::enterRight()
 {
+<<<<<<< HEAD
   controller.resetMotorCount();
   lineTracer.run({ 70, 30, 0.0, { 0.25, 0.005, 0.01 } });
+=======
+  controller.keepArm();
+  moveStraight.moveTo(70);
+>>>>>>> 3877747a92e24cf6de781c5d9d8b8ec029e233ba
   changeDirection(45, true, 100, false);
-  moveStraight.moveTo(215, 30);
-  printf("ビンゴエリアに右進入\n");
+  moveStraight.moveTo(250, 30);
+  printf("ビンゴエリアに右から進入\n");
 }
 
-void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise, int pwm, bool needCorrection)
+void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise, int pwm,
+                                bool needCorrection)
 {
   int correction = 0;
   if(needCorrection) {
-    int correction = (clockwise || lineTracer.getIsLeftEdge()) && (!clockwise || !lineTracer.getIsLeftEdge()) ? 5 : -5;
+    int correction
+        = (clockwise || lineTracer.getIsLeftEdge()) && (!clockwise || !lineTracer.getIsLeftEdge())
+              ? 5
+              : -5;
     rotationAngle += correction;
   }
   rotation.rotate(rotationAngle, clockwise, pwm);
@@ -73,15 +88,23 @@ void Navigator::changeDirectionWithBlock(unsigned int rotationAngle, bool clockw
 
 void Navigator::moveC2M()
 {
+<<<<<<< HEAD
   
   lineTracer.run({ 175, 30, 0.0, { 0.25, 0.005, 0.01 } });
+=======
+  lineTracer.run({ 175, 30, 0.0, { 0.3, 0.005, 0.01 } });
+>>>>>>> 3877747a92e24cf6de781c5d9d8b8ec029e233ba
   // printf("交点サークルから中点への移動\n");
 }
 
 void Navigator::moveC2MWithBlock()
 {
+<<<<<<< HEAD
   
   lineTracer.run({ 100, 30, 0.0, { 0.25, 0.005, 0.01 } });
+=======
+  lineTracer.run({ 100, 30, 0.0, { 0.3, 0.005, 0.01 } });
+>>>>>>> 3877747a92e24cf6de781c5d9d8b8ec029e233ba
   // printf("交点サークルから中点への移動withBlock\n");
 }
 
@@ -105,22 +128,31 @@ void Navigator::setBlockFromC(int rotationAngle, bool clockwise)
   } else {
     // なし
   }
-  // printf("交点サークルからブロックサークルにブロックを設置 angle:%d clockwise:%d\n", rotationAngle,
-        //  clockwise);
+  // printf("交点サークルからブロックサークルにブロックを設置 angle:%d clockwise:%d\n",
+  // rotationAngle,
+  //  clockwise);
 }
 
 void Navigator::moveM2C()
 {
+<<<<<<< HEAD
   
   lineTracer.runToColor(30, 0.25, 0.005, 0.01, 0.0);
+=======
+  lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
+>>>>>>> 3877747a92e24cf6de781c5d9d8b8ec029e233ba
   moveStraight.moveTo(90, 30);
   // printf("中点から交点サークルへの移動\n");
 }
 
 void Navigator::moveM2CWithBlock()
 {
+<<<<<<< HEAD
   
   lineTracer.runToColor(30, 0.25, 0.005, 0.01, 0.0);
+=======
+  lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
+>>>>>>> 3877747a92e24cf6de781c5d9d8b8ec029e233ba
   // printf("中点から交点サークルへの移動withBlock\n");
 }
 

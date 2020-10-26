@@ -269,7 +269,7 @@ class Controller {
     }
     return false;
   };
-  void tslpTsk(int time=10000)
+  void tslpTsk(int time = 10000)
   {
     exitCounter++;
     if(exitCounter > exitCountLimit) std::exit(1);
@@ -386,6 +386,8 @@ class Controller {
    * @note    dummy Controllerでは、競技規約p26の図6-5:初期配置の例(Lコース)の配置情報を返す
    */
   int getCourseInfo(ETROBOC_COURSE_INFO_ID id);
+
+  void keepArm();
 
   /**
    * @brief   競技終了通知をシミュレータに送信する

@@ -402,6 +402,10 @@ bool BlockBingoData::setCoordinate(Coordinate coordinate_)
 
 Coordinate BlockBingoData::numberToCoordinate(int circleNumber)
 {
+  if((circleNumber < 1) || (circleNumber > 8)) {
+    printf("[ERROR] This number is not of range\n");
+    return Coordinate(1, 1);
+  }
   return initBlockCircleCoordinate[circleNumber - 1];
 }
 
