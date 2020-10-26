@@ -13,9 +13,9 @@
 void EtRobocon2020::start()
 {
   // コースを設定(Lコース:ture, Rコース:false)
-  constexpr bool isLeftCourse = true;
+  constexpr bool isLeftCourse = false;
   // 白黒の基準値として実測値を設定
-  constexpr rgb_raw_t standardWhite = { 108, 104, 149 };
+  constexpr rgb_raw_t standardWhite = { 124, 118, 167 };
   constexpr rgb_raw_t standardBlack = { 4, 5, 8 };
   // 明るさの目標値を設定
   constexpr int targetBrightness = (255 - 0) / 2;
@@ -41,7 +41,7 @@ void EtRobocon2020::start()
   Parking parking(isLeftCourse, controller, targetBrightness);
   parking.parkInGarage();
 
-  controller.tslpTsk(3000000);
+  controller.tslpTsk(5000000);
 
   // 競技終了通知を送信する
   controller.notifyCompleted();
