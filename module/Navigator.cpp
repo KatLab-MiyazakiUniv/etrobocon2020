@@ -18,14 +18,14 @@ Navigator::Navigator(Controller& controller_, bool isLeftCourse_)
 void Navigator::enterStraight()
 {
   controller.resetMotorCount();
-  lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
+  lineTracer.runToColor(30, 0.25, 0.005, 0.01, 0.0);
   printf("ビンゴエリアにまっすぐ進入\n");
 }
 
 void Navigator::enterLeft()
 {
   controller.resetMotorCount();
-  lineTracer.run({ 70, 30, 0.0, { 0.3, 0.005, 0.01 } });
+  lineTracer.run({ 70, 30, 0.0, { 0.25, 0.005, 0.01 } });
   changeDirection(45, false, 100, false);
   moveStraight.moveTo(215, 30);
   printf("ビンゴエリアに左から進入\n");
@@ -34,7 +34,7 @@ void Navigator::enterLeft()
 void Navigator::enterRight()
 {
   controller.resetMotorCount();
-  lineTracer.run({ 70, 30, 0.0, { 0.3, 0.005, 0.01 } });
+  lineTracer.run({ 70, 30, 0.0, { 0.25, 0.005, 0.01 } });
   changeDirection(45, true, 100, false);
   moveStraight.moveTo(215, 30);
   printf("ビンゴエリアに右進入\n");
@@ -74,14 +74,14 @@ void Navigator::changeDirectionWithBlock(unsigned int rotationAngle, bool clockw
 void Navigator::moveC2M()
 {
   
-  lineTracer.run({ 175, 30, 0.0, { 0.3, 0.005, 0.01 } });
+  lineTracer.run({ 175, 30, 0.0, { 0.25, 0.005, 0.01 } });
   // printf("交点サークルから中点への移動\n");
 }
 
 void Navigator::moveC2MWithBlock()
 {
   
-  lineTracer.run({ 100, 30, 0.0, { 0.3, 0.005, 0.01 } });
+  lineTracer.run({ 100, 30, 0.0, { 0.25, 0.005, 0.01 } });
   // printf("交点サークルから中点への移動withBlock\n");
 }
 
@@ -112,7 +112,7 @@ void Navigator::setBlockFromC(int rotationAngle, bool clockwise)
 void Navigator::moveM2C()
 {
   
-  lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
+  lineTracer.runToColor(30, 0.25, 0.005, 0.01, 0.0);
   moveStraight.moveTo(90, 30);
   // printf("中点から交点サークルへの移動\n");
 }
@@ -120,7 +120,7 @@ void Navigator::moveM2C()
 void Navigator::moveM2CWithBlock()
 {
   
-  lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
+  lineTracer.runToColor(30, 0.25, 0.005, 0.01, 0.0);
   // printf("中点から交点サークルへの移動withBlock\n");
 }
 
