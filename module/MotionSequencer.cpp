@@ -20,10 +20,10 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
     // controller.stopMotor();
     // controller.resetMotorCount();
 
-    while(controller.getArmMotorCount() != -45){
-      if(controller.getArmMotorCount() < -45){
+    while(controller.getArmMotorCount() != -45) {
+      if(controller.getArmMotorCount() < -45) {
         controller.setArmMotorPwm(30);
-      }else{
+      } else {
         controller.setArmMotorPwm(-30);
       }
       controller.tslpTsk();
@@ -56,7 +56,8 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
       }
     } else if(rotationAngle > 0) {
       int pwm = hasBlock ? 10 : 100;
-      bool needCorrection = (currentType == NodeType::crossCircle && nextType == NodeType::middlePoint);
+      bool needCorrection
+          = (currentType == NodeType::crossCircle && nextType == NodeType::middlePoint);
       navigator.changeDirection(rotationAngle, clockwise, pwm, needCorrection);
       if(clockwise) {
         for(int i = 0; i < rotationCount; i++) motionCommandList.push_back(MotionCommand::RT);
@@ -88,10 +89,11 @@ Direction MotionSequencer::route2Motion(vector<Coordinate> const& route,
         navigator.setBlockFromC(rotationAngle, clockwise);
         motionCommandList.push_back(MotionCommand::SC);
         if(rotationAngle == 135) {
-          if(clockwise){
+          if(clockwise) {
             nextDirection = static_cast<Direction>((static_cast<int>(currentDirection) + 2) % 8);
           } else {
-            nextDirection = static_cast<Direction>((static_cast<int>(currentDirection) - 2 + 8) % 8);
+            nextDirection
+                = static_cast<Direction>((static_cast<int>(currentDirection) - 2 + 8) % 8);
           }
         }
       } else {

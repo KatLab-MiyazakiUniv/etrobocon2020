@@ -20,25 +20,24 @@ void Navigator::enterStraight()
   controller.keepArm();
   controller.resetMotorCount();
   lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
-  printf("ビンゴエリアにまっすぐ進入\n");
 }
 
 void Navigator::enterLeft()
 {
   controller.keepArm();
-  moveStraight.moveTo(70);
-  changeDirection(45, false, 100, false);
-  moveStraight.moveTo(250, 30);
-  printf("ビンゴエリアに左から進入\n");
+  moveStraight.moveTo(50);
+  changeDirection(40, false, 100, false);
+  moveStraight.moveTo(260, 30);
+  lineTracer.setIsLeftEdge(true);
 }
 
 void Navigator::enterRight()
 {
   controller.keepArm();
-  moveStraight.moveTo(70);
-  changeDirection(45, true, 100, false);
-  moveStraight.moveTo(250, 30);
-  printf("ビンゴエリアに右から進入\n");
+  moveStraight.moveTo(50);
+  changeDirection(40, true, 100, false);
+  moveStraight.moveTo(240, 30);
+  lineTracer.setIsLeftEdge(false);
 }
 
 void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise, int pwm,
@@ -50,25 +49,23 @@ void Navigator::changeDirection(unsigned int rotationAngle, bool clockwise, int 
         = (clockwise || lineTracer.getIsLeftEdge()) && (!clockwise || !lineTracer.getIsLeftEdge())
               ? 5
               : -5;
-    rotationAngle += correction;
   }
-  rotation.rotate(rotationAngle, clockwise, pwm);
-  // printf("方向転換 %d° clockwise:%d\n", rotationAngle, clockwise);
+  rotation.rotate(rotationAngle + correction, clockwise, pwm);
+  if(rotationAngle == 180) {
+    lineTracer.setIsLeftEdge(!lineTracer.getIsLeftEdge());
+  }
 }
 
 void Navigator::changeDirectionWithBlock(unsigned int rotationAngle, bool clockwise)
 {
   if(rotationAngle == 0) {
-    moveStraight.moveTo(250, 30);
-    // printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
+    moveStraight.moveTo(180, 30);
   } else if(rotationAngle == 90) {
     rotation.pivotTurn(rotationAngle, clockwise, 30);
     lineTracer.setIsLeftEdge(!clockwise);
-    // printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
   } else if(rotationAngle == 180) {
     moveStraight.moveTo(40, 30);
     rotation.rotate(rotationAngle, clockwise, 10);
-    // printf("方向転換withBlock %d° %d\n", rotationAngle, clockwise);
     lineTracer.setIsLeftEdge(!lineTracer.getIsLeftEdge());
   } else {
     // 何もしない
@@ -79,19 +76,16 @@ void Navigator::changeDirectionWithBlock(unsigned int rotationAngle, bool clockw
 void Navigator::moveC2M()
 {
   lineTracer.run({ 175, 30, 0.0, { 0.3, 0.005, 0.01 } });
-  // printf("交点サークルから中点への移動\n");
 }
 
 void Navigator::moveC2MWithBlock()
 {
   lineTracer.run({ 100, 30, 0.0, { 0.3, 0.005, 0.01 } });
-  // printf("交点サークルから中点への移動withBlock\n");
 }
 
 void Navigator::getBlockFromC()
 {
-  moveStraight.moveTo(270, 30);
-  // printf("交点サークルからブロックサークルのブロックを取得\n");
+  moveStraight.moveTo(255, 30);
 }
 
 void Navigator::setBlockFromC(int rotationAngle, bool clockwise)
@@ -108,34 +102,27 @@ void Navigator::setBlockFromC(int rotationAngle, bool clockwise)
   } else {
     // なし
   }
-  // printf("交点サークルからブロックサークルにブロックを設置 angle:%d clockwise:%d\n",
-  // rotationAngle,
-  //  clockwise);
 }
 
 void Navigator::moveM2C()
 {
   lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
   moveStraight.moveTo(90, 30);
-  // printf("中点から交点サークルへの移動\n");
 }
 
 void Navigator::moveM2CWithBlock()
 {
   lineTracer.runToColor(30, 0.3, 0.005, 0.01, 0.0);
-  // printf("中点から交点サークルへの移動withBlock\n");
 }
 
 void Navigator::moveM2M()
 {
   moveStraight.moveTo(247, 30);
-  // printf("中点から中点への移動\n");
 }
 
 void Navigator::getBlockFromM()
 {
   moveStraight.moveTo(145, 30);
-  // printf("中点からブロックサークルのブロックを取得\n");
 }
 
 void Navigator::setBlockFromM()
@@ -143,19 +130,16 @@ void Navigator::setBlockFromM()
   moveStraight.moveTo(125, 30);
   controller.tslpTsk(500000);
   moveStraight.moveTo(-125, 30);
-  // printf("中点からブロックサークルにブロックを設置\n");
 }
 
 void Navigator::moveB2C()
 {
   moveStraight.moveTo(186, 30);
-  // printf("ブロックサークルから交点サークルへの移動\n");
 }
 
 void Navigator::moveB2M()
 {
-  moveStraight.moveTo(145, 30);
-  // printf("ブロックサークルから中点への移動\n");
+  moveStraight.moveTo(135, 30);
 }
 
 int Navigator::countRepeatedCommand(vector<MotionCommand> const& motionCommandList, int startIndex)
